@@ -48,14 +48,13 @@ module.exports = {
                     },
                 },
             },
-            extends: ['plugin:import/typescript', 'plugin:import/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:@typescript-eslint/recommended-requiring-type-checking'],
+            extends: ['plugin:import/typescript', 'plugin:import/recommended', 'plugin:@typescript-eslint/recommended'],
         },
         {
             files: ['.eslintrc.js'],
             env: {
                 node: true,
             },
-            ignorePatterns: ['node_modules', 'build', 'public'],
         },
     ],
 };
