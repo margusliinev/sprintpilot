@@ -1,7 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
 
 export const meta: MetaFunction = () => {
-    return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
+    return [{ title: 'SprintPilot' }, { name: 'description', content: 'SprintPilot is a project management tool for software development teams.' }];
 };
 
 export default function Index() {
