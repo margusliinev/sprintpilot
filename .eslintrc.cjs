@@ -13,12 +13,8 @@ module.exports = {
         commonjs: true,
         es6: true,
     },
-
-    // Base config
     extends: ['eslint:recommended'],
-
     overrides: [
-        // React
         {
             files: ['**/*.{js,jsx,ts,tsx}'],
             plugins: ['react', 'jsx-a11y'],
@@ -37,8 +33,6 @@ module.exports = {
                 },
             },
         },
-
-        // Typescript
         {
             files: ['**/*.{ts,tsx}'],
             plugins: ['@typescript-eslint', 'import'],
@@ -54,15 +48,14 @@ module.exports = {
                     },
                 },
             },
-            extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/recommended', 'plugin:import/typescript'],
+            extends: ['plugin:import/typescript', 'plugin:import/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:@typescript-eslint/recommended-requiring-type-checking'],
         },
-
-        // Node
         {
             files: ['.eslintrc.js'],
             env: {
                 node: true,
             },
+            ignorePatterns: ['node_modules', 'build', 'public'],
         },
     ],
 };
