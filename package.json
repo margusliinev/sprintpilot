@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "dev": "remix vite:dev",
-        "build": "remix vite:build",
+        "build": "remix vite:build && vite build --ssr",
         "start": "remix-serve ./build/server/index.js",
         "typecheck": "tsc",
         "format": "prettier --write .",
@@ -53,6 +53,6 @@
         "vite-tsconfig-paths": "^4.2.1"
     },
     "engines": {
-        "node": "20.x"
+        "node": ">=18.0.0"
     }
 }
