@@ -5,8 +5,7 @@
     "private": true,
     "scripts": {
         "dev": "remix vite:dev",
-        "build": "npm install && remix vite:build",
-        "build:digitalocean": "npm install --production=false && npm run build && npm ci",
+        "build": "remix vite:build",
         "start": "remix-serve ./build/server/index.js",
         "typecheck": "tsc",
         "format": "prettier --write .",
