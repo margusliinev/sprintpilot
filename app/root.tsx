@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'SprintPilot is a project management tool for software development teams' },
         { name: 'keywords', content: 'sprintpilot, sprint, project management, software development, agile, scrum, kanban, sprint planning, sprint board' },
-        { name: 'theme-color', content: '#ffffff' },
+        { name: 'theme-color', content: '#18181b' },
     ];
 };
 
