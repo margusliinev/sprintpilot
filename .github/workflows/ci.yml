@@ -1,0 +1,47 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    setup:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v3
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 14
+
+            - name: Install dependencies
+              run: npm install --frozen-lockfile
+
+    typecheck:
+        needs: setup
+        name: Typecheck
+        runs-on: ubuntu-latest
+        steps:
+            - name: Typecheck
+              run: npm run typecheck
+
+    lint:
+        needs: setup
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Lint
+              run: npm run lint
+
+    migrations:
+        needs: [typecheck, lint, setup]
+        name: Migrations
+        runs-on: ubuntu-latest
+        steps:
+            - name: Apply all pending migrations to the database
+              run: npm run migrate
+              env:
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}

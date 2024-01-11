@@ -1,9 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { mysqlTableCreator, bigint, varchar, timestamp, index } from 'drizzle-orm/mysql-core';
-
-// SCHEMA PREFIX
-
-export const mysqlTable = mysqlTableCreator((name) => `sprintpilot_${name}`);
+import { mysqlTable, bigint, varchar, timestamp, index } from 'drizzle-orm/mysql-core';
 
 // TABLES
 

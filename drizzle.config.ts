@@ -9,5 +9,4 @@ export default {
     driver: 'mysql2',
     out: './app/db/migrations',
     dbCredentials: { uri: process.env.DATABASE_URL },
-    tablesFilter: ['sprintpilot_*'],
 } satisfies Config;

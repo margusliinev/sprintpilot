@@ -14,7 +14,7 @@ const connection = await mysql.createConnection({
     uri: process.env.DATABASE_URL,
 });
 
-const db = drizzle(connection, { schema, mode: 'planetscale' });
+const db = drizzle(connection, { schema, mode: 'default' });
 
 async function seed() {
     console.log('🌱 Seeding started');

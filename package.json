@@ -5,13 +5,15 @@
     "private": true,
     "scripts": {
         "dev": "remix vite:dev",
-        "build": "remix vite:build && vite build --ssr",
+        "build": "remix vite:build",
         "start": "remix-serve ./build/server/index.js",
         "typecheck": "tsc",
         "format": "prettier --write .",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "push": "drizzle-kit push:mysql",
-        "seed": "tsx app/db/seed.ts"
+        "seed": "tsx app/db/seed.ts",
+        "generate": "drizzle-kit generate:mysql",
+        "migrate": "tsx app/db/migrate.ts"
     },
     "dependencies": {
         "@remix-run/node": "^2.4.1",
