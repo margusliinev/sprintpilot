@@ -10,9 +10,9 @@
         "typecheck": "tsc",
         "format": "prettier --write .",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-        "push": "drizzle-kit push:mysql",
+        "push": "drizzle-kit push:pg",
         "seed": "tsx app/db/seed.ts",
-        "generate": "drizzle-kit generate:mysql",
+        "generate": "drizzle-kit generate:pg",
         "migrate": "tsx app/db/migrate.ts"
     },
     "dependencies": {
@@ -26,7 +26,7 @@
         "drizzle-orm": "^0.29.3",
         "isbot": "^3.6.8",
         "lucide-react": "^0.309.0",
-        "mysql2": "^3.7.0",
+        "pg": "^8.11.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "tailwind-merge": "^2.2.0",
@@ -36,6 +36,7 @@
     "devDependencies": {
         "@remix-run/dev": "^2.4.1",
         "@types/bcryptjs": "^2.4.6",
+        "@types/pg": "^8.10.9",
         "@types/react": "^18.2.20",
         "@types/react-dom": "^18.2.7",
         "@typescript-eslint/eslint-plugin": "^6.7.4",

@@ -1,27 +1,25 @@
+import { pgTable, bigint, varchar, timestamp, index, bigserial } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { mysqlTable, bigint, varchar, timestamp, index } from 'drizzle-orm/mysql-core';
 
 // TABLES
 
-export const usersTable = mysqlTable('users', {
-    id: bigint('id', { unsigned: true, mode: 'number' }).autoincrement().primaryKey().notNull(),
+export const usersTable = pgTable('users', {
+    id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
     username: varchar('username', { length: 255 }).unique().notNull(),
     email: varchar('email', { length: 255 }).unique().notNull(),
     password: varchar('password', { length: 255 }).notNull(),
-    created_at: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
-    updated_at: timestamp('updated_at', { mode: 'date' }).defaultNow().onUpdateNow().notNull(),
+    created_at: timestamp('created_at', { mode: 'date', withTimezone: false, precision: 0 }).defaultNow().notNull(),
+    updated_at: timestamp('updated_at', { mode: 'date', withTimezone: false, precision: 0 }).defaultNow().notNull(),
 });
 
-export const sessionsTable = mysqlTable(
+export const sessionsTable = pgTable(
     'sessions',
     {
-        id: bigint('id', { unsigned: true, mode: 'number' }).autoincrement().primaryKey().notNull(),
-        expires_at: timestamp('expires_at', { mode: 'date' }).notNull(),
-        created_at: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
-        updated_at: timestamp('updated_at', { mode: 'date' }).defaultNow().onUpdateNow().notNull(),
-        user_id: bigint('user_id', { unsigned: true, mode: 'number' })
-            .references(() => usersTable.id, { onDelete: 'cascade', onUpdate: 'cascade' })
-            .notNull(),
+        id: bigserial('id', { mode: 'number' }).primaryKey().notNull(),
+        expires_at: timestamp('expires_at', { mode: 'date', withTimezone: false, precision: 0 }).notNull(),
+        created_at: timestamp('created_at', { mode: 'date', withTimezone: false, precision: 0 }).defaultNow().notNull(),
+        updated_at: timestamp('updated_at', { mode: 'date', withTimezone: false, precision: 0 }).defaultNow().notNull(),
+        user_id: bigint('user_id', { mode: 'number' }).references(() => usersTable.id, { onDelete: 'cascade', onUpdate: 'cascade' }).notNull(),
     },
     (table) => {
         return { user_id_idx: index('user_id_idx').on(table.user_id) };

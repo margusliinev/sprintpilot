@@ -1,19 +1,18 @@
 version: '3.8'
 
 services:
-    mysql:
-        image: mysql:latest
+    postgres:
+        image: postgres:16
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: mysqldb
-            MYSQL_USER: mysqluser
-            MYSQL_PASSWORD: mysqlpassword
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
             TZ: UTC
         ports:
-            - '3306:3306'
+            - '5432:5432'
         volumes:
-            - mysql_data:/var/lib/mysql
+            - postgres_data:/var/lib/postgresql/data
 
 volumes:
-    mysql_data:
+    postgres_data:

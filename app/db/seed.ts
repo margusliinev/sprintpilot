@@ -1,20 +1,20 @@
 import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/mysql2';
+import { drizzle } from 'drizzle-orm/node-postgres';
 import { usersTable } from './schema';
-import mockUsers from './users.json';
-import mysql from 'mysql2/promise';
-import bcrypt from 'bcryptjs';
 import * as schema from './schema';
+import mockUsers from './users.json';
+import bcrypt from 'bcryptjs';
+import pg from 'pg';
 
 if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is not defined');
 }
 
-const connection = await mysql.createConnection({
-    uri: process.env.DATABASE_URL,
+const connection = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
 });
 
-const db = drizzle(connection, { schema, mode: 'default' });
+const client = drizzle(connection, { schema });
 
 async function seed() {
     console.log('🌱 Seeding started');
@@ -22,13 +22,13 @@ async function seed() {
     await connection.connect();
 
     console.time('🧹 Cleaned up the database');
-    await db.delete(usersTable);
+    await client.delete(usersTable);
     console.timeEnd('🧹 Cleaned up the database');
 
     console.time(`👤 Created ${mockUsers.length} users`);
     for (const user of mockUsers) {
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        await db.insert(usersTable).values({ username: user.username, email: user.email, password: hashedPassword });
+        await client.insert(usersTable).values({ username: user.username, email: user.email, password: hashedPassword });
     }
     console.timeEnd(`👤 Created ${mockUsers.length} users`);
 

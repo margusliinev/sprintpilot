@@ -6,7 +6,7 @@ if (!process.env.DATABASE_URL) {
 
 export default {
     schema: './app/db/schema.ts',
-    driver: 'mysql2',
+    driver: 'pg',
     out: './app/db/migrations',
-    dbCredentials: { uri: process.env.DATABASE_URL },
+    dbCredentials: { connectionString: process.env.DATABASE_URL },
 } satisfies Config;
