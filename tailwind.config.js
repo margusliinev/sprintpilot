@@ -4,13 +4,6 @@ module.exports = {
     content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
     prefix: '',
     theme: {
-        container: {
-            center: true,
-            padding: '2rem',
-            screens: {
-                '2xl': '1400px',
-            },
-        },
         extend: {
             width: {
                 'screen-90': '90vw',
@@ -43,6 +36,7 @@ module.exports = {
                 primary: {
                     DEFAULT: 'hsl(var(--primary))',
                     foreground: 'hsl(var(--primary-foreground))',
+                    hover: 'hsl(var(--primary-hover))',
                 },
                 secondary: {
                     DEFAULT: 'hsl(var(--secondary))',

@@ -11,8 +11,9 @@
         --card-foreground: 60 9.1% 97.8%;
         --popover: 20 14.3% 4.1%;
         --popover-foreground: 60 9.1% 97.8%;
-        --primary: 24.6 85% 53.1%;
+        --primary: 25 85% 55%;
         --primary-foreground: 60 9.1% 97.8%;
+        --primary-hover: 25 85% 60%;
         --secondary: 12 6.5% 15.1%;
         --secondary-foreground: 60 9.1% 97.8%;
         --muted: 12 6.5% 15.1%;
