@@ -1,21 +1,27 @@
 {
     "compilerOptions": {
-        "lib": ["DOM", "DOM.Iterable", "ES2022"],
-        "moduleResolution": "Bundler",
-        "paths": { "@/*": ["./app/*"] },
-        "jsx": "react-jsx",
-        "module": "ESNext",
-        "target": "ES2022",
-        "baseUrl": ".",
-        "forceConsistentCasingInFileNames": true,
-        "noUncheckedIndexedAccess": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "isolatedModules": true,
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
         "skipLibCheck": true,
+        "strict": true,
         "noEmit": true,
-        "strict": true
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
-    "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
     "exclude": ["node_modules"]
 }
