@@ -29,7 +29,7 @@
 
     .dark {
         --background-opacity: 0.2;
-        --background: 240 10% 3.9%;
+        --background: 240 5% 10%;
         --foreground: 0 0% 98%;
         --card: 240 10% 3.9%;
         --card-foreground: 0 0% 98%;
@@ -50,7 +50,7 @@
         --ring: 240 4.9% 83.9%;
     }
     * {
-        @apply border-border;
+        @apply border-border min-w-0;
     }
 
     body::before {
@@ -63,6 +63,10 @@
     }
 
     body {
-        @apply bg-background text-foreground min-h-screen font-sans antialiased;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+        min-height: 100vh;
+        overflow-y: initial !important;
+        margin-right: 0 !important;
     }
 }
