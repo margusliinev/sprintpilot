@@ -6,7 +6,7 @@ import './styles/index.css';
 export const meta: MetaFunction = () => {
     return [
         { title: 'SprintPilot' },
-        { name: 'description', content: 'SprintPilot is a project management tool for software development teams' },
+        { name: 'description', content: 'SprintPilot is a project management tool for developers around the world for real-time collaboration around a shared, prioritized backlog.' },
         { name: 'keywords', content: 'sprintpilot, sprint, project management, software development, agile, scrum, kanban, sprint planning, sprint board' },
     ];
 };
@@ -25,7 +25,7 @@ export const links: LinksFunction = () => [
 
 export default function App() {
     return (
-        <html lang='en'>
+        <html lang='en' className='dark'>
             <head>
                 <meta charSet='utf-8' />
                 <meta name='viewport' content='width=device-width, initial-scale=1' />
