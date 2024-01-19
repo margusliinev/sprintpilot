@@ -1,10 +1,12 @@
-import { type Config } from 'drizzle-kit';
+import type { Config } from 'drizzle-kit';
 
-import { env } from '@/env';
+if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL is not set');
+}
 
 export default {
-    schema: './src/server/db/schema.ts',
+    schema: './app/db/schema.ts',
     driver: 'mysql2',
-    dbCredentials: { uri: env.DATABASE_URL },
-    tablesFilter: ['sprintpilot_*'],
+    out: './app/db/migrations',
+    dbCredentials: { uri: process.env.DATABASE_URL },
 } satisfies Config;
