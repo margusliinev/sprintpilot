@@ -5,6 +5,11 @@ module.exports = {
     prefix: '',
     theme: {
         extend: {
+            screens: {
+                xs: '600px',
+                xxs: '500px',
+                xxxs: '400px',
+            },
             width: {
                 'screen-90': '90vw',
                 'screen-80': '80vw',
