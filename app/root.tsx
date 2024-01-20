@@ -58,8 +58,8 @@ export function ErrorBoundary() {
                         <div className='w-full h-full bg-gradient-to-tr from-background to-foreground opacity-10 '></div>
                     </div>
                     <div className='z-10 w-screen-90 text-center'>
-                        <p className='text-5xl font-bold text-primary'>{isRouteErrorResponse(error) ? `${error.status}` : '500'}</p>
-                        <h1 className='mt-4 text-4xl font-bold tracking-tight xxs:text-5xl'>
+                        <p className='text-7xl font-bold text-primary'>{isRouteErrorResponse(error) ? `${error.status}` : '500'}</p>
+                        <h1 className='mt-4 text-4xl font-semibold tracking-tight xxs:text-5xl'>
                             {isRouteErrorResponse(error) ? (error.status === 404 ? 'Page Not Found' : error.statusText) : 'Internal Server Error'}
                         </h1>
                         <p className='mt-6 text-lg text-foreground/90'>

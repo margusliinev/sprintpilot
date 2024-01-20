@@ -7,9 +7,9 @@ export default function Home() {
     return (
         <main className='grid min-h-screen h-full w-full place-items-center'>
             <div className='absolute inset-0 transform-gpu overflow-hidden opacity-40 blur-3xl' aria-hidden='true'>
-                <div className='w-full h-full bg-gradient-to-tr from-background to-foreground opacity-10 '></div>
+                <div className='w-full h-full bg-gradient-to-tr from-background to-foreground opacity-10'></div>
             </div>
-            <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-border bg-background/20 shadow-sm'>
+            <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-border bg-navbar shadow-sm'>
                 <div className='flex w-screen-90 max-w-6xl items-center justify-between'>
                     <Link to={'/'} className='flex items-center gap-3' onClick={() => setisMobileMenuOpen(false)}>
                         <img src='logo.svg' alt='logo' className='w-5' />

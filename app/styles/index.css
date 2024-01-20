@@ -4,12 +4,13 @@
 
 @layer base {
     :root {
+        --navbar: 240 5% 11.5%;
         --background: 240 5% 10%;
         --foreground: 0 0% 95%;
-        --card: 240 10% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 240 10% 3.9%;
-        --popover-foreground: 0 0% 98%;
+        --card: 240 5% 15%;
+        --card-foreground: 0 0% 95%;
+        --popover: 0 0% 9%;
+        --popover-foreground: 0 0% 95%;
         --primary: 0 0% 98%;
         --primary-foreground: 240 5.9% 10%;
         --secondary: 240 3.7% 15.9%;
@@ -18,8 +19,10 @@
         --muted-foreground: 240 5% 64.9%;
         --accent: 240 3.7% 15.9%;
         --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive: 0 60% 65%;
+        --destructive-foreground: 0 0% 95%;
+        --success: 156.2 71.6% 66.9%;
+        --success-foreground: 0 0% 95%;
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 240 4.9% 83.9%;
@@ -37,5 +40,7 @@
         background-color: hsl(var(--background));
         overflow-y: initial !important;
         margin-right: 0 !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 }

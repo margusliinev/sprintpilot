@@ -6,7 +6,7 @@ export default function Index() {
     return (
         <header className='z-10 w-screen-90 max-w-4xl text-center my-32'>
             <div className='mb-6 flex justify-center'>
-                <div className='text-sm font-semibold rounded-full px-6 py-2.5 ring-1 ring-ring/70'>{currentDate}: We are now in open beta!</div>
+                <div className='text-sm font-medium rounded-full px-6 py-2.5 ring-1 ring-ring/70'>{currentDate}: We are now in open beta!</div>
             </div>
             <h1 className='grid font-bold tracking-tight text-3xl xxxs:text-4xl xs:text-5xl md:text-6xl lg:text-7xl'>
                 <span className='mb-2'>Build better software</span>
