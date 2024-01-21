@@ -33,7 +33,7 @@ export default function Home() {
                             </Link>
                         </li>
                     </ul>
-                    <button onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)} className='block sm:hidden'>
+                    <button onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)} className='block sm:hidden' aria-label='toggle menu'>
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
                     <div className={isMobileMenuOpen ? 'fixed inset-0 z-50 mt-16 bg-navbar p-8 sm:hidden' : 'hidden'}>
