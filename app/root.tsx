@@ -8,6 +8,7 @@ export const meta: MetaFunction = () => {
         { title: 'SprintPilot' },
         { name: 'description', content: 'SprintPilot is a project management tool for developers around the world for real-time collaboration around a shared, prioritized backlog.' },
         { name: 'keywords', content: 'sprintpilot, sprint, project management, software development, agile, scrum, kanban, sprint planning, sprint board' },
+        { name: 'theme-color', content: '#83D3FC' },
     ];
 };
 

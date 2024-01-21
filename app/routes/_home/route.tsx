@@ -12,7 +12,7 @@ export default function Home() {
             <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-zinc-800 bg-navbar shadow-sm'>
                 <div className='flex w-screen-90 max-w-6xl items-center justify-between'>
                     <Link to={'/'} className='flex items-center gap-3' onClick={() => setisMobileMenuOpen(false)}>
-                        <img src='logo.svg' alt='logo' className='w-5' />
+                        <img src='logo.svg' alt='logo' width={20} height={20} />
                         <span className='text-2xl font-semibold sm:text-3xl'>SprintPilot</span>
                     </Link>
                     <ul className='hidden sm:flex items-center font-medium text-sm'>
