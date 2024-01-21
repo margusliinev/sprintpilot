@@ -9,7 +9,7 @@ export default function Index() {
                 <div className='text-sm font-medium rounded-full px-6 py-2.5 ring-1 ring-ring/70'>{currentDate}: We are now in open beta!</div>
             </div>
             <h1 className='grid font-bold tracking-tight text-3xl xxxs:text-4xl xs:text-5xl md:text-6xl lg:text-7xl'>
-                <span className='mb-2'>Build better software</span>
+                <span className='mb-2 text-primary'>Build better software</span>
                 <span>with SprintPilot</span>
             </h1>
             <p className='mx-auto mt-6 max-w-2xl text-foreground/90 text-md md:text-lg'>

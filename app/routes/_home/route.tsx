@@ -6,7 +6,7 @@ export default function Home() {
     const [isMobileMenuOpen, setisMobileMenuOpen] = useState(false);
     return (
         <main className='grid min-h-screen h-full w-full place-items-center'>
-            <div className='absolute inset-0 transform-gpu overflow-hidden opacity-40 blur-3xl' aria-hidden='true'>
+            <div className='fixed inset-0 transform-gpu overflow-hidden opacity-40 blur-3xl' aria-hidden='true'>
                 <div className='w-full h-full bg-gradient-to-tr from-background to-foreground opacity-10'></div>
             </div>
             <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-border bg-navbar shadow-sm'>
