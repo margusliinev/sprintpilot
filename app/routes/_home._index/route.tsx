@@ -12,7 +12,7 @@ export default function Index() {
                 <span className='mb-2 text-primary'>Build better software</span>
                 <span>with SprintPilot</span>
             </h1>
-            <p className='mx-auto mt-6 max-w-2xl text-md md:text-lg'>
+            <p className='mx-auto mt-6 max-w-2xl text-md md:text-lg text-secondary-foreground'>
                 SprintPilot is a project management tool of choice for developers around the world to improve real-time collaboration. With its built-in sprint planner and progress tracker,
                 SprintPilot helps you ship better software, faster.
             </p>

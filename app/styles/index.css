@@ -40,9 +40,9 @@
         --accent: 240 5% 15%;
         --accent-foreground: 0 0% 95%;
 
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
-        --ring: 240 4.9% 83.9%;
+        --border: 240 5% 20%;
+        --input: 240 5% 20%;
+        --ring: 240 5% 70%;
         --radius: 0.5rem;
     }
 
