@@ -75,12 +75,12 @@ export function ErrorBoundary() {
                                 : `We encountered an error and cannot fulfill the request.`}
                         </p>
                         <div className='flex items-center justify-center text-sm font-semibold gap-6 mt-8'>
-                            <Link to={'/'} className='rounded-full bg-primary text-primary-foreground px-3.5 py-2.5 transition-colors hover:bg-primary/80'>
+                            <Link to={'/'} className='rounded-full bg-primary text-primary-foreground px-3.5 py-2.5 transition-colors hover:bg-primary-hover'>
                                 Go Back Home
                             </Link>
                             <Link to='/login' className='group flex items-center gap-1'>
                                 Login Page
-                                <span aria-hidden='true' className='font-normal transition-colors group-hover:text-foreground/60'>
+                                <span aria-hidden='true' className='font-normal transition-colors group-hover:text-primary'>
                                     &rarr;
                                 </span>
                             </Link>
