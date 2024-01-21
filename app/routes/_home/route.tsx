@@ -15,17 +15,19 @@ export default function Home() {
                         <img src='logo.svg' alt='logo' className='w-5' />
                         <span className='text-2xl font-semibold sm:text-3xl'>SprintPilot</span>
                     </Link>
-                    <ul className='hidden sm:flex items-center gap-12 font-medium text-sm'>
+                    <ul className='hidden sm:flex items-center font-medium text-sm'>
                         <li>
-                            <Link to={'/pricing'}>Pricing</Link>
+                            <Link to={'/pricing'} className='hover:text-primary-hover transition-colors px-6 py-2'>
+                                Pricing
+                            </Link>
                         </li>
                         <li>
-                            <Link to={'/login'} className='-mr-2'>
+                            <Link to={'/login'} className='hover:text-primary-hover transition-colors pl-6 pr-10 py-2'>
                                 Login
                             </Link>
                         </li>
                         <li className='font-semibold'>
-                            <Link to='/register' className='flex items-center gap-1 rounded-full px-4 py-2.5 bg-primary text-primary-foreground transition-colors hover:bg-primary/80'>
+                            <Link to='/register' className='flex items-center gap-1 rounded-full px-4 py-2.5 bg-primary text-primary-foreground transition-colors hover:bg-primary-hover'>
                                 Register
                                 <span aria-hidden='true'>&rarr;</span>
                             </Link>
@@ -34,21 +36,23 @@ export default function Home() {
                     <button onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)} className='block sm:hidden'>
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
-                    <div className={isMobileMenuOpen ? 'fixed inset-0 z-50 mt-16 bg-background p-8 sm:hidden' : 'hidden'}>
-                        <ul className='grid gap-4 font-medium text-md'>
-                            <li className='border-b border-gray-300 py-4'>
-                                <Link to='/register' className='flex items-center gap-2' onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
+                    <div className={isMobileMenuOpen ? 'fixed inset-0 z-50 mt-16 bg-navbar p-8 sm:hidden' : 'hidden'}>
+                        <ul className='font-medium text-md'>
+                            <li>
+                                <Link to='/register' className='flex items-center gap-2 hover:text-primary-hover py-6 border-b border-ring' onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
                                     Register
-                                    <span aria-hidden='true'>&rarr;</span>
+                                    <span aria-hidden='true' className='font-medium'>
+                                        &rarr;
+                                    </span>
                                 </Link>
                             </li>
-                            <li className='border-b border-gray-300 py-4'>
-                                <Link to={'/login'} onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
+                            <li>
+                                <Link to={'/login'} className='hover:text-primary-hover block py-6 border-b border-ring' onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
                                     login
                                 </Link>
                             </li>
-                            <li className='border-b border-gray-300 py-4'>
-                                <Link to={'/pricing'} onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
+                            <li>
+                                <Link to={'/pricing'} className='hover:text-primary-hover block py-6 border-b border-ring' onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
                                     Pricing
                                 </Link>
                             </li>

@@ -7,22 +7,39 @@
         --navbar: 240 5% 11.5%;
         --background: 240 5% 10%;
         --foreground: 0 0% 95%;
+
+        --primary: 200 95% 75%;
+        --primary-foreground: 240 5% 10%;
+        --primary-hover: 200 95% 85%;
+
+        --success: 155 72% 65%;
+        --success-foreground: 240 5% 10%;
+        --success-hover: 155 72% 75%;
+
+        --warning: 50 100% 70%;
+        --warning-foreground: 240 5% 10%;
+        --warning-hover: 50 100% 80%;
+
+        --destructive: 0 60% 65%;
+        --destructive-foreground: 240 5% 10%;
+        --destructive-hover: 0 60% 75%;
+
+        --secondary: 240 5% 20%;
+        --secondary-foreground: 0 0% 80%;
+        --secondary-hover: 240 5% 25%;
+
+        --muted: 240 4% 16%;
+        --muted-foreground: 240 5% 70%;
+
         --card: 240 5% 15%;
         --card-foreground: 0 0% 95%;
-        --popover: 0 0% 9%;
+
+        --popover: 240 5% 15%;
         --popover-foreground: 0 0% 95%;
-        --primary: 199.4 95.5% 73.9%;
-        --primary-foreground: 240 5% 10%;
-        --secondary: 240 3.7% 15.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
-        --accent: 240 3.7% 15.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 60% 65%;
-        --destructive-foreground: 0 0% 95%;
-        --success: 156.2 71.6% 66.9%;
-        --success-foreground: 0 0% 95%;
+
+        --accent: 240 5% 15%;
+        --accent-foreground: 0 0% 95%;
+
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 240 4.9% 83.9%;
