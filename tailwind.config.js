@@ -33,7 +33,7 @@ module.exports = {
                 'screen-10': '10vh',
             },
             colors: {
-                navbar: 'hsl(var(--navbar))',
+                fill: 'hsl(var(--fill))',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 primary: {

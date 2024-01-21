@@ -4,7 +4,7 @@
 
 @layer base {
     :root {
-        --navbar: 240 5% 11.5%;
+        --fill: 240 5% 11.5%;
         --background: 240 5% 10%;
         --foreground: 0 0% 95%;
 
@@ -41,14 +41,13 @@
         --accent-foreground: 0 0% 95%;
 
         --border: 240 5% 20%;
-        --input: 240 5% 20%;
+        --input: 240 5% 22%;
         --ring: 240 5% 70%;
         --radius: 0.5rem;
     }
 
     * {
         border-color: hsl(var(--border));
-        min-width: 0;
     }
 
     body {

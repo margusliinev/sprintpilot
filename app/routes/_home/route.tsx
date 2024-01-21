@@ -9,7 +9,7 @@ export default function Home() {
             <div className='fixed inset-0 transform-gpu overflow-hidden opacity-40 blur-3xl' aria-hidden='true'>
                 <div className='w-full h-full bg-gradient-to-tr from-background to-foreground opacity-10'></div>
             </div>
-            <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-zinc-800 bg-navbar shadow-sm'>
+            <nav className='fixed top-0 z-50 h-16 w-full grid place-items-center border-b-2 border-zinc-800 bg-fill shadow-sm'>
                 <div className='flex w-screen-90 max-w-6xl items-center justify-between'>
                     <Link to={'/'} className='flex items-center gap-3' onClick={() => setisMobileMenuOpen(false)}>
                         <img src='logo.svg' alt='logo' width={20} height={20} />
@@ -36,7 +36,7 @@ export default function Home() {
                     <button onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)} className='block sm:hidden' aria-label='toggle menu'>
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
-                    <div className={isMobileMenuOpen ? 'fixed inset-0 z-50 mt-16 bg-navbar p-8 sm:hidden' : 'hidden'}>
+                    <div className={isMobileMenuOpen ? 'fixed inset-0 z-50 mt-16 bg-fill p-8 sm:hidden' : 'hidden'}>
                         <ul className='font-medium text-md'>
                             <li>
                                 <Link to='/register' className='flex items-center gap-2 hover:text-primary-hover py-6 border-b border-ring' onClick={() => setisMobileMenuOpen(!isMobileMenuOpen)}>
