@@ -23,7 +23,7 @@ export default function Register() {
                     <Label htmlFor='password'>Password</Label>
                     <Input type='password' name='password' id='password' />
                 </fieldset>
-                <Button type='submit' size={'sm'} className='mb-4 mt-2'>
+                <Button type='submit' size={'sm'} className='mb-2 mt-2'>
                     Register
                 </Button>
                 <div className='flex items-center justify-between gap-4'>
