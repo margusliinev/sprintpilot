@@ -5,7 +5,8 @@ import { validateAction } from '@/utils/validateAction';
 import { registerSchema, registerDto } from './schema';
 import { createUser, getUserByEmail, getUserByUsername } from '@/models/user.server';
 import { useState, useEffect, useRef } from 'react';
-import { hashPassword } from '@/utils/auth.server';
+import { hashPassword, setCookieSessionAndRedirect } from '@/utils/auth.server';
+import { createSession } from '@/models/session.server';
 
 type ActionResponse = {
     body?: registerDto;
@@ -28,7 +29,10 @@ export async function action({ request }: ActionFunctionArgs) {
     const newUser = await createUser({ username: body.username, email: body.email, password: hash });
     if (!newUser) return json<ActionResponse>({ errors: { default: 'Internal server error' } }, { status: 500 });
 
-    return json<ActionResponse>({ body }, { status: 201 });
+    const session = await createSession(newUser.id);
+    if (!session) return json<ActionResponse>({ errors: { default: 'Internal server error' } }, { status: 500 });
+
+    return setCookieSessionAndRedirect(request, session, '/dashboard');
 }
 
 export default function Register() {

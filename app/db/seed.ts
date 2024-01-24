@@ -6,9 +6,7 @@ import mockUsers from './users.json';
 import bcrypt from 'bcryptjs';
 import * as schema from './schema';
 
-if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is not defined');
-}
+if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined');
 
 const connection = await mysql.createConnection({
     uri: process.env.DATABASE_URL,
