@@ -1,4 +1,3 @@
-import { Github, Google } from '@/components/icons';
 import { Button, Input, Label } from '@/components/ui';
 import { Form, Link } from '@remix-run/react';
 
@@ -22,19 +21,6 @@ export default function Login() {
                 <Button type='submit' size={'sm'} className='mb-2 mt-2'>
                     Login
                 </Button>
-                <div className='flex items-center justify-between gap-4'>
-                    <div className='border-t border-zinc-600 w-full'></div>
-                    <div className='text-secondary-foreground uppercase text-xs whitespace-nowrap w-full text-center'>Or continue with</div>
-                    <div className='border-t border-zinc-600 w-full'></div>
-                </div>
-                <div className='grid grid-cols-2 gap-6 mb-4'>
-                    <Button variant='outline' size='sm'>
-                        <Github /> Github
-                    </Button>
-                    <Button variant='outline' size='sm'>
-                        <Google /> Google
-                    </Button>
-                </div>
             </Form>
             <div className='flex justify-center gap-2 text-sm mt-2'>
                 <p>Don&apos;t have an account?</p>

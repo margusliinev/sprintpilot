@@ -1,4 +1,4 @@
-import type { ZodError, ZodSchema } from 'zod';
+import { type ZodError, ZodSchema } from 'zod';
 
 export async function validateAction<ActionInput>({ request, schema }: { request: Request; schema: ZodSchema }) {
     const body = Object.fromEntries(await request.formData());
