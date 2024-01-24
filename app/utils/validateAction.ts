@@ -1,11 +1,11 @@
 import { type ZodError, ZodSchema } from 'zod';
 
 export async function validateAction<ActionInput>({ request, schema }: { request: Request; schema: ZodSchema }) {
-    const body = Object.fromEntries(await request.formData());
+    const fromData = Object.fromEntries(await request.formData());
 
     try {
-        const formData = schema.parse(body) as ActionInput;
-        return { formData, errors: null };
+        const body = schema.parse(fromData) as ActionInput;
+        return { body };
     } catch (error) {
         const { fieldErrors } = (error as ZodError).flatten();
         const errors = Object.fromEntries(
@@ -16,6 +16,6 @@ export async function validateAction<ActionInput>({ request, schema }: { request
                 return [key, `${key[0]?.toUpperCase() + key.slice(1)} is invalid`];
             }),
         );
-        return { formData: null, errors };
+        return { errors };
     }
 }

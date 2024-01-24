@@ -15,4 +15,4 @@ export const registerSchema = z.object({
         .regex(/.*[A-Za-z].*/, { message: 'Password must contain at least one letter' }),
 });
 
-export type actionData = z.infer<typeof registerSchema>;
+export type registerDto = z.infer<typeof registerSchema>;
