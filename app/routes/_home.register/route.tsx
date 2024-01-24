@@ -1,15 +1,22 @@
 import { Button, Input, Label } from '@/components/ui';
 import { Github, Google, Spinner } from '@/components/icons';
-import { Form, Link, useNavigation } from '@remix-run/react';
+import { Form, Link, useActionData, useNavigation } from '@remix-run/react';
 import { ActionFunctionArgs, json } from '@remix-run/node';
-import { registerValidation } from './validation';
+import { validateAction } from '@/utils/validateAction';
+import { registerSchema, actionData } from './schema';
 
 export async function action({ request }: ActionFunctionArgs) {
-    const validation = await registerValidation(request);
-    if (!validation.success) return json({ success: false, fields: validation.errors }, { status: 400 });
+    const { formData, errors } = await validateAction<actionData>({ request, schema: registerSchema });
+
+    if (errors) {
+        return json({ formData: null, errors }, { status: 400 });
+    }
+
+    return json({ formData, errors: null }, { status: 201 });
 }
 
 export default function Register() {
+    const data = useActionData<typeof action>();
     const navigation = useNavigation();
     const submitting = navigation.formAction === '/register';
 
@@ -23,15 +30,18 @@ export default function Register() {
             <Form className='grid gap-4' method='POST' action='/register' noValidate>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='username'>Username</Label>
-                    <Input type='text' name='username' id='username' />
+                    <Input type='text' name='username' id='username' aria-invalid={data?.errors?.username ? true : undefined} />
+                    {data?.errors?.username && <p className='text-sm text-destructive'>{data?.errors?.username}</p>}
                 </fieldset>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='email'>Email</Label>
-                    <Input type='email' name='email' id='email' />
+                    <Input type='email' name='email' id='email' aria-invalid={data?.errors?.email ? true : undefined} />
+                    {data?.errors?.username && <p className='text-sm text-destructive'>{data?.errors?.email}</p>}
                 </fieldset>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='password'>Password</Label>
-                    <Input type='password' name='password' id='password' />
+                    <Input type='password' name='password' id='password' aria-invalid={data?.errors?.password ? true : undefined} />
+                    {data?.errors?.username && <p className='text-sm text-destructive'>{data?.errors?.password}</p>}
                 </fieldset>
                 <Button type='submit' size={'sm'} className='mb-2 mt-2'>
                     {submitting ? <Spinner /> : 'Register'}

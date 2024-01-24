@@ -1,7 +1,6 @@
-import { formatErrors } from '@/utils/formatErrors';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 
-const registerSchema = z.object({
+export const registerSchema = z.object({
     username: z
         .string({ invalid_type_error: 'Username is invalid', required_error: 'Username is required' })
         .min(3, { message: 'Username must be between 3 and 39 characters' })
@@ -16,16 +15,4 @@ const registerSchema = z.object({
         .regex(/.*[A-Za-z].*/, { message: 'Password must contain at least one letter' }),
 });
 
-export async function registerValidation(request: Request) {
-    const formData = Object.fromEntries(await request.formData());
-    try {
-        const data = registerSchema.parse(formData);
-        return { success: true, body: data };
-    } catch (error) {
-        if (error instanceof ZodError) {
-            const errors = formatErrors(error);
-            return { success: false, errors };
-        }
-        return { success: false, errors: { default: 'Validation failed' } };
-    }
-}
+export type actionData = z.infer<typeof registerSchema>;
