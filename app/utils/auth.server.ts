@@ -25,7 +25,7 @@ export async function requireUserId(request: Request) {
     const sessionId = session.get('sessionId');
 
     const user = await getUserBySessionId(sessionId);
-    if (!user || !user.id) throw redirect('/login', { headers: { 'set-cookie': await authSessionStorage.destroySession(session) } });
+    if (!user) throw redirect('/login', { headers: { 'set-cookie': await authSessionStorage.destroySession(session) } });
 
     return user.id;
 }

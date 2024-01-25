@@ -4,7 +4,7 @@ import { ActionFunctionArgs, json } from '@remix-run/node';
 import { validateAction } from '@/utils/validateAction';
 import { registerSchema, registerDto } from './schema';
 import { createUser, getUserByEmail, getUserByUsername } from '@/models/user.server';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { hashPassword, setCookieSessionAndRedirect } from '@/utils/auth.server';
 import { createSession } from '@/models/session.server';
 
@@ -39,9 +39,6 @@ export default function Register() {
     const [isUsernameError, setIsUsernameError] = useState<true | undefined>(undefined);
     const [isEmailError, setIsEmailError] = useState<true | undefined>(undefined);
     const [isPasswordError, setIsPasswordError] = useState<true | undefined>(undefined);
-    const usernameRef = useRef<HTMLInputElement>(null);
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
     const actionData = useActionData<typeof action>();
     const navigation = useNavigation();
     const submitting = navigation.formAction === '/register';
@@ -63,25 +60,37 @@ export default function Register() {
             <div className='grid place-items-center text-center'>
                 <img src='logo.svg' alt='logo' width={25} height={25} className='mb-2' />
                 <h1 className='mb-1 text-2xl font-semibold'>Create an account</h1>
-                <p className='mb-8 text-sm text-secondary-foreground'>And lets get you started with your free trial</p>
+                <p className='mb-8 text-sm text-secondary-foreground'>And lets get you started with a free plan</p>
             </div>
-            <Form className='grid gap-4' method='POST' action='/register'>
+            <Form className='grid gap-4' method='POST' action='/register' noValidate>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='username'>Username</Label>
-                    <Input ref={usernameRef} type='text' name='username' id='username' aria-invalid={isUsernameError} onChange={() => setIsUsernameError(undefined)} required />
-                    {isUsernameError && <p className='text-sm text-destructive'>{actionData?.errors?.username}</p>}
+                    <Input type='text' name='username' id='username' aria-invalid={isUsernameError} aria-describedby='username-error' onChange={() => setIsUsernameError(undefined)} />
+                    {isUsernameError && (
+                        <p className='text-sm text-destructive' id='username-error'>
+                            {actionData?.errors?.username}
+                        </p>
+                    )}
                 </fieldset>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='email'>Email</Label>
-                    <Input ref={emailRef} type='email' name='email' id='email' aria-invalid={isEmailError} onChange={() => setIsEmailError(undefined)} required />
-                    {isEmailError && <p className='text-sm text-destructive'>{actionData?.errors?.email}</p>}
+                    <Input type='email' name='email' id='email' aria-invalid={isEmailError} aria-describedby='email-error' onChange={() => setIsEmailError(undefined)} />
+                    {isEmailError && (
+                        <p className='text-sm text-destructive' id='email-error'>
+                            {actionData?.errors?.email}
+                        </p>
+                    )}
                 </fieldset>
                 <fieldset className='space-y-1'>
                     <Label htmlFor='password'>Password</Label>
-                    <Input ref={passwordRef} type='password' name='password' id='password' aria-invalid={isPasswordError} onChange={() => setIsPasswordError(undefined)} required />
-                    {isPasswordError && <p className='text-sm text-destructive'>{actionData?.errors?.password}</p>}
+                    <Input type='password' name='password' id='password' aria-invalid={isPasswordError} aria-describedby='password-error' onChange={() => setIsPasswordError(undefined)} />
+                    {isPasswordError && (
+                        <p className='text-sm text-destructive' id='password-error'>
+                            {actionData?.errors?.password}
+                        </p>
+                    )}
                 </fieldset>
-                <Button type='submit' size={'sm'} className='mb-2 mt-2'>
+                <Button type='submit' size={'sm'} className='mb-2 mt-2' disabled={submitting}>
                     {submitting ? <Spinner /> : 'Register'}
                 </Button>
             </Form>
