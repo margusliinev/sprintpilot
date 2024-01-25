@@ -16,28 +16,18 @@ export const authSessionStorage = createCookieSessionStorage({
         sameSite: 'lax',
         secrets: [SESSION_SECRET],
         secure: process.env.NODE_ENV === 'production',
-        expires: new Date(Date.now() + COOKIE_EXPIRATION_TIME),
     },
 });
 
-export async function getUserId(request: Request) {
+export async function requireUserId(request: Request) {
     const cookie = request.headers.get('cookie');
     const session = await authSessionStorage.getSession(cookie);
-
     const sessionId = session.get('sessionId');
-    if (!sessionId) return null;
 
     const user = await getUserBySessionId(sessionId);
-    if (!user) throw redirect('/login', { headers: { 'set-cookie': await authSessionStorage.destroySession(session) } });
+    if (!user || !user.id) throw redirect('/login', { headers: { 'set-cookie': await authSessionStorage.destroySession(session) } });
 
     return user.id;
-}
-
-export async function requireUserId(request: Request) {
-    const userId = await getUserId(request);
-    if (!userId) throw redirect('/login');
-
-    return userId;
 }
 
 export async function setCookieSessionAndRedirect(request: Request, session: Session, redirectTo: string) {
@@ -45,14 +35,13 @@ export async function setCookieSessionAndRedirect(request: Request, session: Ses
     const authSession = await authSessionStorage.getSession(cookie);
     authSession.set('sessionId', session.id);
 
-    return redirect(redirectTo, { headers: { 'set-cookie': await authSessionStorage.commitSession(authSession) } });
-}
-
-export async function signout(request: Request) {
-    const cookie = request.headers.get('cookie');
-    const session = await authSessionStorage.getSession(cookie);
-
-    return redirect('/login', { headers: { 'set-cookie': await authSessionStorage.destroySession(session) } });
+    return redirect(redirectTo, {
+        headers: {
+            'set-cookie': await authSessionStorage.commitSession(authSession, {
+                expires: new Date(Date.now() + COOKIE_EXPIRATION_TIME),
+            }),
+        },
+    });
 }
 
 export function hashPassword(password: string) {
@@ -60,7 +49,7 @@ export function hashPassword(password: string) {
         const hashedPassword = bcrypt.hash(password, 10);
         return hashedPassword;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return null;
     }
 }
@@ -70,7 +59,7 @@ export function verifyPassword(password: string, hashedPassword: string) {
         const isMatch = bcrypt.compare(password, hashedPassword);
         return isMatch;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return false;
     }
 }
