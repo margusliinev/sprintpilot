@@ -1,5 +1,6 @@
 {
     "name": "sprintpilot",
+    "version": "0.0.1",
     "license": "MIT",
     "type": "module",
     "private": true,
@@ -9,37 +10,22 @@
         "start": "remix-serve ./build/server/index.js",
         "typecheck": "tsc",
         "format": "prettier --write .",
-        "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-        "push": "drizzle-kit push:mysql",
-        "seed": "tsx app/db/seed.ts"
+        "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint ."
     },
     "dependencies": {
-        "@radix-ui/react-accordion": "^1.1.2",
-        "@radix-ui/react-label": "^2.0.2",
-        "@radix-ui/react-slot": "^1.0.2",
         "@remix-run/node": "^2.5.1",
         "@remix-run/react": "^2.5.1",
         "@remix-run/serve": "^2.5.1",
-        "bcryptjs": "^2.4.3",
-        "class-variance-authority": "^0.7.0",
-        "clsx": "^2.1.0",
-        "drizzle-orm": "^0.29.3",
         "isbot": "^4.1.0",
-        "lucide-react": "^0.312.0",
-        "mysql2": "^3.7.1",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "tailwind-merge": "^2.2.0",
-        "tailwindcss-animate": "^1.0.7"
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
         "@remix-run/dev": "^2.5.1",
-        "@types/bcryptjs": "^2.4.6",
         "@types/react": "^18.2.20",
         "@types/react-dom": "^18.2.7",
         "@typescript-eslint/eslint-plugin": "^6.7.4",
         "autoprefixer": "^10.4.17",
-        "drizzle-kit": "^0.20.13",
         "eslint": "^8.38.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-import-resolver-typescript": "^3.6.1",
@@ -47,14 +33,14 @@
         "eslint-plugin-jsx-a11y": "^6.7.1",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "prettier": "^3.2.4",
+        "postcss": "^8.4.33",
+        "prettier-plugin-tailwindcss": "^0.5.11",
         "tailwindcss": "^3.4.1",
-        "tsx": "^4.7.0",
         "typescript": "^5.1.6",
         "vite": "^5.0.0",
         "vite-tsconfig-paths": "^4.2.1"
     },
     "engines": {
-        "node": "20.11.0"
+        "node": ">=18.0.0"
     }
 }

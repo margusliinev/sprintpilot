@@ -5,40 +5,35 @@ module.exports = {
         ecmaVersion: 'latest',
         sourceType: 'module',
         ecmaFeatures: {
-            jsx: true,
-        },
+            jsx: true
+        }
     },
     env: {
         browser: true,
         commonjs: true,
-        es6: true,
+        es6: true
     },
-
-    // Base config
     extends: ['eslint:recommended'],
 
     overrides: [
-        // React
         {
             files: ['**/*.{js,jsx,ts,tsx}'],
             plugins: ['react', 'jsx-a11y'],
             extends: ['plugin:react/recommended', 'plugin:react/jsx-runtime', 'plugin:react-hooks/recommended', 'plugin:jsx-a11y/recommended'],
             settings: {
                 react: {
-                    version: 'detect',
+                    version: 'detect'
                 },
                 formComponents: ['Form'],
                 linkComponents: [
                     { name: 'Link', linkAttribute: 'to' },
-                    { name: 'NavLink', linkAttribute: 'to' },
+                    { name: 'NavLink', linkAttribute: 'to' }
                 ],
                 'import/resolver': {
-                    typescript: {},
-                },
-            },
+                    typescript: {}
+                }
+            }
         },
-
-        // Typescript
         {
             files: ['**/*.{ts,tsx}'],
             plugins: ['@typescript-eslint', 'import'],
@@ -47,22 +42,20 @@ module.exports = {
                 'import/internal-regex': '^~/',
                 'import/resolver': {
                     node: {
-                        extensions: ['.ts', '.tsx'],
+                        extensions: ['.ts', '.tsx']
                     },
                     typescript: {
-                        alwaysTryTypes: true,
-                    },
-                },
+                        alwaysTryTypes: true
+                    }
+                }
             },
-            extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/recommended', 'plugin:import/typescript'],
+            extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/recommended', 'plugin:import/typescript']
         },
-
-        // Node
         {
             files: ['.eslintrc.js'],
             env: {
-                node: true,
-            },
-        },
-    ],
+                node: true
+            }
+        }
+    ]
 };

@@ -14,8 +14,8 @@
         "isolatedModules": true,
         "skipLibCheck": true,
         "noEmit": true,
-        "strict": true,
+        "strict": true
     },
     "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules"]
 }
