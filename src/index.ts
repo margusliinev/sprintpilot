@@ -1,15 +1,14 @@
+import HealthRoutes from './modules/health/health.routes';
+import { showRoutes } from 'hono/dev';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
-
-const PORT = process.env.PORT;
-if (!PORT) throw new Error('PORT is not defined');
+import { env } from './config';
 
 const app = new Hono();
 
-app.get('/', (c) => {
-    return c.text('Hello Hono!');
-});
+app.route('/api/health', HealthRoutes);
 
-console.log('Server is running on port', PORT);
+showRoutes(app, { colorize: true });
+serve({ fetch: app.fetch, port: env.PORT });
 
-serve({ fetch: app.fetch, port: Number(PORT) });
+console.log('Server is running on port', env.PORT);
