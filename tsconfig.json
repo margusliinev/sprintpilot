@@ -13,10 +13,10 @@
         "moduleResolution": "Node",
         "module": "CommonJS",
         "target": "ES2022",
-        "rootDir": "./src",
+        "rootDir": "./",
         "outDir": "./dist",
-        "types": ["node"]
+        "types": ["node"],
+        "paths": { "@/*": ["./src/*"] }
     },
-    "include": ["src"],
     "exclude": ["node_modules", "dist", "client"]
 }

@@ -1,4 +1,27 @@
-import { UnauthorizedException, ForbiddenException, BadRequestException } from './errors';
+import {
+    BadRequestException,
+    UnauthorizedException,
+    ForbiddenException,
+    NotFoundException,
+    MethodNotAllowedException,
+    ConflictException,
+    UnprocessableEntityException,
+    TooManyRequestsException,
+    InternalServerErrorException,
+    ServiceUnavailableException
+} from './errors';
 import { env } from './env';
 
-export { env, UnauthorizedException, ForbiddenException, BadRequestException };
+export {
+    env,
+    BadRequestException,
+    UnauthorizedException,
+    ForbiddenException,
+    NotFoundException,
+    MethodNotAllowedException,
+    ConflictException,
+    UnprocessableEntityException,
+    TooManyRequestsException,
+    InternalServerErrorException,
+    ServiceUnavailableException
+};
