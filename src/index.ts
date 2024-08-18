@@ -1,12 +1,12 @@
-import HealthRoutes from '@/modules/health/health.routes';
-import AuthRoutes from '@/modules/auth/auth.controller';
+import HealthRoutes from './modules/health/health.routes';
+import AuthRoutes from './modules/auth/auth.controller';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { BadRequestException } from './config/errors';
 import { HTTPException } from 'hono/http-exception';
 import { showRoutes } from 'hono/dev';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
-import { env } from '@/config';
+import { env } from './config';
 
 const app = new Hono();
 

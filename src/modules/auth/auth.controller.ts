@@ -1,9 +1,9 @@
 import { deleteCookie, setSignedCookie } from 'hono/cookie';
 import { loginSchema, registerSchema } from './auth.schema';
 import { authService } from './auth.service';
-import { defaultCookieOptions, validate } from '@/utils';
+import { defaultCookieOptions, validate } from '../../utils';
 import { Hono } from 'hono';
-import { env } from '@/config';
+import { env } from '../../config';
 
 const app = new Hono();
 

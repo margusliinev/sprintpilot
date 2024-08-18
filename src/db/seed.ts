@@ -2,7 +2,7 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import { createConnection } from 'mysql2';
 import * as schema from './schema';
 import mockUsers from './users.json';
-import { env } from '@/config';
+import { env } from '../config';
 import bcrypt from 'bcryptjs';
 
 const connection = createConnection(env.DATABASE_URL);

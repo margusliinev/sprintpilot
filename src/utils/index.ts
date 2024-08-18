@@ -2,7 +2,7 @@ import { CookieOptions } from 'hono/utils/cookie';
 import { zValidator } from '@hono/zod-validator';
 import { ValidationTargets } from 'hono';
 import { ZodSchema } from 'zod';
-import { env } from '@/config';
+import { env } from '../config';
 
 export const defaultCookieOptions: CookieOptions = {
     path: '/',

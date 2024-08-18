@@ -14,9 +14,7 @@
         "module": "CommonJS",
         "target": "ES2022",
         "rootDir": "./",
-        "outDir": "./dist",
-        "types": ["node"],
-        "paths": { "@/*": ["./src/*"] }
+        "outDir": "./dist"
     },
     "exclude": ["node_modules", "dist", "client"]
 }

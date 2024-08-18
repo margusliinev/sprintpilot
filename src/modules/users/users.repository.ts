@@ -1,7 +1,7 @@
-import type { NewUser, Session, User } from '@/db/schema';
-import { usersTable, sessionsTable } from '@/db/schema';
+import type { NewUser, Session, User } from '../../db/schema';
+import { usersTable, sessionsTable } from '../../db/schema';
 import { eq, and, gt, getTableColumns } from 'drizzle-orm';
-import { db } from '@/db';
+import { db } from '../../db';
 
 const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7;
 

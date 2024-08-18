@@ -1,5 +1,5 @@
-import { userRepository } from '@/modules/users/users.repository';
-import { InternalServerErrorException, BadRequestException } from '@/config';
+import { userRepository } from '../../modules/users/users.repository';
+import { InternalServerErrorException, BadRequestException } from '../../config';
 import { loginDto, registerDto } from './auth.schema';
 import bcrypt from 'bcryptjs';
 
