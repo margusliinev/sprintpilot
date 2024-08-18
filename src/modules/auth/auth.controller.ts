@@ -1,9 +1,9 @@
+import { defaultCookieOptions, validate } from '../../utils';
 import { deleteCookie, setSignedCookie } from 'hono/cookie';
 import { loginSchema, registerSchema } from './auth.schema';
 import { authService } from './auth.service';
-import { defaultCookieOptions, validate } from '../../utils';
-import { Hono } from 'hono';
 import { env } from '../../config';
+import { Hono } from 'hono';
 
 const app = new Hono();
 
@@ -27,7 +27,7 @@ app.post('/login', validate('json', loginSchema), async (c) => {
 
 app.post('/logout', async (c) => {
     deleteCookie(c, '__session');
-    return c.json({ success: true, message: 'Logout successful' }, 204);
+    return c.json({ success: true, message: 'Logout successful' }, 200);
 });
 
 export default app;

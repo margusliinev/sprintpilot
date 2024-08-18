@@ -1,4 +1,4 @@
-import HealthRoutes from './modules/health/health.routes';
+import HealthRoutes from './modules/health/health.controller';
 import AuthRoutes from './modules/auth/auth.controller';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { BadRequestException } from './config/errors';

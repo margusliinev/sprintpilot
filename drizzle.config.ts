@@ -11,5 +11,7 @@ export default defineConfig({
     migrations: {
         schema: './src/db/schema.ts',
         table: 'migrations'
-    }
+    },
+    verbose: true,
+    strict: true
 });
