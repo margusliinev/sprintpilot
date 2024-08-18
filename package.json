@@ -20,7 +20,7 @@
         "zod": "3.23.8"
     },
     "devDependencies": {
-        "@types/bcryptjs": "^2.4.6",
+        "@types/bcryptjs": "2.4.6",
         "@types/node": "20.11.17",
         "drizzle-kit": "0.24.0",
         "tsx": "4.7.1",
