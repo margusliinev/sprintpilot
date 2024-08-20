@@ -20,6 +20,7 @@ export const getCookie = async (c: Context, name: string) => {
 
 export const setCookie = (c: Context, name: string, value: any) => {
     const encryptedValue = encrypt(value);
+    if (!encryptedValue) return null;
     return setSignedCookie(c, name, encryptedValue, env.COOKIE_SECRET, defaultCookieOptions);
 };
 
