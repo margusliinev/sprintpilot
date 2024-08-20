@@ -26,6 +26,6 @@ app.onError(async (err, c) => {
 });
 
 showRoutes(app, { colorize: true });
-serve({ fetch: app.fetch, port: env.PORT });
+export const server = serve({ fetch: app.fetch, port: env.PORT });
 
 console.log('Server is running on port', env.PORT);
