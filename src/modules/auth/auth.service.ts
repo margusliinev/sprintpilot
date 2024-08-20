@@ -1,4 +1,4 @@
-import { InternalServerErrorException, BadRequestException } from '../../config';
+import { InternalServerErrorException, BadRequestException } from '../../utils';
 import { userRepository } from '../../modules/users/users.repository';
 import { loginDto, registerDto } from './auth.schema';
 import bcrypt from 'bcryptjs';

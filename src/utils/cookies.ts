@@ -1,7 +1,8 @@
 import { getSignedCookie, setSignedCookie, deleteCookie as deleteCookieHono } from 'hono/cookie';
+import { decrypt, encrypt } from './encryption';
 import { CookieOptions } from 'hono/utils/cookie';
 import { Context } from 'hono';
-import { env } from '../config';
+import { env } from './env';
 
 const defaultCookieOptions: CookieOptions = {
     path: '/',
@@ -11,12 +12,15 @@ const defaultCookieOptions: CookieOptions = {
     sameSite: 'lax'
 };
 
-export const getCookie = (c: Context, name: string) => {
-    return getSignedCookie(c, env.SESSION_SECRET, name);
+export const getCookie = async (c: Context, name: string) => {
+    const value = await getSignedCookie(c, env.COOKIE_SECRET, name);
+    if (!value) return null;
+    return decrypt(value);
 };
 
 export const setCookie = (c: Context, name: string, value: string | number) => {
-    return setSignedCookie(c, name, String(value), env.SESSION_SECRET, defaultCookieOptions);
+    const encryptedValue = encrypt(String(value));
+    return setSignedCookie(c, name, encryptedValue, env.COOKIE_SECRET, defaultCookieOptions);
 };
 
 export const deleteCookie = (c: Context, name: string) => {

@@ -1,18 +1,20 @@
 import HealthRoutes from './modules/health/health.routes';
+import UsersRoutes from './modules/users/users.routes';
 import AuthRoutes from './modules/auth/auth.routes';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { HTTPException } from 'hono/http-exception';
 import { showRoutes } from 'hono/dev';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
-import { env } from './config';
+import { env } from './utils';
 
 const app = new Hono();
 
 app.use(trimTrailingSlash());
 
-app.route('/api/auth', AuthRoutes);
 app.route('/api/health', HealthRoutes);
+app.route('/api/users', UsersRoutes);
+app.route('/api/auth', AuthRoutes);
 
 app.notFound(async (c) => c.json({ success: false, message: 'Not Found' }, 404));
 app.onError(async (err, c) => {

@@ -1,4 +1,4 @@
-import { validate, setCookie, deleteCookie } from '../../config';
+import { validate, setCookie, deleteCookie } from '../../utils';
 import { loginSchema, registerSchema } from './auth.schema';
 import { authService } from './auth.service';
 import { Hono } from 'hono';

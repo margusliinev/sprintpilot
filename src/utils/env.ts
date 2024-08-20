@@ -3,7 +3,8 @@ import { z, ZodError } from 'zod';
 const envSchema = z.object({
     PORT: z.coerce.number(),
     NODE_ENV: z.union([z.literal('development'), z.literal('production')]),
-    SESSION_SECRET: z.string(),
+    COOKIE_SECRET: z.string(),
+    ENCRYPTION_SECRET: z.string(),
     DATABASE_URL: z.string()
 });
 

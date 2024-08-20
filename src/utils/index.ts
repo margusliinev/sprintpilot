@@ -1,3 +1,7 @@
+import { getCookie, setCookie, deleteCookie } from './cookies';
+import { encrypt, decrypt } from './encryption';
+import { validate } from './validate';
+import { env } from './env';
 import {
     BadRequestException,
     UnauthorizedException,
@@ -33,9 +37,6 @@ import {
     GatewayTimeoutException,
     HttpVersionNotSupportedException
 } from './errors';
-import { env } from './env';
-import { getCookie, setCookie, deleteCookie } from './cookies';
-import { validate } from './validate';
 
 export {
     env,
@@ -43,6 +44,8 @@ export {
     setCookie,
     deleteCookie,
     validate,
+    encrypt,
+    decrypt,
     BadRequestException,
     UnauthorizedException,
     PaymentRequiredException,

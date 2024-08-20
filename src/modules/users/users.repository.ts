@@ -16,7 +16,7 @@ async function getUserBySessionId(sessionId: Session['id']) {
     const [user] = await db
         .select(userColumns)
         .from(sessionsTable)
-        .leftJoin(usersTable, eq(sessionsTable.user_id, usersTable.id))
+        .innerJoin(usersTable, eq(sessionsTable.user_id, usersTable.id))
         .where(and(eq(sessionsTable.id, sessionId), gt(sessionsTable.expires_at, new Date())));
     return user;
 }
