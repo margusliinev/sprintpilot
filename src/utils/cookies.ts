@@ -4,6 +4,8 @@ import { CookieOptions } from 'hono/utils/cookie';
 import { Context } from 'hono';
 import { env } from './env';
 
+type CookieValue = string | number | object;
+
 const defaultCookieOptions: CookieOptions = {
     path: '/',
     httpOnly: true,
@@ -18,8 +20,8 @@ export const getCookie = async (c: Context, name: string) => {
     return decrypt(value);
 };
 
-export const setCookie = (c: Context, name: string, value: string | number) => {
-    const encryptedValue = encrypt(String(value));
+export const setCookie = (c: Context, name: string, value: CookieValue) => {
+    const encryptedValue = encrypt(value);
     return setSignedCookie(c, name, encryptedValue, env.COOKIE_SECRET, defaultCookieOptions);
 };
 

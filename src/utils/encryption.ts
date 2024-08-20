@@ -13,15 +13,30 @@ const getKey = (password: string) => {
 };
 const key = getKey(env.ENCRYPTION_SECRET);
 
-export const encrypt = (value: string): string => {
+const serialize = (value: any) => {
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return value.toString();
+    return JSON.stringify(value);
+};
+
+const deserialize = (value: string) => {
+    try {
+        return JSON.parse(value);
+    } catch {
+        return value;
+    }
+};
+
+export const encrypt = (value: any) => {
     const iv = randomBytes(IV_LENGTH);
     const cipher = createCipheriv(ALGORITHM, key, iv);
-    const encrypted = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()]);
+    const serializedValue = serialize(value);
+    const encrypted = Buffer.concat([cipher.update(serializedValue, 'utf8'), cipher.final()]);
     const authTag = cipher.getAuthTag();
     return `${iv.toString('base64')}:${encrypted.toString('base64')}:${authTag.toString('base64')}`;
 };
 
-export const decrypt = (value: string): string => {
+export const decrypt = (value: string) => {
     const parts = value.split(':');
     const [ivBase64, encryptedBase64, authTagBase64] = parts;
     if (!ivBase64 || !encryptedBase64 || !authTagBase64) throw new InternalServerErrorException();
@@ -31,5 +46,6 @@ export const decrypt = (value: string): string => {
     const decipher = createDecipheriv(ALGORITHM, key, iv);
     decipher.setAuthTag(authTag);
     const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()]);
-    return decrypted.toString('utf8');
+    const decryptedString = decrypted.toString('utf8');
+    return deserialize(decryptedString);
 };

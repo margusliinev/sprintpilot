@@ -9,7 +9,7 @@ app.post('/register', validate('json', registerSchema), async (c) => {
     const body = c.req.valid('json');
 
     const session = await authService.register(body);
-    await setCookie(c, '__session', session.id);
+    await setCookie(c, '__session', { id: session.id });
 
     return c.json({ success: true, message: 'Register successful' }, 201);
 });
@@ -18,7 +18,7 @@ app.post('/login', validate('json', loginSchema), async (c) => {
     const body = c.req.valid('json');
 
     const session = await authService.login(body);
-    await setCookie(c, '__session', session.id);
+    await setCookie(c, '__session', { id: session.id });
 
     return c.json({ success: true, message: 'Login successful' }, 201);
 });
