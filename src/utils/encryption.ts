@@ -1,21 +1,35 @@
-import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'crypto';
+import { randomBytes, createCipheriv, createDecipheriv, pbkdf2Sync } from 'crypto';
+import { InternalServerErrorException } from './errors';
 import { env } from './env';
 
+const ALGORITHM = 'aes-256-gcm';
+const IV_LENGTH = 12;
+const KEY_LENGTH = 32;
+const ITERATIONS = 10000;
+const SALT = env.ENCRYPTION_SALT;
+
+const getKey = (password: string) => {
+    return pbkdf2Sync(password, SALT, ITERATIONS, KEY_LENGTH, 'sha256');
+};
+const key = getKey(env.ENCRYPTION_SECRET);
+
 export const encrypt = (value: string): string => {
-    const iv = randomBytes(16);
-    const key = createHash('sha256').update(env.ENCRYPTION_SECRET).digest();
-    const cipher = createCipheriv('aes-256-cbc', key, iv);
-    let encrypted = cipher.update(value, 'utf8', 'base64');
-    encrypted += cipher.final('base64');
-    return `${iv.toString('base64')}:${encrypted}`;
+    const iv = randomBytes(IV_LENGTH);
+    const cipher = createCipheriv(ALGORITHM, key, iv);
+    const encrypted = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()]);
+    const authTag = cipher.getAuthTag();
+    return `${iv.toString('base64')}:${encrypted.toString('base64')}:${authTag.toString('base64')}`;
 };
 
-export const decrypt = (value: string) => {
-    const [ivBase64, encrypted] = value.split(':');
-    const iv = Buffer.from(String(ivBase64), 'base64');
-    const key = createHash('sha256').update(env.ENCRYPTION_SECRET).digest();
-    const decipher = createDecipheriv('aes-256-cbc', key, iv);
-    let decrypted = decipher.update(String(encrypted), 'base64', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
+export const decrypt = (value: string): string => {
+    const parts = value.split(':');
+    const [ivBase64, encryptedBase64, authTagBase64] = parts;
+    if (!ivBase64 || !encryptedBase64 || !authTagBase64) throw new InternalServerErrorException();
+    const iv = Buffer.from(ivBase64, 'base64');
+    const encrypted = Buffer.from(encryptedBase64, 'base64');
+    const authTag = Buffer.from(authTagBase64, 'base64');
+    const decipher = createDecipheriv(ALGORITHM, key, iv);
+    decipher.setAuthTag(authTag);
+    const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()]);
+    return decrypted.toString('utf8');
 };

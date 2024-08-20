@@ -5,6 +5,7 @@ const envSchema = z.object({
     NODE_ENV: z.union([z.literal('development'), z.literal('production')]),
     COOKIE_SECRET: z.string(),
     ENCRYPTION_SECRET: z.string(),
+    ENCRYPTION_SALT: z.string(),
     DATABASE_URL: z.string()
 });
 
