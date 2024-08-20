@@ -8,7 +8,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { env } from './utils';
 
-const app = new Hono();
+export const app = new Hono();
 
 app.use(trimTrailingSlash());
 
