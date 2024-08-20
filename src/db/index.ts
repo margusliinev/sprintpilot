@@ -7,16 +7,4 @@ export const pool = mysql.createPool({
     uri: env.DATABASE_URL
 });
 
-export const db = drizzle(pool, {
-    mode: 'default',
-    schema: schema,
-    logger: {
-        logQuery(query, params) {
-            console.log({
-                time: new Date().toISOString(),
-                query: query,
-                params: params
-            });
-        }
-    }
-});
+export const db = drizzle(pool, { mode: 'default', schema });

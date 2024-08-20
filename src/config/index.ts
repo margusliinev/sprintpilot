@@ -34,9 +34,15 @@ import {
     HttpVersionNotSupportedException
 } from './errors';
 import { env } from './env';
+import { getCookie, setCookie, deleteCookie } from './cookies';
+import { validate } from './validate';
 
 export {
     env,
+    getCookie,
+    setCookie,
+    deleteCookie,
+    validate,
     BadRequestException,
     UnauthorizedException,
     PaymentRequiredException,

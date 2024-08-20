@@ -6,7 +6,7 @@ import { env } from '../config';
 import bcrypt from 'bcryptjs';
 
 const connection = createConnection(env.DATABASE_URL);
-const db = drizzle(connection, { mode: 'default', schema: schema });
+const db = drizzle(connection, { mode: 'default', schema });
 
 async function seed() {
     console.log('🌱 Seeding started');

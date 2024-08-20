@@ -1,16 +1,6 @@
-import { CookieOptions } from 'hono/utils/cookie';
 import { zValidator } from '@hono/zod-validator';
 import { ValidationTargets } from 'hono';
 import { ZodSchema } from 'zod';
-import { env } from '../config';
-
-export const defaultCookieOptions: CookieOptions = {
-    path: '/',
-    httpOnly: true,
-    secure: env.NODE_ENV === 'production',
-    maxAge: 7 * 24 * 60 * 60,
-    sameSite: 'lax'
-};
 
 export function validate<T extends ZodSchema>(target: keyof ValidationTargets, schema: T) {
     return zValidator(target, schema, (result, c) => {
