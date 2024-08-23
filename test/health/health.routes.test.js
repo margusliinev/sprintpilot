@@ -1,6 +1,6 @@
 import { before, after, describe, test } from 'node:test';
 import { deepStrictEqual } from 'node:assert';
-import { server, app } from '../../index';
+import { server, app } from '../../src/index';
 
 describe('Health Routes', async () => {
     before(() => {
