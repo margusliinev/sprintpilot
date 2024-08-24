@@ -3,10 +3,12 @@ import UsersRoutes from './modules/users/users.routes';
 import AuthRoutes from './modules/auth/auth.routes';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { HTTPException } from 'hono/http-exception';
+import { secureHeaders } from 'hono/secure-headers';
 import { authenticate } from './middleware';
 import { showRoutes } from 'hono/dev';
 import { requestId } from 'hono/request-id';
 import { serve } from '@hono/node-server';
+import { csrf } from 'hono/csrf';
 import { Hono } from 'hono';
 import { env } from './utils';
 
@@ -14,7 +16,9 @@ export const app = new Hono();
 
 app.use(trimTrailingSlash());
 app.use(requestId());
-app.use(authenticate);
+app.use(secureHeaders());
+app.use(csrf());
+app.use(authenticate());
 
 app.route('/api/health', HealthRoutes);
 app.route('/api/users', UsersRoutes);

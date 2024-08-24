@@ -9,23 +9,24 @@ const publicRoutes = [
     { path: '/api/auth/logout', method: 'POST' }
 ] as const;
 
-export const authenticate = createMiddleware(async (c, next) => {
-    const isPublic = publicRoutes.some((route) => route.path === c.req.path && route.method === c.req.method);
-    if (isPublic) return await next();
+export const authenticate = () =>
+    createMiddleware(async (c, next) => {
+        const isPublic = publicRoutes.some((route) => route.path === c.req.path && route.method === c.req.method);
+        if (isPublic) return await next();
 
-    const session = await getCookie(c, '__session');
-    if (!session) throw new UnauthorizedException();
+        const session = await getCookie(c, '__session');
+        if (!session) throw new UnauthorizedException();
 
-    const user = await usersRepository.getUserBySessionId(session.id);
-    if (!user) {
-        deleteCookie(c, '__session');
-        throw new UnauthorizedException();
-    }
+        const user = await usersRepository.getUserBySessionId(session.id);
+        if (!user) {
+            deleteCookie(c, '__session');
+            throw new UnauthorizedException();
+        }
 
-    const contextUser = { id: user.id };
-    const contextSession = { id: session.id };
+        const contextUser = { id: user.id };
+        const contextSession = { id: session.id };
 
-    c.set('user', contextUser);
-    c.set('session', contextSession);
-    await next();
-});
+        c.set('user', contextUser);
+        c.set('session', contextSession);
+        await next();
+    });
