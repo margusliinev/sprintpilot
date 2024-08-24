@@ -10,6 +10,7 @@ app.get('/me', async (c) => {
     const user = await usersRepository.getUserById(userId);
     if (!user) throw new NotFoundException();
 
+    c.log.info('User Retrieved');
     return c.json({ success: true, data: user });
 });
 
@@ -19,6 +20,7 @@ app.delete('/me/sessions', async (c) => {
     const userId = c.get('user').id;
     await usersRepository.deleteUserSessions(userId);
 
+    c.log.info('Deleted all user sessions');
     return c.json({ success: true, message: 'Deleted all user sessions' }, 200);
 });
 

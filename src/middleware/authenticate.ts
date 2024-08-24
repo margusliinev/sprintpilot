@@ -1,6 +1,7 @@
 import { getCookie, deleteCookie, UnauthorizedException } from '../utils';
 import { usersRepository } from '../modules/users/users.repository';
 import { createMiddleware } from 'hono/factory';
+import { Logger } from '../utils';
 
 const publicRoutes = [
     { path: '/api/health/ok', method: 'GET' },
@@ -18,7 +19,7 @@ export const authenticate = () =>
         if (!session) throw new UnauthorizedException();
 
         const user = await usersRepository.getUserBySessionId(session.id);
-        if (!user) {
+        if (!user || !user.id || !session.id) {
             deleteCookie(c, '__session');
             throw new UnauthorizedException();
         }
@@ -26,7 +27,11 @@ export const authenticate = () =>
         const contextUser = { id: user.id };
         const contextSession = { id: session.id };
 
+        const requestId = c.get('requestId');
         c.set('user', contextUser);
         c.set('session', contextSession);
+
+        c.log = new Logger({ requestId: requestId, sessionId: session.id, userId: user.id });
+
         await next();
     });

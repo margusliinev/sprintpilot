@@ -1,13 +1,19 @@
 import { HTTPException } from 'hono/http-exception';
 import { User, Session } from './db/schema';
+import { Logger } from './utils';
+import { Context } from 'hono';
 
-type UserContext = Omit<User, 'username' | 'email' | 'password' | 'created_at' | 'updated_at'>;
-type SessionContext = Omit<Session, 'expires_at' | 'created_at' | 'updated_at' | 'user_id'>;
+type UserContext = { id: User['id'] };
+type SessionContext = { id: Session['id'] };
 
 declare module 'hono' {
     interface ContextVariableMap {
         user: UserContext;
         session: SessionContext;
+    }
+
+    interface Context {
+        log: Logger;
     }
 }
 
