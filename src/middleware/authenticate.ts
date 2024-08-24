@@ -1,12 +1,22 @@
 import { getCookie, deleteCookie, UnauthorizedException } from '../utils';
-import { userRepository } from '../modules/users/users.repository';
+import { usersRepository } from '../modules/users/users.repository';
 import { createMiddleware } from 'hono/factory';
 
+const publicRoutes = [
+    { path: '/api/health/ok', method: 'GET' },
+    { path: '/api/auth/register', method: 'POST' },
+    { path: '/api/auth/login', method: 'POST' },
+    { path: '/api/auth/logout', method: 'POST' }
+] as const;
+
 export const authenticate = createMiddleware(async (c, next) => {
+    const isPublic = publicRoutes.some((route) => route.path === c.req.path && route.method === c.req.method);
+    if (isPublic) return await next();
+
     const session = await getCookie(c, '__session');
     if (!session) throw new UnauthorizedException();
 
-    const user = await userRepository.getUserBySessionId(session.id);
+    const user = await usersRepository.getUserBySessionId(session.id);
     if (!user) {
         deleteCookie(c, '__session');
         throw new UnauthorizedException();

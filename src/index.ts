@@ -3,6 +3,7 @@ import UsersRoutes from './modules/users/users.routes';
 import AuthRoutes from './modules/auth/auth.routes';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { HTTPException } from 'hono/http-exception';
+import { authenticate } from './middleware';
 import { showRoutes } from 'hono/dev';
 import { requestId } from 'hono/request-id';
 import { serve } from '@hono/node-server';
@@ -13,6 +14,7 @@ export const app = new Hono();
 
 app.use(trimTrailingSlash());
 app.use(requestId());
+app.use(authenticate);
 
 app.route('/api/health', HealthRoutes);
 app.route('/api/users', UsersRoutes);

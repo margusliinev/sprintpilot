@@ -1,7 +1,5 @@
 import { validate, setCookie, deleteCookie } from '../../utils';
 import { loginSchema, registerSchema } from './auth.schema';
-import { authRepository } from './auth.repository';
-import { authenticate } from '../../middleware';
 import { authService } from './auth.service';
 import { Hono } from 'hono';
 
@@ -28,15 +26,6 @@ app.post('/login', validate('json', loginSchema), async (c) => {
 app.post('/logout', async (c) => {
     deleteCookie(c, '__session');
     return c.json({ success: true, message: 'Logout successful' }, 200);
-});
-
-app.delete('/revoke', authenticate, async (c) => {
-    deleteCookie(c, '__session');
-
-    const userId = c.get('user').id;
-    await authRepository.deleteUserSessions(userId);
-
-    return c.json({ success: true, message: 'Revoke successful' }, 200);
 });
 
 export default app;

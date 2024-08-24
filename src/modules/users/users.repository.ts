@@ -36,7 +36,7 @@ async function getUserByEmailWithPassword(email: User['email']) {
     return user;
 }
 
-async function getAllUsers() {
+async function getUsers() {
     const [users] = await db.select(userColumns).from(usersTable);
     return users;
 }
@@ -57,13 +57,18 @@ async function createUserSession(userId: User['id']) {
     });
 }
 
-export const userRepository = {
+async function deleteUserSessions(id: User['id']) {
+    return db.delete(sessionsTable).where(eq(sessionsTable.user_id, id));
+}
+
+export const usersRepository = {
     getUserById,
     getUserBySessionId,
     getUserByUsername,
     getUserByEmail,
     getUserByEmailWithPassword,
-    getAllUsers,
+    getUsers,
     createUser,
-    createUserSession
+    createUserSession,
+    deleteUserSessions
 };
