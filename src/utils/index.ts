@@ -1,6 +1,5 @@
 import { getCookie, setCookie, deleteCookie } from './cookies';
 import { encrypt, decrypt } from './encryption';
-import { Logger } from './logger';
 import { env } from './env';
 import {
     BadRequestException,
@@ -45,7 +44,6 @@ export {
     deleteCookie,
     encrypt,
     decrypt,
-    Logger,
     BadRequestException,
     UnauthorizedException,
     PaymentRequiredException,

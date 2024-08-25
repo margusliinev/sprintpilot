@@ -1,6 +1,5 @@
 import { HTTPException } from 'hono/http-exception';
 import { User, Session } from './db/schema';
-import { Logger } from './utils';
 import { Context } from 'hono';
 
 type UserContext = { id: User['id'] };
@@ -10,10 +9,6 @@ declare module 'hono' {
     interface ContextVariableMap {
         user: UserContext;
         session: SessionContext;
-    }
-
-    interface Context {
-        log: Logger;
     }
 }
 
