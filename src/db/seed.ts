@@ -1,15 +1,13 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import { createConnection } from 'mysql2';
-import * as schema from './schema';
-import mockUsers from './users.json';
+import { seedUsers } from './seeds';
 import { env } from '../utils';
-import bcrypt from 'bcryptjs';
+import * as schema from './schemas';
 
-const connection = createConnection(env.DATABASE_URL);
+const connection = createConnection({ uri: env.DATABASE_URL });
 const db = drizzle(connection, { mode: 'default', schema });
 
 async function seed() {
-    console.log('🌱 Seeding started');
     console.time(`🌱 Database has been seeded`);
     connection.connect();
 
@@ -18,14 +16,7 @@ async function seed() {
     await db.delete(schema.sessionsTable);
     console.timeEnd('🧹 Cleaned up the database');
 
-    console.time(`👤 Created ${mockUsers.length} users`);
-    for (const user of mockUsers) {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-        if (!hashedPassword) throw new Error('Error during hashing password');
-
-        await db.insert(schema.usersTable).values({ username: user.username, email: user.email, password: hashedPassword });
-    }
-    console.timeEnd(`👤 Created ${mockUsers.length} users`);
+    await seedUsers(db);
 
     connection.end();
     console.timeEnd(`🌱 Database has been seeded`);

@@ -1,5 +1,5 @@
-import type { NewUser, Session, User } from '../../db/schema';
-import { usersTable, sessionsTable } from '../../db/schema';
+import type { NewUser, Session, User } from '../../db/schemas';
+import { usersTable, sessionsTable } from '../../db/schemas';
 import { eq, and, gt, getTableColumns } from 'drizzle-orm';
 import { db } from '../../db';
 

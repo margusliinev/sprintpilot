@@ -1,5 +1,5 @@
 import { getCookie, setCookie, deleteCookie } from './cookies';
-import { encrypt, decrypt } from './encryption';
+import { hashPassword, verifyPassword, encrypt, decrypt } from './encryption';
 import { env } from './env';
 import {
     BadRequestException,
@@ -42,6 +42,8 @@ export {
     getCookie,
     setCookie,
     deleteCookie,
+    hashPassword,
+    verifyPassword,
     encrypt,
     decrypt,
     BadRequestException,

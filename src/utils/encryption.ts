@@ -1,5 +1,6 @@
-import { randomBytes, createCipheriv, createDecipheriv, pbkdf2Sync } from 'crypto';
+import { randomBytes, createCipheriv, createDecipheriv, pbkdf2Sync, scrypt } from 'crypto';
 import { InternalServerErrorException } from './errors';
+import { promisify } from 'util';
 import { env } from './env';
 
 const ALGORITHM = 'aes-256-gcm';
@@ -67,5 +68,30 @@ export const decrypt = (value: string) => {
     } catch (error) {
         console.error('Failed to decrypt value:', error);
         return null;
+    }
+};
+
+const scryptAsync = promisify(scrypt);
+
+export const hashPassword = async (password: string): Promise<string | null> => {
+    try {
+        const salt = randomBytes(16).toString('hex');
+        const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+        return `${salt}:${derivedKey.toString('hex')}`;
+    } catch (err) {
+        console.error('Failed Hashing Password:', err);
+        return null;
+    }
+};
+
+export const verifyPassword = async (password: string, hash: string): Promise<boolean> => {
+    try {
+        const [salt, key] = hash.split(':');
+        if (!salt || !key) return false;
+        const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+        return key === derivedKey.toString('hex');
+    } catch (err) {
+        console.error('Failed Verifying Password:', err);
+        return false;
     }
 };

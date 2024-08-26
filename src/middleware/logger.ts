@@ -3,7 +3,6 @@ import { createMiddleware } from 'hono/factory';
 export const logger = () =>
     createMiddleware(async (c, next) => {
         const start = Date.now();
-
         const userAgent = c.req.header('User-Agent');
         const referrer = c.req.header('Referrer');
 
@@ -11,11 +10,9 @@ export const logger = () =>
 
         const end = Date.now();
         const duration = `Duration: ${end - start}ms`;
-
         const method = `Method: ${c.req.method}`;
         const path = `Path: ${c.req.path}`;
         const status = `Status: ${c.res.status}`;
-
         const requestId = c.get('requestId');
         const sessionId = c.get('session')?.id;
         const userId = c.get('user')?.id;

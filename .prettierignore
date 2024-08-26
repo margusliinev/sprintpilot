@@ -1,1 +1,1 @@
-schema.ts
+/src/db/schemas/*.schema.ts
