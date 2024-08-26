@@ -3,8 +3,8 @@ import { z, ZodError } from 'zod';
 const envSchema = z.object({
     PORT: z.coerce.number(),
     NODE_ENV: z.union([z.literal('development'), z.literal('production')]),
-    COOKIE_SECRET: z.string(),
-    SESSION_SECRET: z.string(),
+    COOKIE_SECRET: z.string().min(32),
+    SESSION_SECRET: z.string().min(32),
     DATABASE_URL: z.string()
 });
 
@@ -13,7 +13,7 @@ try {
 } catch (error) {
     if (error instanceof ZodError) {
         const errors = error.errors.map((err) => err.path[0]).join(', ');
-        console.error('Missing environment variables:', errors);
+        console.error('Missing/Invalid environment variables:', errors);
     }
     process.exit(1);
 }

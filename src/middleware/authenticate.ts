@@ -1,4 +1,4 @@
-import { getCookie, deleteCookie, UnauthorizedException } from '../utils';
+import { getCookie, deleteCookie, UnauthorizedException, ErrorLogger } from '../utils';
 import { usersRepository } from '../modules/users/users.repository';
 import { createMiddleware } from 'hono/factory';
 
@@ -23,11 +23,14 @@ export const authenticate = () =>
             throw new UnauthorizedException();
         }
 
-        const contextUser = { id: user.id };
+        const requestId = c.get('requestId');
         const contextSession = { id: session.id };
+        const contextUser = { id: user.id };
 
-        c.set('user', contextUser);
         c.set('session', contextSession);
+        c.set('user', contextUser);
+
+        c.errorLogger = new ErrorLogger(requestId, contextSession.id, contextUser.id);
 
         await next();
     });

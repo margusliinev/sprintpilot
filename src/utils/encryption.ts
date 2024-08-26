@@ -1,5 +1,4 @@
 import { randomBytes, createCipheriv, createDecipheriv, pbkdf2Sync, scrypt } from 'crypto';
-import { InternalServerErrorException } from './errors';
 import { promisify } from 'util';
 import { env } from './env';
 
@@ -9,7 +8,7 @@ const KEY_LENGTH = 32;
 const SALT_LENGTH = 16;
 const ITERATIONS = 10000;
 
-const deriveKey = (secret: string, salt: Buffer): Buffer => {
+const deriveEncryptionKey = (secret: string, salt: Buffer): Buffer => {
     return pbkdf2Sync(secret, salt, ITERATIONS, KEY_LENGTH, 'sha256');
 };
 
@@ -27,11 +26,13 @@ const deserialize = (value: string) => {
     }
 };
 
+const scryptAsync = promisify(scrypt);
+
 export const encrypt = (value: any) => {
     try {
         const salt = randomBytes(SALT_LENGTH);
         const iv = randomBytes(IV_LENGTH);
-        const key = deriveKey(env.SESSION_SECRET, salt);
+        const key = deriveEncryptionKey(env.SESSION_SECRET, salt);
         const cipher = createCipheriv(ALGORITHM, key, iv);
 
         const serializedValue = serialize(value);
@@ -40,7 +41,7 @@ export const encrypt = (value: any) => {
 
         return `${salt.toString('base64')}:${iv.toString('base64')}:${encrypted.toString('base64')}:${authTag.toString('base64')}`;
     } catch (error) {
-        console.error('Failed to encrypt value:', error);
+        console.error('Encryption error occurred');
         return null;
     }
 };
@@ -48,17 +49,17 @@ export const encrypt = (value: any) => {
 export const decrypt = (value: string) => {
     try {
         const parts = value.split(':');
-        if (parts.length !== 4) throw new InternalServerErrorException();
+        if (parts.length !== 4) throw new Error('Invalid encrypted value');
 
         const [saltBase64, ivBase64, encryptedBase64, authTagBase64] = parts;
-        if (!saltBase64 || !ivBase64 || !encryptedBase64 || !authTagBase64) throw new InternalServerErrorException();
+        if (!saltBase64 || !ivBase64 || !encryptedBase64 || !authTagBase64) throw new Error('Invalid encrypted value');
 
         const salt = Buffer.from(saltBase64, 'base64');
         const iv = Buffer.from(ivBase64, 'base64');
         const encrypted = Buffer.from(encryptedBase64, 'base64');
         const authTag = Buffer.from(authTagBase64, 'base64');
 
-        const key = deriveKey(env.SESSION_SECRET, salt);
+        const key = deriveEncryptionKey(env.SESSION_SECRET, salt);
         const decipher = createDecipheriv(ALGORITHM, key, iv);
         decipher.setAuthTag(authTag);
         const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()]);
@@ -66,12 +67,10 @@ export const decrypt = (value: string) => {
         const decryptedString = decrypted.toString('utf8');
         return deserialize(decryptedString);
     } catch (error) {
-        console.error('Failed to decrypt value:', error);
+        console.error('Decryption error occurred');
         return null;
     }
 };
-
-const scryptAsync = promisify(scrypt);
 
 export const hashPassword = async (password: string): Promise<string | null> => {
     try {
@@ -79,7 +78,7 @@ export const hashPassword = async (password: string): Promise<string | null> => 
         const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
         return `${salt}:${derivedKey.toString('hex')}`;
     } catch (err) {
-        console.error('Failed Hashing Password:', err);
+        console.error('Failed Hashing Password');
         return null;
     }
 };
@@ -91,7 +90,7 @@ export const verifyPassword = async (password: string, hash: string): Promise<bo
         const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
         return key === derivedKey.toString('hex');
     } catch (err) {
-        console.error('Failed Verifying Password:', err);
+        console.error('Failed Verifying Password');
         return false;
     }
 };

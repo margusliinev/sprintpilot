@@ -27,6 +27,7 @@ app.route('/api/auth', AuthRoutes);
 
 app.notFound(async (c) => c.json({ success: false, message: 'Not Found' }, 404));
 app.onError(async (err, c) => {
+    c.errorLogger.log(err);
     if (err instanceof HTTPException) {
         return c.json({ success: false, message: err.message, errors: err.details ? [err.details] : undefined }, err.status);
     } else {
