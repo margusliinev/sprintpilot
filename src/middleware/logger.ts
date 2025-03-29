@@ -13,20 +13,35 @@ type RequestLog = {
     userId?: number;
 };
 
-export class RequestLogger {
-    private formatLogMessage(logData: RequestLog): string {
-        const { method, path, status, duration } = logData;
-        const statusColor = status >= 500 ? '\x1b[31m' : status >= 400 ? '\x1b[33m' : '\x1b[32m';
-        const resetColor = '\x1b[0m';
+const ANSI_COLORS = {
+    red: '\x1b[31m',
+    yellow: '\x1b[33m',
+    green: '\x1b[32m',
+    reset: '\x1b[0m',
+};
 
-        return `${method} ${path} - ${statusColor}${status}${resetColor} (${duration}ms)`;
+const getColor = (status: number) => {
+    if (status >= 500) return ANSI_COLORS.red;
+    if (status >= 400) return ANSI_COLORS.yellow;
+    return ANSI_COLORS.green;
+};
+
+export class RequestLogger {
+    private formatLogMessage(logData: RequestLog) {
+        const { method, path, status, duration } = logData;
+
+        const color = getColor(status);
+        const coloredStatus = `${color}${status}${ANSI_COLORS.reset}`;
+        const coloredMethod = `${color}${method}${ANSI_COLORS.reset}`;
+
+        return `${coloredMethod} ${path} - ${coloredStatus} ${duration}ms`;
     }
 
     log(requestLog: RequestLog) {
-        if (env.ENV === 'live') {
-            console.log(JSON.stringify(requestLog));
-        } else {
+        if (env.ENV === 'dev') {
             console.log(this.formatLogMessage(requestLog));
+        } else {
+            console.log(JSON.stringify(requestLog));
         }
     }
 }
