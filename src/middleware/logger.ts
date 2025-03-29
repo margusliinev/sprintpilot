@@ -1,7 +1,7 @@
-import { RequestLogger } from '../helpers/loggers';
 import { createMiddleware } from 'hono/factory';
+import { env } from '../helpers/env';
 
-export type RequestLog = {
+type RequestLog = {
     requestId: string;
     userAgent?: string;
     referrer?: string;
@@ -12,6 +12,24 @@ export type RequestLog = {
     sessionId?: string;
     userId?: number;
 };
+
+export class RequestLogger {
+    private formatLogMessage(logData: RequestLog): string {
+        const { method, path, status, duration } = logData;
+        const statusColor = status >= 500 ? '\x1b[31m' : status >= 400 ? '\x1b[33m' : '\x1b[32m';
+        const resetColor = '\x1b[0m';
+
+        return `${method} ${path} - ${statusColor}${status}${resetColor} (${duration}ms)`;
+    }
+
+    log(requestLog: RequestLog) {
+        if (env.ENV === 'live') {
+            console.log(JSON.stringify(requestLog));
+        } else {
+            console.log(this.formatLogMessage(requestLog));
+        }
+    }
+}
 
 export const logger = () =>
     createMiddleware(async (c, next) => {
