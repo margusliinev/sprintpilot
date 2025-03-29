@@ -17,7 +17,7 @@ const HTTP_EXCEPTIONS = {
 type HttpStatusCode = (typeof HTTP_EXCEPTIONS)[keyof typeof HTTP_EXCEPTIONS]['code'];
 type HttpStatusMessage = (typeof HTTP_EXCEPTIONS)[keyof typeof HTTP_EXCEPTIONS]['message'];
 
-class CustomException extends HTTPException {
+export class CustomException extends HTTPException {
     public errors?: Record<string, string>;
 
     constructor(status: HttpStatusCode, defaultMessage: HttpStatusMessage, errors?: Record<string, string>) {
@@ -50,6 +50,7 @@ export function handleNotFound(c: Context) {
 }
 
 export function handleError(err: CustomException | HTTPException | Error, c: Context) {
+    c.logger.error(err);
     if (err instanceof CustomException) {
         return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
     } else if (err instanceof HTTPException) {

@@ -1,10 +1,13 @@
+import { CustomException } from '../helpers/errors';
+import { HTTPException } from 'hono/http-exception';
 import { createMiddleware } from 'hono/factory';
 import { env } from '../helpers/env';
+import { Context } from 'hono';
 
 type RequestLog = {
     requestId: string;
-    userAgent?: string;
-    referrer?: string;
+    userAgent: string;
+    referrer: string;
     method: string;
     path: string;
     duration: string;
@@ -26,8 +29,14 @@ const getColor = (status: number) => {
     return ANSI_COLORS.green;
 };
 
-export class RequestLogger {
-    private formatLogMessage(logData: RequestLog) {
+export class Logger {
+    private context: Context;
+
+    constructor(c: Context) {
+        this.context = c;
+    }
+
+    private devRequestLog(logData: RequestLog) {
         const { method, path, status, duration } = logData;
 
         const color = getColor(status);
@@ -37,33 +46,63 @@ export class RequestLogger {
         return `${coloredMethod} ${path} - ${coloredStatus} ${duration}ms`;
     }
 
-    log(requestLog: RequestLog) {
+    private devLog(logData: Record<string, any>) {
+        const { message, errors, stack } = logData;
+
+        const formattedLogMessage = message ? `${message}` : undefined;
+        const formattedErrors = errors
+            ? Object.entries(errors)
+                  .map(([key, value]) => `${key}: ${value}`)
+                  .join('\n')
+            : undefined;
+        const formattedStack = stack ? `${stack.split('\n').slice(1).join('\n')}` : undefined;
+
+        return [formattedLogMessage, formattedErrors, formattedStack].filter((line) => line !== undefined).join('\n');
+    }
+
+    private log(additionalData: Record<string, any> = {}) {
+        const logEntry = {
+            requestId: this.context.get('requestId'),
+            sessionId: this.context.get('session')?.id,
+            userId: this.context.get('user')?.id,
+            ...additionalData,
+        };
         if (env.ENV === 'dev') {
-            console.log(this.formatLogMessage(requestLog));
+            console.log(this.devLog(logEntry));
         } else {
-            console.log(JSON.stringify(requestLog));
+            console.log(JSON.stringify(logEntry));
         }
     }
-}
 
-export const logger = () =>
-    createMiddleware(async (c, next) => {
-        const start = performance.now();
-        const requestId = c.get('requestId');
-        const userAgent = c.req.header('User-Agent');
-        const referrer = c.req.header('Referrer');
-        const method = c.req.method;
-        const path = c.req.path;
+    error(error: CustomException | HTTPException | Error) {
+        const message = error.message;
+        const stack = error.stack;
+        const status = error instanceof HTTPException ? error.status : 500;
+        const errors = error instanceof CustomException ? error.errors : undefined;
 
-        await next();
+        if (status >= 500) {
+            this.log({ message, errors, stack });
+        } else {
+            this.log({ message, errors });
+        }
+    }
 
-        const end = performance.now();
+    info(message: string) {
+        this.log({ message });
+    }
+
+    logRequest(start: number, end: number) {
+        const requestId = this.context.get('requestId');
+        const userAgent = this.context.req.header('User-Agent') || 'Unknown';
+        const referrer = this.context.req.header('Referrer') || 'Unknown';
+        const method = this.context.req.method;
+        const path = this.context.req.path;
         const duration = (end - start).toFixed(3);
-        const status = c.res.status;
-        const sessionId = c.get('session')?.id;
-        const userId = c.get('user')?.id;
+        const status = this.context.res.status;
+        const sessionId = this.context.get('session')?.id;
+        const userId = this.context.get('user')?.id;
 
-        const requestLog: RequestLog = {
+        const logData: RequestLog = {
             requestId,
             userAgent,
             referrer,
@@ -75,6 +114,21 @@ export const logger = () =>
             userId,
         };
 
-        const requestLogger = new RequestLogger();
-        requestLogger.log(requestLog);
+        if (env.ENV === 'dev') {
+            console.log(this.devRequestLog(logData));
+        } else {
+            console.log(JSON.stringify(logData));
+        }
+    }
+}
+
+export const logger = () =>
+    createMiddleware(async (c, next) => {
+        const start = performance.now();
+        c.logger = new Logger(c);
+
+        await next();
+
+        const end = performance.now();
+        c.logger.logRequest(start, end);
     });
