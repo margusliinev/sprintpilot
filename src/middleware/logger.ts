@@ -3,31 +3,28 @@ import { HTTPException } from 'hono/http-exception';
 import { createMiddleware } from 'hono/factory';
 import { env } from '../helpers/env';
 import { Context } from 'hono';
+import winston from 'winston';
 
-type RequestLog = {
-    requestId: string;
-    userAgent: string;
-    referrer: string;
-    method: string;
-    path: string;
-    duration: string;
-    status: number;
-    sessionId?: string;
-    userId?: number;
-};
+const { combine, timestamp, colorize, printf, errors, json } = winston.format;
 
-const ANSI_COLORS = {
-    red: '\x1b[31m',
-    yellow: '\x1b[33m',
-    green: '\x1b[32m',
-    reset: '\x1b[0m',
-};
+const devFormat = combine(
+    timestamp(),
+    colorize(),
+    errors({ stack: true }),
+    printf(({ timestamp, level, message, errors, stack }) => {
+        const formattedErrors = errors ? `- ${Object.entries(errors).map(([_, value]) => value)}` : '';
+        const formattedStack = stack ? `\n${stack}` : '';
 
-const getColor = (status: number) => {
-    if (status >= 500) return ANSI_COLORS.red;
-    if (status >= 400) return ANSI_COLORS.yellow;
-    return ANSI_COLORS.green;
-};
+        return `${timestamp} ${level} - ${message} ${formattedErrors} ${formattedStack}`;
+    }),
+);
+
+const liveFormat = combine(timestamp(), errors({ stack: true }), json());
+
+const loggerInstance = winston.createLogger({
+    format: env.ENV === 'dev' ? devFormat : liveFormat,
+    transports: [new winston.transports.Console()],
+});
 
 export class Logger {
     private context: Context;
@@ -36,65 +33,43 @@ export class Logger {
         this.context = c;
     }
 
-    private devRequestLog(logData: RequestLog) {
-        const { method, path, status, duration } = logData;
+    private log(level: string, message: string, meta?: Record<string, unknown>) {
+        const requestId = this.context.get('requestId');
+        const sessionId = this.context.get('session')?.id;
+        const userId = this.context.get('user')?.id;
 
-        const color = getColor(status);
-        const coloredStatus = `${color}${status}${ANSI_COLORS.reset}`;
-        const coloredMethod = `${color}${method}${ANSI_COLORS.reset}`;
-
-        return `${coloredMethod} ${path} - ${coloredStatus} ${duration}ms`;
-    }
-
-    private devLog(logData: Record<string, any>) {
-        const { message, errors, stack } = logData;
-
-        const formattedLogMessage = message ? `${message}` : undefined;
-        const formattedErrors = errors
-            ? Object.entries(errors)
-                  .map(([key, value]) => `${key}: ${value}`)
-                  .join('\n')
-            : undefined;
-        const formattedStack = stack ? `${stack.split('\n').slice(1).join('\n')}` : undefined;
-
-        return [formattedLogMessage, formattedErrors, formattedStack].filter((line) => line !== undefined).join('\n');
-    }
-
-    private log(additionalData: Record<string, any> = {}) {
-        const logEntry = {
-            requestId: this.context.get('requestId'),
-            sessionId: this.context.get('session')?.id,
-            userId: this.context.get('user')?.id,
-            ...additionalData,
+        const logData = {
+            requestId,
+            sessionId,
+            userId,
+            ...meta,
         };
-        if (env.ENV === 'dev') {
-            console.log(this.devLog(logEntry));
-        } else {
-            console.log(JSON.stringify(logEntry));
-        }
+
+        loggerInstance.log(level, message, logData);
     }
 
     error(error: CustomException | HTTPException | Error) {
         const message = error.message;
-        const stack = error.stack;
         const status = error instanceof HTTPException ? error.status : 500;
         const errors = error instanceof CustomException ? error.errors : undefined;
+        const level = status >= 500 ? 'error' : status >= 400 ? 'warn' : 'info';
+        const stack = status >= 500 ? error.stack : undefined;
 
-        if (status >= 500) {
-            this.log({ message, errors, stack });
-        } else {
-            this.log({ message, errors });
-        }
+        this.log(level, message, { errors, stack });
+    }
+
+    warn(message: string) {
+        this.log('warn', message);
     }
 
     info(message: string) {
-        this.log({ message });
+        this.log('info', message);
     }
 
     logRequest(start: number, end: number) {
         const requestId = this.context.get('requestId');
-        const userAgent = this.context.req.header('User-Agent') || 'Unknown';
-        const referrer = this.context.req.header('Referrer') || 'Unknown';
+        const userAgent = this.context.req.header('User-Agent');
+        const referrer = this.context.req.header('Referrer');
         const method = this.context.req.method;
         const path = this.context.req.path;
         const duration = (end - start).toFixed(3);
@@ -102,7 +77,7 @@ export class Logger {
         const sessionId = this.context.get('session')?.id;
         const userId = this.context.get('user')?.id;
 
-        const logData: RequestLog = {
+        const logData = {
             requestId,
             userAgent,
             referrer,
@@ -114,11 +89,10 @@ export class Logger {
             userId,
         };
 
-        if (env.ENV === 'dev') {
-            console.log(this.devRequestLog(logData));
-        } else {
-            console.log(JSON.stringify(logData));
-        }
+        const level = status >= 500 ? 'error' : status >= 400 ? 'warn' : 'info';
+        const message = `${method} ${path} - ${status} ${duration}ms`;
+
+        loggerInstance.log(level, message, logData);
     }
 }
 

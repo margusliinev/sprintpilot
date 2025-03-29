@@ -22,10 +22,11 @@
     },
     "dependencies": {
         "@hono/zod-validator": "0.4.3",
-        "drizzle-orm": "0.41.0",
         "drizzle-kit": "0.30.6",
-        "mysql2": "3.14.0",
+        "drizzle-orm": "0.41.0",
         "hono": "4.7.5",
+        "mysql2": "3.14.0",
+        "winston": "3.17.0",
         "zod": "3.24.2"
     },
     "devDependencies": {

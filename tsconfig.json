@@ -5,6 +5,7 @@
         "noUnusedParameters": true,
         "noUnusedLocals": true,
         "resolveJsonModule": true,
+        "esModuleInterop": true,
         "skipLibCheck": true,
         "strict": true
     },
