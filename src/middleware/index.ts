@@ -1,3 +1,5 @@
+import type { RequestLog } from './logger';
 import { validate } from './validate';
+import { logger } from './logger';
 
-export { validate };
+export { RequestLog, validate, logger };

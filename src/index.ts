@@ -2,8 +2,7 @@ import { handleNotFound, handleError } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
-import { validate } from './middleware';
-import { showRoutes } from 'hono/dev';
+import { logger, validate } from './middleware';
 import { env } from './helpers/env';
 import { csrf } from 'hono/csrf';
 import { Hono } from 'hono';
@@ -21,6 +20,7 @@ app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
 app.use(csrf());
+app.use(logger());
 
 app.get('/', (c) => {
     return c.json({ success: true, data: 'OK' });
@@ -28,12 +28,10 @@ app.get('/', (c) => {
 
 app.post('/', validate('json', userSchema), (c) => {
     const { name, email } = c.req.valid('json');
-
     return c.json({ success: true, data: { name, email } });
 });
 
 app.notFound(handleNotFound);
 app.onError(handleError);
 
-showRoutes(app, { colorize: true });
 export const server = serve({ fetch: app.fetch, port: env.PORT });
