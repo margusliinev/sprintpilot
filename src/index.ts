@@ -4,12 +4,13 @@ import { secureHeaders } from 'hono/secure-headers';
 import { logger } from './middleware';
 import { requestId } from 'hono/request-id';
 import { UsersRouter } from './routes';
+import { showRoutes } from 'hono/dev';
 import { env } from './helpers/env';
 import { csrf } from 'hono/csrf';
 import { Hono } from 'hono';
 import { serve } from 'bun';
 
-export const app = new Hono();
+const app = new Hono();
 
 app.use(trimTrailingSlash());
 app.use(secureHeaders());
@@ -22,5 +23,7 @@ app.route('/api/users', UsersRouter);
 app.notFound(handleNotFound);
 app.onError(handleError);
 
-export const server = serve({ fetch: app.fetch, port: env.PORT });
-console.log(`Server is running on port ${env.PORT}`);
+if (env.ENV === 'dev') showRoutes(app, { colorize: true });
+
+const server = serve({ fetch: app.fetch, port: env.PORT });
+console.log(`Server is running on port ${server.port}`);
