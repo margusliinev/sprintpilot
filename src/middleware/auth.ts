@@ -1,4 +1,4 @@
-import { deleteSessionTokenCookie, getSessionTokenCookie, validateSessionToken } from '../helpers/auth';
+import { deleteSessionTokenCookie, getSessionTokenCookie, setSessionTokenCookie, validateSessionToken } from '../helpers/auth';
 import { UnauthorizedException } from '../helpers/errors';
 import { createMiddleware } from 'hono/factory';
 
@@ -22,6 +22,8 @@ export const auth = () =>
             deleteSessionTokenCookie(c);
             throw new UnauthorizedException();
         }
+
+        setSessionTokenCookie(c, sessionToken, session.expires_at);
 
         c.set('user', user);
         c.set('session', session);

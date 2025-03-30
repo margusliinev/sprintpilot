@@ -1,9 +1,9 @@
+import { HealthRouter, UsersRouter, AuthRouter } from './routes';
 import { handleNotFound, handleError } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { auth, logger } from './middleware';
 import { requestId } from 'hono/request-id';
-import { UsersRouter } from './routes';
 import { showRoutes } from 'hono/dev';
 import { env } from './helpers/env';
 import { csrf } from 'hono/csrf';
@@ -19,7 +19,9 @@ app.use(csrf());
 app.use(logger());
 app.use(auth());
 
+app.route('/api/health', HealthRouter);
 app.route('/api/users', UsersRouter);
+app.route('/api/auth', AuthRouter);
 
 app.notFound(handleNotFound);
 app.onError(handleError);
