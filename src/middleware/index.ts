@@ -1,5 +1,5 @@
-import { authenticate } from './authenticate';
 import { validate } from './validate';
 import { logger } from './logger';
+import { auth } from './auth';
 
-export { authenticate, validate, logger };
+export { validate, logger, auth };

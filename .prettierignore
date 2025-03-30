@@ -1,1 +1,4 @@
-/src/db/schemas/*.schema.ts
+node_modules
+dist
+bun.lock
+schema.ts

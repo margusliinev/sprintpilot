@@ -1,29 +1,12 @@
-import { HTTPException } from 'hono/http-exception';
-import { User, Session } from './db/schema';
-import { ErrorLogger } from './utils';
-import { Context } from 'hono';
-
-type UserContext = { id: User['id'] };
-type SessionContext = { id: Session['id'] };
+import { ValidSessionValidationResult } from './helpers/auth';
+import { Logger } from './middleware/logger';
 
 declare module 'hono' {
     interface ContextVariableMap {
-        user: UserContext;
-        session: SessionContext;
+        user: ValidSessionValidationResult['user'];
+        session: ValidSessionValidationResult['session'];
     }
-
     interface Context {
-        errorLogger: ErrorLogger;
-    }
-}
-
-interface ErrorDetails {
-    field: string;
-    message: string;
-}
-
-declare module 'hono/http-exception' {
-    interface HTTPException {
-        details?: ErrorDetails;
+        logger: Logger;
     }
 }

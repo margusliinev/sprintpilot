@@ -1,5 +1,5 @@
 services:
-    mysql:
+    db:
         image: mysql:9
         restart: always
         environment:
@@ -12,6 +12,5 @@ services:
             - mysql_data:/var/lib/mysql
         ports:
             - '3306:3306'
-
 volumes:
     mysql_data:

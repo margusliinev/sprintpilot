@@ -1,41 +1,32 @@
-import HealthRoutes from './modules/health/health.routes';
-import UsersRoutes from './modules/users/users.routes';
-import AuthRoutes from './modules/auth/auth.routes';
+import { HealthRouter, UsersRouter, AuthRouter } from './routes';
+import { handleNotFound, handleError } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
-import { authenticate, logger } from './middleware';
-import { HTTPException } from 'hono/http-exception';
 import { secureHeaders } from 'hono/secure-headers';
-import { showRoutes } from 'hono/dev';
+import { auth, logger } from './middleware';
 import { requestId } from 'hono/request-id';
-import { serve } from '@hono/node-server';
+import { showRoutes } from 'hono/dev';
+import { env } from './helpers/env';
 import { csrf } from 'hono/csrf';
 import { Hono } from 'hono';
-import { env } from './utils';
+import { serve } from 'bun';
 
-export const app = new Hono();
+const app = new Hono();
 
 app.use(trimTrailingSlash());
 app.use(secureHeaders());
-app.use(csrf());
 app.use(requestId());
+app.use(csrf());
 app.use(logger());
-app.use(authenticate());
+app.use(auth());
 
-app.route('/api/health', HealthRoutes);
-app.route('/api/users', UsersRoutes);
-app.route('/api/auth', AuthRoutes);
+app.route('/api/health', HealthRouter);
+app.route('/api/users', UsersRouter);
+app.route('/api/auth', AuthRouter);
 
-app.notFound(async (c) => c.json({ success: false, message: 'Not Found' }, 404));
-app.onError(async (err, c) => {
-    c.errorLogger.log(err);
-    if (err instanceof HTTPException) {
-        return c.json({ success: false, message: err.message, errors: err.details ? [err.details] : undefined }, err.status);
-    } else {
-        return c.json({ success: false, message: 'Internal Server Error' }, 500);
-    }
-});
+app.notFound(handleNotFound);
+app.onError(handleError);
 
-showRoutes(app, { colorize: true });
-export const server = serve({ fetch: app.fetch, port: env.PORT });
+if (env.ENV === 'dev') showRoutes(app, { colorize: true });
 
-console.log('Server is running on port', env.PORT);
+const server = serve({ fetch: app.fetch, port: env.PORT });
+console.log(`Server is running on port ${server.port}`);

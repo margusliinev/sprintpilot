@@ -1,29 +1,39 @@
 {
     "name": "sprintpilot",
+    "description": "Sprintpilot is a project management tool of choice for developers around the world to improve real-time collaboration.",
+    "version": "1.0.0",
     "license": "MIT",
-    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/margusliinev/sprintpilot"
+    },
     "scripts": {
-        "dev": "tsx watch --env-file=.env src/index.ts",
-        "build": "tsup",
-        "start": "node --env-file=.env dist/index.js",
-        "test": "tsx --env-file=.env --test ./test",
-        "generate": "drizzle-kit generate",
-        "migrate": "drizzle-kit migrate",
-        "seed": "tsx --env-file=.env ./src/db/seed.ts"
+        "dev": "bun run --hot src/index.ts",
+        "build": "bun build --compile --minify --sourcemap ./src/index.ts --outfile ./dist/index",
+        "start": "./dist/index",
+        "test": "bun test",
+        "format": "prettier --write .",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:studio": "drizzle-kit studio",
+        "db:check": "drizzle-kit check",
+        "db:push": "drizzle-kit push",
+        "db:pull": "drizzle-kit pull"
     },
     "dependencies": {
-        "@hono/node-server": "1.13.7",
-        "@hono/zod-validator": "0.4.2",
-        "drizzle-orm": "0.38.3",
-        "hono": "4.6.15",
-        "mysql2": "3.12.0",
-        "zod": "3.24.1"
+        "@hono/zod-validator": "0.4.3",
+        "@oslojs/crypto": "1.0.1",
+        "@oslojs/encoding": "1.1.0",
+        "drizzle-orm": "0.41.0",
+        "drizzle-kit": "0.30.6",
+        "winston": "3.17.0",
+        "mysql2": "3.14.0",
+        "hono": "4.7.5",
+        "zod": "3.24.2"
     },
     "devDependencies": {
-        "@types/node": "22.10.5",
-        "drizzle-kit": "0.30.1",
-        "tsup": "8.3.5",
-        "tsx": "4.19.2",
-        "typescript": "5.7.2"
+        "@types/bun": "1.2.8",
+        "prettier": "3.5.3",
+        "drizzle-seed": "0.3.1"
     }
 }
