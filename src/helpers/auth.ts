@@ -1,6 +1,6 @@
+import { setSignedCookie, deleteCookie, getSignedCookie } from 'hono/cookie';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { usersTable, sessionsTable, NewSession } from '../db/schema';
-import { setSignedCookie, deleteCookie } from 'hono/cookie';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { eq } from 'drizzle-orm';
 import { Context } from 'hono';
@@ -59,21 +59,31 @@ export async function validateSessionToken(token: string) {
     return { user, session };
 }
 
-export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;
-
 export async function invalidateSession(session_id: string) {
     await db.delete(sessionsTable).where(eq(sessionsTable.id, session_id));
 }
 
 export function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
     setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
-        expires: expires_at,
+        secure: env.ENV === 'live',
+        sameSite: 'lax',
+        httpOnly: true,
         path: '/',
+        expires: expires_at,
     });
+}
+
+export function getSessionTokenCookie(ctx: Context) {
+    return getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
 }
 
 export function deleteSessionTokenCookie(ctx: Context) {
     deleteCookie(ctx, sessionCookieName, {
+        secure: env.ENV === 'live',
+        sameSite: 'lax',
+        httpOnly: true,
         path: '/',
     });
 }
+
+export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;

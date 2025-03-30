@@ -1,7 +1,7 @@
+import { BadRequestException } from '../helpers/errors';
 import { zValidator } from '@hono/zod-validator';
 import { ValidationTargets } from 'hono';
 import { ZodSchema } from 'zod';
-import { BadRequestException } from '../helpers/errors';
 
 export function validate<T extends ZodSchema>(target: keyof ValidationTargets, schema: T) {
     return zValidator(target, schema, (result, c) => {

@@ -1,7 +1,7 @@
 import { handleNotFound, handleError } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
-import { logger } from './middleware';
+import { auth, logger } from './middleware';
 import { requestId } from 'hono/request-id';
 import { UsersRouter } from './routes';
 import { showRoutes } from 'hono/dev';
@@ -17,6 +17,7 @@ app.use(secureHeaders());
 app.use(requestId());
 app.use(csrf());
 app.use(logger());
+app.use(auth());
 
 app.route('/api/users', UsersRouter);
 

@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory';
-import { Logger } from '../helpers/logging';
+import { Logger } from '../helpers/logger';
 
 export const logger = () =>
     createMiddleware(async (c, next) => {
