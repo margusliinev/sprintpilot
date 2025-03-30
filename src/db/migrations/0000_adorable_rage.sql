@@ -1,6 +1,6 @@
 CREATE TABLE `sessions` (
 	`id` varchar(255) NOT NULL,
-	`user_id` bigint unsigned NOT NULL,
+	`user_id` varchar(255) NOT NULL,
 	`expires_at` timestamp NOT NULL,
 	`created_at` timestamp NOT NULL DEFAULT (now()),
 	`updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
@@ -8,7 +8,7 @@ CREATE TABLE `sessions` (
 );
 --> statement-breakpoint
 CREATE TABLE `users` (
-	`id` bigint unsigned AUTO_INCREMENT NOT NULL,
+	`id` varchar(255) NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	`password` varchar(255) NOT NULL,
