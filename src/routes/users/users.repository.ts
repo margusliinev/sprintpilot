@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '../../helpers/errors';
 import { eq, getTableColumns } from 'drizzle-orm';
 import { User, NewUser } from '../../db/schema';
 import { usersTable } from '../../db/schema';
@@ -17,8 +18,10 @@ async function getUserByEmailWithPassword(email: User['email']) {
 
 async function createUser(user: NewUser) {
     return db.transaction(async (tx) => {
-        const [newUser] = await tx.insert(usersTable).values(user);
-        const [createdUser] = await tx.select(userColumns).from(usersTable).where(eq(usersTable.id, newUser.insertId));
+        const [newUser] = await tx.insert(usersTable).values(user).$returningId();
+        if (!newUser) throw new InternalServerErrorException();
+
+        const [createdUser] = await tx.select(userColumns).from(usersTable).where(eq(usersTable.id, newUser.id));
         return createdUser;
     });
 }

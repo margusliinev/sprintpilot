@@ -1,7 +1,7 @@
-import { mysqlTable, varchar, bigint, timestamp } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, timestamp } from 'drizzle-orm/mysql-core';
 
 export const usersTable = mysqlTable('users', {
-	id: bigint({ unsigned: true, mode: 'number' }).autoincrement().primaryKey(),
+	id: varchar({ length: 255 }).primaryKey().$defaultFn(() => Bun.randomUUIDv7()),
 	name: varchar({ length: 255 }).notNull(),
 	email: varchar({ length: 255 }).notNull().unique(),
 	password: varchar({ length: 255 }).notNull(),
@@ -11,7 +11,7 @@ export const usersTable = mysqlTable('users', {
 
 export const sessionsTable = mysqlTable('sessions', {
 	id: varchar({ length: 255 }).primaryKey(),
-	user_id: bigint({ unsigned: true, mode: 'number' }).notNull().references(() => usersTable.id),
+	user_id: varchar({ length: 255 }).notNull().references(() => usersTable.id),
 	expires_at: timestamp({ mode: 'date' }).notNull(),
 	created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
 	updated_at: timestamp({ mode: 'date' }).notNull().defaultNow().onUpdateNow()
