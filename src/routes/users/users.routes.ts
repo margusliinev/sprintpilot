@@ -1,5 +1,5 @@
-import { Hono } from 'hono';
 import { deleteSessionTokenCookie, invalidateUserSessions } from '../../helpers/auth';
+import { Hono } from 'hono';
 
 const app = new Hono();
 

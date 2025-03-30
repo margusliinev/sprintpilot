@@ -6,7 +6,6 @@ const publicRoutes = [
     { path: '/api/health/ok', method: 'GET' },
     { path: '/api/auth/register', method: 'POST' },
     { path: '/api/auth/login', method: 'POST' },
-    { path: '/api/auth/logout', method: 'POST' },
 ] as const;
 
 export const auth = () =>
@@ -18,12 +17,12 @@ export const auth = () =>
         if (!sessionToken) throw new UnauthorizedException();
 
         const { user, session } = await validateSessionToken(sessionToken);
-        if (!session || !user) {
+        if (!user || !session) {
             deleteSessionTokenCookie(c);
             throw new UnauthorizedException();
         }
 
-        setSessionTokenCookie(c, sessionToken, session.expires_at);
+        await setSessionTokenCookie(c, sessionToken, session.expires_at);
 
         c.set('user', user);
         c.set('session', session);

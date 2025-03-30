@@ -67,8 +67,8 @@ export async function invalidateUserSessions(user_id: number) {
     await db.delete(sessionsTable).where(eq(sessionsTable.user_id, user_id));
 }
 
-export function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
-    setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
+export async function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
+    await setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
         secure: env.ENV === 'live',
         sameSite: 'lax',
         httpOnly: true,
@@ -77,8 +77,8 @@ export function setSessionTokenCookie(ctx: Context, token: string, expires_at: D
     });
 }
 
-export function getSessionTokenCookie(ctx: Context) {
-    return getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
+export async function getSessionTokenCookie(ctx: Context) {
+    return await getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
 }
 
 export function deleteSessionTokenCookie(ctx: Context) {

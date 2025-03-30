@@ -1,5 +1,5 @@
-import { registerSchema, loginSchema } from './auth.schema';
 import { deleteSessionTokenCookie, invalidateSession, setSessionTokenCookie } from '../../helpers/auth';
+import { registerSchema, loginSchema } from './auth.schema';
 import { authService } from './auth.service';
 import { validate } from '../../middleware';
 import { Hono } from 'hono';
@@ -10,7 +10,7 @@ app.post('/register', validate('json', registerSchema), async (c) => {
     const body = c.req.valid('json');
 
     const { sessionToken, session } = await authService.register(body);
-    setSessionTokenCookie(c, sessionToken, session.expires_at);
+    await setSessionTokenCookie(c, sessionToken, session.expires_at);
 
     return c.json({ success: true, message: 'Register successful' }, 201);
 });
@@ -19,7 +19,7 @@ app.post('/login', validate('json', loginSchema), async (c) => {
     const body = c.req.valid('json');
 
     const { sessionToken, session } = await authService.login(body);
-    setSessionTokenCookie(c, sessionToken, session.expires_at);
+    await setSessionTokenCookie(c, sessionToken, session.expires_at);
 
     return c.json({ success: true, message: 'Login successful' }, 200);
 });
