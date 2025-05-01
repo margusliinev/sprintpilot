@@ -1,5 +1,5 @@
 import { ValidSessionValidationResult } from './helpers/auth';
-import { Logger } from './middleware/logger';
+import { Logger } from './helpers/logger';
 
 declare module 'hono' {
     interface ContextVariableMap {
