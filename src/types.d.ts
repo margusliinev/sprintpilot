@@ -1,5 +1,5 @@
 import { ValidSessionValidationResult } from './helpers/auth';
-import { Logger } from './helpers/logger';
+import { logger } from './helpers/logger';
 
 declare module 'hono' {
     interface ContextVariableMap {
@@ -7,6 +7,6 @@ declare module 'hono' {
         session: ValidSessionValidationResult['session'];
     }
     interface Context {
-        logger: Logger;
+        log: ReturnType<typeof logger.child>;
     }
 }

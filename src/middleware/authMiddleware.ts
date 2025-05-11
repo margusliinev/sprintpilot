@@ -8,7 +8,7 @@ const publicRoutes = [
     { path: '/api/auth/login', method: 'POST' },
 ] as const;
 
-export const auth = () =>
+const authMiddleware = () =>
     createMiddleware(async (c, next) => {
         const isPublic = publicRoutes.some((route) => route.path === c.req.path && route.method === c.req.method);
         if (isPublic) return await next();
@@ -29,3 +29,5 @@ export const auth = () =>
 
         await next();
     });
+
+export default authMiddleware;

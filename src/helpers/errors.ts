@@ -50,7 +50,7 @@ export function handleNotFound(c: Context) {
 }
 
 export function handleError(err: CustomException | HTTPException | Error, c: Context) {
-    c.logger.error(err);
+    c.log.error(err);
     if (err instanceof CustomException) {
         return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
     } else if (err instanceof HTTPException) {
