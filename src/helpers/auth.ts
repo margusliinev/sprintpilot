@@ -1,11 +1,11 @@
+import type { Session, User } from '../db/schema.ts';
+import type { Context } from 'hono';
+import { createNewSession, deleteSession, updateSession } from '../queries/sessions.ts';
+import { getUserWithSession, deleteUserSessions } from '../queries/users.ts';
 import { setSignedCookie, deleteCookie, getSignedCookie } from 'hono/cookie';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
-import { usersTable, sessionsTable, NewSession } from '../db/schema';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { eq } from 'drizzle-orm';
-import { Context } from 'hono';
-import { env } from './env';
-import { db } from '../db';
+import { env } from './env.ts';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -19,57 +19,54 @@ export function generateSessionToken() {
 
 export async function createSession(token: string, user_id: string) {
     const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const session: NewSession = {
+    const newSession = await createNewSession({
         id: sessionId,
         user_id,
         expires_at: new Date(Date.now() + DAY_IN_MS * 30),
-    };
-    await db.insert(sessionsTable).values(session);
-    return session;
+    });
+    return newSession;
 }
 
 export async function validateSessionToken(token: string) {
     const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const [result] = await db
-        .select({
-            user: { id: usersTable.id, name: usersTable.name, email: usersTable.email, created_at: usersTable.created_at, updated_at: usersTable.updated_at },
-            session: sessionsTable,
-        })
-        .from(sessionsTable)
-        .innerJoin(usersTable, eq(sessionsTable.user_id, usersTable.id))
-        .where(eq(sessionsTable.id, sessionId));
+    const sessionWithUser = await getUserWithSession(sessionId);
 
-    if (!result) {
+    if (!sessionWithUser) {
         return { user: null, session: null };
     }
-    const { user, session } = result;
+
+    const { user, session } = sessionWithUser;
 
     const sessionExpired = Date.now() >= session.expires_at.getTime();
     if (sessionExpired) {
-        await db.delete(sessionsTable).where(eq(sessionsTable.id, session.id));
+        await deleteSession(session.id);
         return { user: null, session: null };
     }
 
     const renewSession = Date.now() >= session.expires_at.getTime() - DAY_IN_MS * 15;
     if (renewSession) {
         session.expires_at = new Date(Date.now() + DAY_IN_MS * 30);
-        await db.update(sessionsTable).set({ expires_at: session.expires_at }).where(eq(sessionsTable.id, session.id));
+        await updateSession(session.id, { expires_at: session.expires_at });
     }
 
     return { user, session };
 }
 
-export async function invalidateSession(session_id: string) {
-    await db.delete(sessionsTable).where(eq(sessionsTable.id, session_id));
+export async function invalidateSession(sessionId: Session['id']) {
+    await deleteSession(sessionId);
 }
 
-export async function invalidateUserSessions(user_id: string) {
-    await db.delete(sessionsTable).where(eq(sessionsTable.user_id, user_id));
+export async function invalidateUserSessions(userId: User['id']) {
+    await deleteUserSessions(userId);
+}
+
+export async function getSessionTokenCookie(ctx: Context) {
+    return await getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
 }
 
 export async function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
     await setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
-        secure: env.ENV === 'live',
+        secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
@@ -77,13 +74,9 @@ export async function setSessionTokenCookie(ctx: Context, token: string, expires
     });
 }
 
-export async function getSessionTokenCookie(ctx: Context) {
-    return await getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
-}
-
 export function deleteSessionTokenCookie(ctx: Context) {
     deleteCookie(ctx, sessionCookieName, {
-        secure: env.ENV === 'live',
+        secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
@@ -91,8 +84,3 @@ export function deleteSessionTokenCookie(ctx: Context) {
 }
 
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;
-
-export type ValidSessionValidationResult = {
-    user: Exclude<SessionValidationResult['user'], null>;
-    session: Exclude<SessionValidationResult['session'], null>;
-};

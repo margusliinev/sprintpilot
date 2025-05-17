@@ -1,5 +1,4 @@
-import validate from './validationMiddleware';
-import logger from './loggerMiddleware';
-import auth from './authMiddleware';
+import auth from './authMiddleware.ts';
+import logger from './loggerMiddleware.ts';
 
-export { validate, logger, auth };
+export { auth, logger };

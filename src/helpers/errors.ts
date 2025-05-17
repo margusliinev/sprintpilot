@@ -1,61 +1,45 @@
+import type { ContentfulStatusCode } from 'hono/utils/http-status';
+import type { Context } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import { Context } from 'hono';
 
-const HTTP_EXCEPTIONS = {
-    BAD_REQUEST: { code: 400, message: 'Bad Request' },
-    UNAUTHORIZED: { code: 401, message: 'Unauthorized' },
-    PAYMENT_REQUIRED: { code: 402, message: 'Payment Required' },
-    FORBIDDEN: { code: 403, message: 'Forbidden' },
-    NOT_FOUND: { code: 404, message: 'Not Found' },
-    METHOD_NOT_ALLOWED: { code: 405, message: 'Method Not Allowed' },
-    CONFLICT: { code: 409, message: 'Conflict' },
-    UNPROCESSABLE_ENTITY: { code: 422, message: 'Unprocessable Entity' },
-    TOO_MANY_REQUESTS: { code: 429, message: 'Too Many Requests' },
-    INTERNAL_SERVER_ERROR: { code: 500, message: 'Internal Server Error' },
-} as const;
+export type Errors = Record<string, string>;
 
-type HttpStatusCode = (typeof HTTP_EXCEPTIONS)[keyof typeof HTTP_EXCEPTIONS]['code'];
-type HttpStatusMessage = (typeof HTTP_EXCEPTIONS)[keyof typeof HTTP_EXCEPTIONS]['message'];
-
-export class CustomException extends HTTPException {
-    public errors?: Record<string, string>;
-
-    constructor(status: HttpStatusCode, defaultMessage: HttpStatusMessage, errors?: Record<string, string>) {
-        super(status, { message: defaultMessage });
+class HTTPExceptionWithErrors extends HTTPException {
+    errors?: Errors;
+    constructor(status: ContentfulStatusCode, message: string, errors?: Errors) {
+        super(status, { message });
         this.errors = errors;
     }
 }
 
-function createExceptionClass(statusDetail: { code: HttpStatusCode; message: HttpStatusMessage }) {
-    return class extends CustomException {
-        constructor(errors?: Record<string, string>) {
-            super(statusDetail.code, statusDetail.message, errors);
+function createHttpException(status: ContentfulStatusCode, message: string) {
+    return class extends HTTPExceptionWithErrors {
+        constructor(errors?: Errors) {
+            super(status, message, errors);
         }
     };
 }
 
-export const BadRequestException = createExceptionClass(HTTP_EXCEPTIONS.BAD_REQUEST);
-export const UnauthorizedException = createExceptionClass(HTTP_EXCEPTIONS.UNAUTHORIZED);
-export const PaymentRequiredException = createExceptionClass(HTTP_EXCEPTIONS.PAYMENT_REQUIRED);
-export const ForbiddenException = createExceptionClass(HTTP_EXCEPTIONS.FORBIDDEN);
-export const NotFoundException = createExceptionClass(HTTP_EXCEPTIONS.NOT_FOUND);
-export const MethodNotAllowedException = createExceptionClass(HTTP_EXCEPTIONS.METHOD_NOT_ALLOWED);
-export const ConflictException = createExceptionClass(HTTP_EXCEPTIONS.CONFLICT);
-export const UnprocessableEntityException = createExceptionClass(HTTP_EXCEPTIONS.UNPROCESSABLE_ENTITY);
-export const TooManyRequestsException = createExceptionClass(HTTP_EXCEPTIONS.TOO_MANY_REQUESTS);
-export const InternalServerErrorException = createExceptionClass(HTTP_EXCEPTIONS.INTERNAL_SERVER_ERROR);
+export const BadRequestException = createHttpException(400, 'Bad Request');
+export const UnauthorizedException = createHttpException(401, 'Unauthorized');
+export const PaymentRequiredException = createHttpException(402, 'Payment Required');
+export const ForbiddenException = createHttpException(403, 'Forbidden');
+export const NotFoundException = createHttpException(404, 'Not Found');
+export const MethodNotAllowedException = createHttpException(405, 'Method Not Allowed');
+export const ConflictException = createHttpException(409, 'Conflict');
+export const UnprocessableEntityException = createHttpException(422, 'Unprocessable Entity');
+export const TooManyRequestsException = createHttpException(429, 'Too Many Requests');
+export const InternalServerErrorException = createHttpException(500, 'Internal Server Error');
 
 export function handleNotFound(c: Context) {
-    return c.json({ success: false, message: HTTP_EXCEPTIONS.NOT_FOUND.message }, HTTP_EXCEPTIONS.NOT_FOUND.code);
+    return c.json({ success: false, message: 'Not Found' }, 404);
 }
 
-export function handleError(err: CustomException | HTTPException | Error, c: Context) {
+export function handleError(err: HTTPExceptionWithErrors | Error, c: Context) {
     c.log.error(err);
-    if (err instanceof CustomException) {
+    if (err instanceof HTTPExceptionWithErrors) {
         return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
-    } else if (err instanceof HTTPException) {
-        return c.json({ success: false, message: err.message }, err.status);
     } else {
-        return c.json({ success: false, message: HTTP_EXCEPTIONS.INTERNAL_SERVER_ERROR.message }, HTTP_EXCEPTIONS.INTERNAL_SERVER_ERROR.code);
+        return c.json({ success: false, message: 'Internal Server Error' }, 500);
     }
 }

@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory';
-import { logger } from '../helpers/logger';
+import { logger, env } from '../helpers/index.ts';
 
 const loggerMiddleware = () =>
     createMiddleware(async (c, next) => {
@@ -29,7 +29,9 @@ const loggerMiddleware = () =>
         };
 
         const level = status >= 500 ? 'error' : status >= 400 ? 'warn' : 'info';
-        logger[level]('HTTP Request', logData);
+
+        if (env.NODE_ENV === 'development') logger[level](`${method} ${path} - (${status}) (${duration}ms)`);
+        if (env.NODE_ENV === 'production') logger[level](logData);
     });
 
 export default loggerMiddleware;
