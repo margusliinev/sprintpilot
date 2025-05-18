@@ -36,10 +36,12 @@ export function handleNotFound(c: Context) {
 }
 
 export function handleError(err: HTTPExceptionWithErrors | Error, c: Context) {
-    c.var.log.error(err);
     if (err instanceof HTTPExceptionWithErrors) {
+        const level = err.status >= 500 ? 'error' : err.status >= 400 ? 'warn' : 'info';
+        c.var.log[level](err);
         return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
     } else {
+        c.var.log.error(err);
         return c.json({ success: false, message: 'Internal Server Error' }, 500);
     }
 }

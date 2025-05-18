@@ -1,4 +1,4 @@
-import { deleteSessionTokenCookie, getSessionTokenCookie, setSessionTokenCookie, validateSessionToken } from '../helpers/index.ts';
+import { getSessionTokenCookie, validateSessionToken, deleteSessionTokenCookie, setSessionTokenCookie } from '../helpers/index.ts';
 import { createMiddleware } from 'hono/factory';
 
 const authMiddleware = () =>

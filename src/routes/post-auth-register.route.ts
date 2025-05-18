@@ -1,9 +1,7 @@
-import { BadRequestException, createSession, generateSessionToken, hashPassword, InternalServerErrorException, setSessionTokenCookie, validateBody } from '../helpers/index.ts';
+import { validateBody, createSession, generateSessionToken, setSessionTokenCookie, hashPassword, BadRequestException, InternalServerErrorException } from '../helpers/index.ts';
 import { createNewUser, getUserByEmail } from '../queries/users.ts';
-import { createFactory } from 'hono/factory';
+import { Hono } from 'hono';
 import { z } from 'zod';
-
-const factory = createFactory();
 
 const registerSchema = z.object({
     name: z
@@ -19,7 +17,7 @@ const registerSchema = z.object({
         .regex(/.*[A-Za-z].*/, { message: 'Password must contain at least one letter' }),
 });
 
-export const registerHandler = factory.createHandlers(validateBody(registerSchema), async (c) => {
+const app = new Hono().post('/', validateBody(registerSchema), async (c) => {
     const body = c.req.valid('json');
 
     const existingEmail = await getUserByEmail(body.email);
@@ -39,3 +37,5 @@ export const registerHandler = factory.createHandlers(validateBody(registerSchem
 
     return c.json({ success: true, message: 'Register successful' }, 201);
 });
+
+export default app;

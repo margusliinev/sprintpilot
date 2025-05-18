@@ -1,16 +1,14 @@
-import { BadRequestException, createSession, generateSessionToken, InternalServerErrorException, setSessionTokenCookie, validateBody, verifyPassword } from '../helpers/index.ts';
+import { validateBody, createSession, generateSessionToken, setSessionTokenCookie, verifyPassword, BadRequestException, InternalServerErrorException } from '../helpers/index.ts';
 import { getUserByEmailWithPassword } from '../queries/users.ts';
-import { createFactory } from 'hono/factory';
+import { Hono } from 'hono';
 import { z } from 'zod';
-
-const factory = createFactory();
 
 const loginSchema = z.object({
     email: z.string({ required_error: 'Email is required', invalid_type_error: 'Email is invalid' }).email({ message: 'Email is invalid' }),
     password: z.string({ required_error: 'Password is required', invalid_type_error: 'Password is invalid' }),
 });
 
-export const loginHandler = factory.createHandlers(validateBody(loginSchema), async (c) => {
+const app = new Hono().post('/', validateBody(loginSchema), async (c) => {
     const body = c.req.valid('json');
 
     const user = await getUserByEmailWithPassword(body.email);
@@ -28,3 +26,5 @@ export const loginHandler = factory.createHandlers(validateBody(loginSchema), as
 
     return c.json({ success: true, message: 'Login successful' }, 200);
 });
+
+export default app;

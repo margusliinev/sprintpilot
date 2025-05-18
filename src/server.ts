@@ -1,4 +1,4 @@
-import { healthHandler, registerHandler, loginHandler, logoutHandler, getCurrentUserHandler, deleteCurrentUserSessionsHandler } from './handlers/index.ts';
+import { HealthRoute, RegisterRoute, LoginRoute, LogoutRoute, GetCurrentUserRoute, DeleteCurrentUserSessionsRoute } from './routes/index.ts';
 import { handleError, handleNotFound, env } from './helpers/index.ts';
 import { logger, auth } from './middleware/index.ts';
 import { trimTrailingSlash } from 'hono/trailing-slash';
@@ -15,12 +15,12 @@ export const app = new Hono()
     .use(requestId())
     .use(logger())
     .use(auth())
-    .get('/health', ...healthHandler)
-    .post('/auth/register', ...registerHandler)
-    .post('/auth/login', ...loginHandler)
-    .post('/auth/logout', ...logoutHandler)
-    .get('/users/me', ...getCurrentUserHandler)
-    .delete('/users/me/sessions', ...deleteCurrentUserSessionsHandler)
+    .route('/health', HealthRoute)
+    .route('/auth/register', RegisterRoute)
+    .route('/auth/login', LoginRoute)
+    .route('/auth/logout', LogoutRoute)
+    .route('/users/me', GetCurrentUserRoute)
+    .route('/users/me/sessions', DeleteCurrentUserSessionsRoute)
     .notFound(handleNotFound)
     .onError(handleError);
 

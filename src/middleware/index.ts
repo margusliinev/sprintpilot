@@ -1,4 +1,4 @@
-import auth from './authMiddleware.ts';
 import logger from './loggerMiddleware.ts';
+import auth from './authMiddleware.ts';
 
-export { auth, logger };
+export { logger, auth };
