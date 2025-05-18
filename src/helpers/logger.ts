@@ -3,7 +3,7 @@ import pino from 'pino';
 
 export const logger = pino.default({
     base: null,
-    level: 'info',
+    level: env.NODE_ENV === 'test' ? 'silent' : 'info',
     timestamp: pino.stdTimeFunctions.isoTime,
     formatters: { level: (label) => ({ level: label }) },
     transport: {

@@ -8,5 +8,10 @@ export default defineConfig({
             DATABASE_URL: 'mysql://user:password@localhost:3307/db_test',
             SESSION_SECRET: 'random-hex-string-min-32-characters',
         },
+        poolOptions: {
+            forks: {
+                singleFork: true,
+            },
+        },
     },
 });

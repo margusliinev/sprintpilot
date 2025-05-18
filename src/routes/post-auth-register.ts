@@ -6,8 +6,8 @@ import { z } from 'zod';
 const registerSchema = z.object({
     name: z
         .string({ required_error: 'Name is required', invalid_type_error: 'Name is invalid' })
-        .min(2, { message: 'Name must be between 2 and 50 characters' })
-        .max(50, { message: 'Name must be between 2 and 50 characters' }),
+        .min(2, { message: 'Name must be at least 2 characters' })
+        .max(50, { message: 'Name must be at most 50 characters' }),
     email: z.string({ required_error: 'Email is required', invalid_type_error: 'Email is invalid' }).email({ message: 'Email is invalid' }),
     password: z
         .string({ required_error: 'Password is required', invalid_type_error: 'Password is invalid' })
