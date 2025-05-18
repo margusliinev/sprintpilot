@@ -19,7 +19,7 @@ async function getUserByEmailWithPassword(email: User['email']) {
 async function getUserWithSession(sessionId: Session['id']) {
     const [result] = await db
         .select({
-            user: { id: usersTable.id, name: usersTable.name, email: usersTable.email, created_at: usersTable.created_at, updated_at: usersTable.updated_at },
+            user: userColumns,
             session: sessionsTable,
         })
         .from(sessionsTable)

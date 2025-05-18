@@ -10,7 +10,7 @@ const loggerMiddleware = () =>
         const referer = c.req.header('Referer') || 'unknown';
         const requestId = c.get('requestId');
 
-        c.log = logger.child({ requestId });
+        c.set('log', logger.child({ requestId }));
 
         await next();
 

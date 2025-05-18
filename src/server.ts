@@ -14,16 +14,18 @@ export const app = new Hono()
     .use(secureHeaders())
     .use(requestId())
     .use(logger())
+    .use(auth())
     .get('/health', ...healthHandler)
     .post('/auth/register', ...registerHandler)
     .post('/auth/login', ...loginHandler)
-    .post('/auth/logout', auth(), ...logoutHandler)
-    .get('/users/me', auth(), ...getCurrentUserHandler)
-    .delete('/users/me/sessions', auth(), ...deleteCurrentUserSessionsHandler)
+    .post('/auth/logout', ...logoutHandler)
+    .get('/users/me', ...getCurrentUserHandler)
+    .delete('/users/me/sessions', ...deleteCurrentUserSessionsHandler)
     .notFound(handleNotFound)
     .onError(handleError);
 
 if (env.NODE_ENV === 'development') showRoutes(app, { colorize: true });
-
-serve({ fetch: app.fetch, port: env.PORT });
-console.log(`Server is running on port ${env.PORT}`);
+if (env.NODE_ENV !== 'test') {
+    serve({ fetch: app.fetch, port: env.PORT });
+    console.log(`Server is running on port ${env.PORT}`);
+}

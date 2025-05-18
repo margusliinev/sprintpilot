@@ -7,10 +7,10 @@ describe('/Health', () => {
 
     test('should return successful response for healthcheck', async () => {
         const res = await client.api.health.$get();
-        const { success, message } = await res.json();
+        const data = await res.json();
 
-        expect(success).toBe(true);
-        expect(message).toBe('OK');
+        expect(data.success).toBe(true);
+        expect(data.message).toBe('OK');
         expect(res.status).toBe(200);
     });
 });

@@ -36,7 +36,7 @@ export function handleNotFound(c: Context) {
 }
 
 export function handleError(err: HTTPExceptionWithErrors | Error, c: Context) {
-    c.log.error(err);
+    c.var.log.error(err);
     if (err instanceof HTTPExceptionWithErrors) {
         return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
     } else {
