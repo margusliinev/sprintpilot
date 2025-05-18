@@ -17,5 +17,5 @@
         "types": ["node"]
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "build", "test", "drizzle.config.ts"]
+    "exclude": ["node_modules", "build", "test", "drizzle.config.ts", "vitest.config.ts"]
 }

@@ -106,7 +106,7 @@ describe('POST /auth/login', () => {
         const res = await client.api.auth.login.$post({
             json: {
                 email: 'johndoe@example.com',
-                password: 'johndoe123',
+                password: password,
             },
         });
         const data = (await res.json()) as any;

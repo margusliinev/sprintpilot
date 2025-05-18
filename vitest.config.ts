@@ -13,5 +13,8 @@ export default defineConfig({
                 singleFork: true,
             },
         },
+        coverage: {
+            exclude: ['node_modules', 'build', 'test', 'drizzle.config.ts', 'vitest.config.ts'],
+        },
     },
 });
