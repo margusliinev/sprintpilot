@@ -9,4 +9,5 @@ const liveFormat = combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), json())
 export const logger = winston.createLogger({
     format: env.NODE_ENV === 'development' ? devFormat : liveFormat,
     transports: [new winston.transports.Console()],
+    level: env.NODE_ENV === 'test' ? 'error' : 'info',
 });
