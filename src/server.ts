@@ -1,31 +1,32 @@
-import { GetHealth, PostAuthRegister, PostAuthLogin, PostAuthLogout, GetUsersMe, DeleteUsersMeSessions } from './routes/index.ts';
-import { handleError, handleNotFound, env } from './helpers/index.ts';
-import { logger, auth } from './middleware/index.ts';
+import { healthRoutes, usersRoutes, authRoutes } from './routes';
+import { handleError, handleNotFound } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
-import { serve } from '@hono/node-server';
+import { logger } from './middleware';
+import { runMigrations } from './db';
 import { showRoutes } from 'hono/dev';
+import { env } from './helpers/env';
 import { Hono } from 'hono';
+import { serve } from 'bun';
 
-export const app = new Hono()
-    .basePath('/api')
-    .use(trimTrailingSlash())
-    .use(secureHeaders())
-    .use(requestId())
-    .use(logger())
-    .use(auth())
-    .route('/health', GetHealth)
-    .route('/auth/register', PostAuthRegister)
-    .route('/auth/login', PostAuthLogin)
-    .route('/auth/logout', PostAuthLogout)
-    .route('/users/me', GetUsersMe)
-    .route('/users/me/sessions', DeleteUsersMeSessions)
-    .notFound(handleNotFound)
-    .onError(handleError);
+export const app = new Hono();
+
+app.use(trimTrailingSlash());
+app.use(secureHeaders());
+app.use(requestId());
+app.use(logger);
+
+app.route('/api/health', healthRoutes);
+app.route('/api/users', usersRoutes);
+app.route('/api/auth', authRoutes);
+
+app.notFound(handleNotFound);
+app.onError(handleError);
 
 if (env.NODE_ENV === 'development') showRoutes(app, { colorize: true });
 if (env.NODE_ENV !== 'test') {
-    serve({ fetch: app.fetch, port: env.PORT });
-    console.log(`Server is running on port ${env.PORT}`);
+    const server = serve({ fetch: app.fetch, port: env.PORT });
+    console.log(`🚀 Server running at http://localhost:${server.port}`);
+    runMigrations();
 }

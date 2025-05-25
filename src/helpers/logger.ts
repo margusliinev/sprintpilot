@@ -1,13 +1,12 @@
-import { env } from './env.ts';
-import pino from 'pino';
+import { env } from './env';
+import winston from 'winston';
 
-export const logger = pino.default({
-    base: null,
-    level: env.NODE_ENV === 'test' ? 'silent' : 'info',
-    timestamp: pino.stdTimeFunctions.isoTime,
-    formatters: { level: (label) => ({ level: label }) },
-    transport: {
-        target: env.NODE_ENV === 'development' ? 'pino-pretty' : 'pino/file',
-        options: env.NODE_ENV === 'development' ? { colorize: true, singleLine: true } : { destination: 1 },
-    },
+const { combine, timestamp, prettyPrint, json } = winston.format;
+
+const devFormat = combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), prettyPrint({ colorize: true }));
+const liveFormat = combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), json());
+
+export const logger = winston.createLogger({
+    format: env.NODE_ENV === 'development' ? devFormat : liveFormat,
+    transports: [new winston.transports.Console()],
 });

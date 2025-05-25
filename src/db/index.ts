@@ -1,6 +1,21 @@
-import { migrate } from 'drizzle-orm/mysql2/migrator';
-import { drizzle } from 'drizzle-orm/mysql2';
-import { env } from '../helpers/index.ts';
+import { migrate } from 'drizzle-orm/bun-sql/migrator';
+import { drizzle } from 'drizzle-orm/bun-sql';
+import { env } from '../helpers/env';
 
-export const db = drizzle({ connection: env.DATABASE_URL });
-await migrate(db, { migrationsFolder: './src/db/migrations' });
+export const db = drizzle(env.DATABASE_URL);
+export async function runMigrations() {
+    try {
+        console.log('Starting database migrations...');
+        const start = performance.now();
+
+        await migrate(db, { migrationsFolder: './src/db/migrations' });
+
+        const end = performance.now();
+        console.log(`Database migrations completed successfully in ${(end - start).toFixed(2)}ms`);
+
+        return { success: true };
+    } catch (error) {
+        console.error('Database migration failed:', error);
+        throw error;
+    }
+}

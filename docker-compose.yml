@@ -1,30 +1,30 @@
 services:
     db:
-        image: mysql:9
+        image: postgres:17
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: db
-            MYSQL_USER: user
-            MYSQL_PASSWORD: password
+            POSTGRES_DB: db
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
             TZ: UTC
-        volumes:
-            - mysql_data:/var/lib/mysql
         ports:
-            - '3306:3306'
+            - '5432:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
     db_test:
-        image: mysql:9
+        image: postgres:17
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: db_test
-            MYSQL_USER: user
-            MYSQL_PASSWORD: password
+            POSTGRES_DB: db_test
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
             TZ: UTC
-        volumes:
-            - mysql_data_test:/var/lib/mysql
         ports:
-            - '3307:3306'
+            - '5433:5432'
+        volumes:
+            - postgres_data_test:/var/lib/postgresql/data
+
 volumes:
-    mysql_data:
-    mysql_data_test:
+    postgres_data:
+    postgres_data_test:

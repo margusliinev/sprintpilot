@@ -1,5 +1,5 @@
-import type { Errors } from './errors.ts';
-import { BadRequestException } from './errors.ts';
+import type { Errors } from './errors';
+import { BadRequestException } from './errors';
 import { zValidator } from '@hono/zod-validator';
 import { ZodSchema } from 'zod';
 

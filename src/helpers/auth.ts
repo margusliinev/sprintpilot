@@ -1,35 +1,23 @@
-import type { Session, User } from '../db/schema.ts';
+import type { Session, User } from '../db/schema';
 import type { Context } from 'hono';
-import { createNewSession, deleteSession, updateSession } from '../queries/sessions.ts';
-import { getUserWithSession, deleteUserSessions } from '../queries/users.ts';
+import { createNewSession, deleteSession, updateSession } from '../queries/sessions';
+import { getUserWithSession, deleteUserSessions } from '../queries/users';
 import { setSignedCookie, deleteCookie, getSignedCookie } from 'hono/cookie';
-import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
-import { sha256 } from '@oslojs/crypto/sha2';
-import { env } from './env.ts';
+import { env } from './env';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
+const sessionCookieName = 'auth-session';
 
-export const sessionCookieName = 'auth-session';
-
-export function generateSessionToken() {
-    const bytes = crypto.getRandomValues(new Uint8Array(18));
-    const token = encodeBase64url(bytes);
-    return token;
-}
-
-export async function createSession(token: string, user_id: string) {
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+export async function createSession(user_id: string) {
     const newSession = await createNewSession({
-        id: sessionId,
         user_id,
         expires_at: new Date(Date.now() + DAY_IN_MS * 30),
     });
     return newSession;
 }
 
-export async function validateSessionToken(token: string) {
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-    const sessionWithUser = await getUserWithSession(sessionId);
+export async function validateSessionToken(sessionToken: string) {
+    const [sessionWithUser] = await getUserWithSession(sessionToken);
 
     if (!sessionWithUser) {
         return { user: null, session: null };

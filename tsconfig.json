@@ -1,21 +1,28 @@
 {
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
-        "rewriteRelativeImportExtensions": true,
-        "allowImportingTsExtensions": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
         "noUnusedParameters": true,
+        "noImplicitOverride": true,
         "noUnusedLocals": true,
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
         "erasableSyntaxOnly": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
+        "allowJs": true,
+        "noEmit": true,
         "strict": true,
-        "module": "NodeNext",
+        "moduleResolution": "bundler",
+        "moduleDetection": "force",
+        "module": "Preserve",
         "target": "ESNext",
         "outDir": "./build",
         "rootDir": "./src",
-        "types": ["node"]
+        "lib": ["ESNext"]
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "build", "test", "drizzle.config.ts", "vitest.config.ts"]
+    "exclude": ["node_modules", "build", "test", "drizzle.config.ts"]
 }
