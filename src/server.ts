@@ -15,7 +15,7 @@ export const app = new Hono();
 app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
-app.use(logger);
+app.use(logger());
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);
