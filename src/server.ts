@@ -24,9 +24,10 @@ app.route('/api/auth', authRoutes);
 app.notFound(handleNotFound);
 app.onError(handleError);
 
+const server = serve({ fetch: app.fetch, port: env.PORT });
+
 if (env.NODE_ENV === 'development') showRoutes(app, { colorize: true });
 if (env.NODE_ENV !== 'test') {
-    const server = serve({ fetch: app.fetch, port: env.PORT });
     console.log(`🚀 Server running at http://localhost:${server.port}`);
     runMigrations();
 }
