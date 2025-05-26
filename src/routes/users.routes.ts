@@ -2,15 +2,15 @@ import { deleteSessionTokenCookie, invalidateUserSessions } from '../helpers/aut
 import { auth } from '../middleware';
 import { Hono } from 'hono';
 
-const app = new Hono();
+const app = new Hono().use(auth);
 
-app.get('/me', auth, (c) => {
+app.get('/me', (c) => {
     const user = c.get('user');
 
     return c.json({ success: true, data: user });
 });
 
-app.delete('/me/sessions', auth, async (c) => {
+app.delete('/me/sessions', async (c) => {
     const user = c.get('user');
 
     await invalidateUserSessions(user.id);
