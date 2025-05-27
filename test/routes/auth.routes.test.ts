@@ -39,7 +39,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(false);
         expect(data.message).toBe('Bad Request');
         expect(data.errors).toStrictEqual({
-            name: 'Name is required',
+            name: 'Name is invalid',
         });
     });
 
@@ -60,7 +60,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(false);
         expect(data.message).toBe('Bad Request');
         expect(data.errors).toStrictEqual({
-            email: 'Email is required',
+            email: 'Email is invalid',
         });
     });
 
@@ -81,7 +81,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(false);
         expect(data.message).toBe('Bad Request');
         expect(data.errors).toStrictEqual({
-            password: 'Password is required',
+            password: 'Password is invalid',
         });
     });
 
@@ -156,7 +156,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(false);
         expect(data.message).toBe('Bad Request');
         expect(data.errors).toStrictEqual({
-            email: 'Email is required',
+            email: 'Email is invalid',
         });
     });
 
@@ -176,7 +176,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(false);
         expect(data.message).toBe('Bad Request');
         expect(data.errors).toStrictEqual({
-            password: 'Password is required',
+            password: 'Password is invalid',
         });
     });
 

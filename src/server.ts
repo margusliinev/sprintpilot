@@ -3,12 +3,12 @@ import { handleError, handleNotFound } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
-import { logger } from './middleware';
 import { runMigrations } from './db';
 import { showRoutes } from 'hono/dev';
+import { logger } from './middleware';
 import { env } from './helpers/env';
-import { Hono } from 'hono';
 import { serve } from 'bun';
+import { Hono } from 'hono';
 
 export const app = new Hono();
 

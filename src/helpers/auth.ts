@@ -1,8 +1,8 @@
 import type { Session, User } from '../db/schema';
 import type { Context } from 'hono';
 import { createNewSession, deleteSession, updateSession } from '../queries/sessions';
-import { getUserWithSession, deleteUserSessions } from '../queries/users';
 import { setSignedCookie, deleteCookie, getSignedCookie } from 'hono/cookie';
+import { getUserWithSession, deleteUserSessions } from '../queries/users';
 import { env } from './env';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;

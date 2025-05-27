@@ -1,51 +1,21 @@
 import type { Errors } from './errors';
 import { BadRequestException } from './errors';
 import { zValidator } from '@hono/zod-validator';
-import { ZodSchema } from 'zod';
+import { ZodType } from 'zod/v4';
 
-const validateBody = <T extends ZodSchema>(schema: T) => {
+const validateBody = <T extends ZodType>(schema: T) => {
     return zValidator('json', schema, (result, c) => {
         if (!result.success) {
             const errors = result.error.issues.reduce((acc, issue) => {
                 const key = issue.path[0];
                 const message = issue.message;
-                if (key && !acc[key]) acc[key] = message;
+                if (key && !acc[key.toString()]) acc[key.toString()] = message;
                 return acc;
             }, {} as Errors);
             throw new BadRequestException(errors);
         }
-        c.req.addValidatedData('json', result.data);
+        c.req.addValidatedData('json', result.data as any);
     });
 };
 
-const validateParams = <T extends ZodSchema>(schema: T) => {
-    return zValidator('param', schema, (result, c) => {
-        if (!result.success) {
-            const errors = result.error.issues.reduce((acc, issue) => {
-                const key = issue.path[0];
-                const message = issue.message;
-                if (key && !acc[key]) acc[key] = message;
-                return acc;
-            }, {} as Errors);
-            throw new BadRequestException(errors);
-        }
-        c.req.addValidatedData('param', result.data);
-    });
-};
-
-const validateQuery = <T extends ZodSchema>(schema: T) => {
-    return zValidator('query', schema, (result, c) => {
-        if (!result.success) {
-            const errors = result.error.issues.reduce((acc, issue) => {
-                const key = issue.path[0];
-                const message = issue.message;
-                if (key && !acc[key]) acc[key] = message;
-                return acc;
-            }, {} as Errors);
-            throw new BadRequestException(errors);
-        }
-        c.req.addValidatedData('query', result.data);
-    });
-};
-
-export { validateBody, validateParams, validateQuery };
+export { validateBody };
