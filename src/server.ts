@@ -6,6 +6,7 @@ import { requestId } from 'hono/request-id';
 import { runMigrations } from './db';
 import { showRoutes } from 'hono/dev';
 import { logger } from './middleware';
+import { serveStatic } from 'hono/bun';
 import { env } from './helpers/env';
 import { serve } from 'bun';
 import { Hono } from 'hono';
@@ -16,6 +17,10 @@ app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
 app.use(logger());
+app.use('/*', serveStatic({ root: './ui' }));
+
+app.get('/', serveStatic({ path: 'index.html', root: './ui' }));
+app.get('/about', serveStatic({ path: 'about.html', root: './ui' }));
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);

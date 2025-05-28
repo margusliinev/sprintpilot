@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Header scroll effect
     const header = document.querySelector('header');
-    const heroSection = document.querySelector('#hero');
 
     // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
