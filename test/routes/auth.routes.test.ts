@@ -22,6 +22,31 @@ describe('Auth Routes', () => {
         expect(data.message).toBe('Register successful');
     });
 
+    test('should successfully login the user', async () => {
+        const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
+        await createNewUser({
+            name: 'Test User',
+            email: 'test@example.com',
+            password,
+        });
+
+        const res = await app.request('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: 'test@example.com',
+                password: 'password123',
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+
+        expect(res.status).toBe(200);
+        expect(data.success).toBe(true);
+        expect(data.message).toBe('Login successful');
+    });
+
     test('should fail to register if name is missing', async () => {
         const res = await app.request('/api/auth/register', {
             method: 'POST',
@@ -115,32 +140,7 @@ describe('Auth Routes', () => {
         });
     });
 
-    test('should successfully login the user', async () => {
-        const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
-        await createNewUser({
-            name: 'Test User',
-            email: 'test@example.com',
-            password,
-        });
-
-        const res = await app.request('/api/auth/login', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: 'test@example.com',
-                password: 'password123',
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await res.json();
-
-        expect(res.status).toBe(200);
-        expect(data.success).toBe(true);
-        expect(data.message).toBe('Login successful');
-    });
-
-    test('should fail if login email is missing', async () => {
+    test('should fail to login if email is missing', async () => {
         const res = await app.request('/api/auth/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -160,7 +160,7 @@ describe('Auth Routes', () => {
         });
     });
 
-    test('should fail if login password is missing', async () => {
+    test('should fail to login if password is missing', async () => {
         const res = await app.request('/api/auth/login', {
             method: 'POST',
             body: JSON.stringify({
@@ -180,7 +180,7 @@ describe('Auth Routes', () => {
         });
     });
 
-    test('should fail to login with invalid email', async () => {
+    test('should fail to login if email is invalid', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
         await createNewUser({
             name: 'Test User',
@@ -208,7 +208,7 @@ describe('Auth Routes', () => {
         });
     });
 
-    test('should fail to login with invalid password', async () => {
+    test('should fail to login if password is invalid', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
         await createNewUser({
             name: 'Test User',

@@ -292,8 +292,13 @@ nav {
     transition: var(--transition);
 }
 
-.nav-links a:hover:after {
+.nav-links a:hover:after,
+.nav-links a.active:after {
     width: 100%;
+}
+
+.nav-links a.active {
+    color: var(--color-accent);
 }
 
 .cta-buttons {

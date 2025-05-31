@@ -8,6 +8,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelector('.nav-links');
     const ctaButtons = document.querySelector('.cta-buttons');
 
+    // Set active nav link based on current page
+    const setActiveNavLink = () => {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+
+            // Check if the href matches the current path
+            if ((href === '/' && currentPath === '/') || (href !== '/' && currentPath.includes(href))) {
+                link.classList.add('active');
+            }
+        });
+    };
+
+    // Call the function to set active link
+    setActiveNavLink();
+
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', function () {
             navLinks.classList.toggle('mobile-active');

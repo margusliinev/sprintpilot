@@ -3,3 +3,4 @@ migrations
 schema.ts
 bun.lock
 build
+dev.db*
