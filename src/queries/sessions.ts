@@ -4,6 +4,10 @@ import { sessionsTable } from '../db/schema';
 import { db } from '../db/index';
 import { eq } from 'drizzle-orm';
 
+async function getAllSessions() {
+    return db.select().from(sessionsTable);
+}
+
 async function createNewSession(session: NewSession) {
     return db.transaction(async (tx) => {
         const [newSession] = await tx.insert(sessionsTable).values(session).returning();
@@ -22,4 +26,4 @@ async function deleteSession(sessionId: Session['id']) {
     return db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
 }
 
-export { createNewSession, updateSession, deleteSession };
+export { getAllSessions, createNewSession, updateSession, deleteSession };

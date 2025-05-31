@@ -1,3 +1,4 @@
+import { getAllSessions } from '../../src/queries/sessions';
 import { createNewUser } from '../../src/queries/users';
 import { describe, test, expect } from 'bun:test';
 import { app } from '../../src/server';
@@ -45,6 +46,42 @@ describe('Auth Routes', () => {
         expect(res.status).toBe(200);
         expect(data.success).toBe(true);
         expect(data.message).toBe('Login successful');
+    });
+
+    test('should successfully logout the user', async () => {
+        const registerResponse = await app.request('/api/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: 'Test User',
+                email: 'test@example.com',
+                password: 'password123',
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const setCookie = registerResponse.headers.get('set-cookie');
+        expect(setCookie).toBeTruthy();
+
+        const sessions = await getAllSessions();
+        expect(sessions.length).toBe(1);
+
+        const logoutResponse = await app.request('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: setCookie!,
+            },
+        });
+        const data = await logoutResponse.json();
+
+        expect(logoutResponse.status).toBe(200);
+        expect(data.success).toBe(true);
+        expect(data.message).toBe('Logout successful');
+
+        const updatedSessions = await getAllSessions();
+        expect(updatedSessions.length).toBe(0);
     });
 
     test('should fail to register if name is missing', async () => {
@@ -234,5 +271,19 @@ describe('Auth Routes', () => {
         expect(data.errors).toStrictEqual({
             email: 'Invalid email or password',
         });
+    });
+
+    test('should fail to logout if not authenticated', async () => {
+        const res = await app.request('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+
+        expect(res.status).toBe(401);
+        expect(data.success).toBe(false);
+        expect(data.message).toBe('Unauthorized');
     });
 });
