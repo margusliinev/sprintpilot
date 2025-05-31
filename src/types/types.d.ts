@@ -1,9 +1,9 @@
 import type { SessionValidationResult } from '../helpers/auth';
-import { logger } from '../helpers/logger';
+import { Logger } from '../helpers/logger';
 
 declare module 'hono' {
     interface ContextVariableMap {
-        log: ReturnType<typeof logger.child>;
+        log: Logger;
         user: Exclude<SessionValidationResult['user'], null>;
         session: Exclude<SessionValidationResult['session'], null>;
     }

@@ -1,13 +1,54 @@
+import type { Errors } from './errors';
 import { env } from './env';
-import winston from 'winston';
 
-const { combine, timestamp, prettyPrint, json } = winston.format;
+type Level = 'info' | 'warn' | 'error';
+type Meta = Record<string, any>;
+type ErrorExtended = Error & { errors?: Errors };
+type HTTPRequest = {
+    method: string;
+    path: string;
+    userAgent: string;
+    referer: string;
+    status: number;
+    duration: string;
+    message: string;
+};
 
-const devFormat = combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), prettyPrint({ colorize: true }));
-const liveFormat = combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), json());
+export class Logger {
+    private requestId: string;
 
-export const logger = winston.createLogger({
-    format: env.NODE_ENV === 'development' ? devFormat : liveFormat,
-    transports: [new winston.transports.Console()],
-    level: env.NODE_ENV === 'test' ? 'error' : 'info',
-});
+    constructor(requestId: string) {
+        this.requestId = requestId;
+    }
+
+    log(level: Level, message: string, meta?: Meta, error?: ErrorExtended) {
+        const logData = {
+            requestId: this.requestId,
+            timestamp: new Date().toISOString(),
+            level,
+            message,
+            ...meta,
+            ...(error?.message && { message: error.message }),
+            ...(error?.errors && { errors: error.errors }),
+            ...(error?.stack && level === 'error' && { stack: error.stack }),
+        };
+        if (env.BUN_ENV === 'development') console.log(logData);
+        if (env.BUN_ENV === 'production') console.log(JSON.stringify(logData));
+    }
+
+    info(message: string, meta?: Meta) {
+        this.log('info', message, meta);
+    }
+
+    warn(message: string, meta?: Meta, error?: ErrorExtended) {
+        this.log('warn', message, meta, error);
+    }
+
+    error(message: string, meta?: Meta, error?: ErrorExtended) {
+        this.log('error', message, meta, error);
+    }
+
+    request(httpRequest: HTTPRequest) {
+        if (env.BUN_ENV === 'production') console.log(JSON.stringify(httpRequest));
+    }
+}

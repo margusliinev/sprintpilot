@@ -3,7 +3,7 @@ import { beforeAll, beforeEach } from 'bun:test';
 import { db, runMigrations } from '../src/db';
 
 beforeAll(async () => {
-    await runMigrations();
+    runMigrations();
 });
 
 beforeEach(async () => {

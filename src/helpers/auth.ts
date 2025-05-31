@@ -11,7 +11,7 @@ const sessionCookieName = 'auth-session';
 export async function createSession(user_id: string) {
     const newSession = await createNewSession({
         user_id,
-        expires_at: new Date(Date.now() + DAY_IN_MS * 30),
+        expires_at: new Date(Date.now() + DAY_IN_MS * 30).toISOString(),
     });
     return newSession;
 }
@@ -25,15 +25,15 @@ export async function validateSessionToken(sessionToken: string) {
 
     const { user, session } = sessionWithUser;
 
-    const sessionExpired = Date.now() >= session.expires_at.getTime();
+    const sessionExpired = Date.now() >= new Date(session.expires_at).getTime();
     if (sessionExpired) {
         await deleteSession(session.id);
         return { user: null, session: null };
     }
 
-    const renewSession = Date.now() >= session.expires_at.getTime() - DAY_IN_MS * 15;
+    const renewSession = Date.now() >= new Date(session.expires_at).getTime() - DAY_IN_MS * 15;
     if (renewSession) {
-        session.expires_at = new Date(Date.now() + DAY_IN_MS * 30);
+        session.expires_at = new Date(Date.now() + DAY_IN_MS * 30).toISOString();
         await updateSession(session.id, { expires_at: session.expires_at });
     }
 
@@ -52,19 +52,19 @@ export async function getSessionTokenCookie(ctx: Context) {
     return await getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
 }
 
-export async function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
+export async function setSessionTokenCookie(ctx: Context, token: string, expires_at: string) {
     await setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
-        secure: env.NODE_ENV === 'production',
+        secure: env.BUN_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
-        expires: expires_at,
+        expires: new Date(expires_at),
     });
 }
 
 export function deleteSessionTokenCookie(ctx: Context) {
     deleteCookie(ctx, sessionCookieName, {
-        secure: env.NODE_ENV === 'production',
+        secure: env.BUN_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
