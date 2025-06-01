@@ -1,0 +1,31 @@
+{
+    "name": "sprintpilot-ui",
+    "description": "Sprintpilot UI",
+    "version": "1.0.0",
+    "license": "MIT",
+    "type": "module",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/margusliinev/sprintpilot"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && tsc",
+        "serve": "vite preview"
+    },
+    "dependencies": {
+        "@tanstack/react-router": "1.120.13",
+        "@tanstack/react-router-devtools": "1.120.13",
+        "@tanstack/router-plugin": "1.120.13",
+        "react": "19.1.0",
+        "react-dom": "19.1.0"
+    },
+    "devDependencies": {
+        "@types/react": "19.1.6",
+        "@types/react-dom": "19.1.5",
+        "@vitejs/plugin-react": "4.5.0",
+        "typescript": "5.8.3",
+        "vite": "6.3.5"
+    }
+}

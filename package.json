@@ -1,9 +1,10 @@
 {
-    "name": "sprintpilot",
-    "description": "Sprintpilot is a project management tool of choice for developers around the world to improve real-time collaboration.",
+    "name": "sprintpilot-api",
+    "description": "Sprintpilot API",
     "version": "1.0.0",
     "license": "MIT",
     "type": "module",
+    "private": true,
     "repository": {
         "type": "git",
         "url": "https://github.com/margusliinev/sprintpilot"
