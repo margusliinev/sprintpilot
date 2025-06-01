@@ -54,7 +54,7 @@ export async function getSessionTokenCookie(ctx: Context) {
 
 export async function setSessionTokenCookie(ctx: Context, token: string, expires_at: string) {
     await setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
-        secure: env.BUN_ENV === 'production',
+        secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
@@ -64,7 +64,7 @@ export async function setSessionTokenCookie(ctx: Context, token: string, expires
 
 export function deleteSessionTokenCookie(ctx: Context) {
     deleteCookie(ctx, sessionCookieName, {
-        secure: env.BUN_ENV === 'production',
+        secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',

@@ -32,8 +32,8 @@ export class Logger {
             ...(error?.errors && { errors: error.errors }),
             ...(error?.stack && level === 'error' && { stack: error.stack }),
         };
-        if (env.BUN_ENV === 'development') console.log(logData);
-        if (env.BUN_ENV === 'production') console.log(JSON.stringify(logData));
+        if (env.NODE_ENV === 'development') console.log(logData);
+        if (env.NODE_ENV === 'production') console.log(JSON.stringify(logData));
     }
 
     info(message: string, meta?: Meta) {
@@ -49,6 +49,6 @@ export class Logger {
     }
 
     request(httpRequest: HTTPRequest) {
-        if (env.BUN_ENV === 'production') console.log(JSON.stringify(httpRequest));
+        if (env.NODE_ENV === 'production') console.log(JSON.stringify(httpRequest));
     }
 }

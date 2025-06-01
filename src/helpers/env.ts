@@ -2,7 +2,7 @@ import { z, ZodError } from 'zod/v4';
 
 const envSchema = z.object({
     PORT: z.coerce.number(),
-    BUN_ENV: z.enum(['development', 'production', 'test']),
+    NODE_ENV: z.enum(['development', 'production', 'test']),
     DATABASE_URL: z.string(),
     SESSION_SECRET: z.string(),
 });
