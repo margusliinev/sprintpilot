@@ -1,4 +1,4 @@
-import logger from './logger';
+import bootstrap from './bootstrap';
 import auth from './auth';
 
-export { logger, auth };
+export { bootstrap, auth };

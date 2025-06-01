@@ -1,9 +1,9 @@
-import { healthRoutes, usersRoutes, authRoutes } from './routes';
+import { healthRoutes, usersRoutes, authRoutes } from './features';
 import { handleError, handleNotFound } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
-import { logger } from './middleware';
+import { bootstrap } from './middleware';
 import { runMigrations } from './db';
 import { env } from './helpers/env';
 import { serve } from 'bun';
@@ -14,7 +14,7 @@ export const app = new Hono();
 app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
-app.use(logger);
+app.use(bootstrap);
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);

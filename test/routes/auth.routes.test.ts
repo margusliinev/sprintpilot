@@ -1,6 +1,5 @@
-import { getAllSessions } from '../../src/queries/sessions';
-import { createNewUser } from '../../src/queries/users';
 import { describe, test, expect } from 'bun:test';
+import { models } from '../../src/models';
 import { app } from '../../src/server';
 
 describe('Auth Routes', () => {
@@ -25,7 +24,7 @@ describe('Auth Routes', () => {
 
     test('should successfully login the user', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
-        await createNewUser({
+        await models.user.createNewUser({
             name: 'Test User',
             email: 'test@example.com',
             password,
@@ -64,7 +63,7 @@ describe('Auth Routes', () => {
         const setCookie = registerResponse.headers.get('set-cookie');
         expect(setCookie).toBeTruthy();
 
-        const sessions = await getAllSessions();
+        const sessions = await models.session.getAllSessions();
         expect(sessions.length).toBe(1);
 
         const logoutResponse = await app.request('/api/auth/logout', {
@@ -80,7 +79,7 @@ describe('Auth Routes', () => {
         expect(data.success).toBe(true);
         expect(data.message).toBe('Logout successful');
 
-        const updatedSessions = await getAllSessions();
+        const updatedSessions = await models.session.getAllSessions();
         expect(updatedSessions.length).toBe(0);
     });
 
@@ -150,7 +149,7 @@ describe('Auth Routes', () => {
     test('should fail to register if email is already in use', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
 
-        await createNewUser({
+        await models.user.createNewUser({
             name: 'Test User',
             email: 'test@example.com',
             password,
@@ -219,7 +218,7 @@ describe('Auth Routes', () => {
 
     test('should fail to login if email is invalid', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
-        await createNewUser({
+        await models.user.createNewUser({
             name: 'Test User',
             email: 'test@example.com',
             password,
@@ -247,7 +246,7 @@ describe('Auth Routes', () => {
 
     test('should fail to login if password is invalid', async () => {
         const password = await Bun.password.hash('password123', { algorithm: 'bcrypt' });
-        await createNewUser({
+        await models.user.createNewUser({
             name: 'Test User',
             email: 'test@example.com',
             password,

@@ -1,21 +1,21 @@
-import { getSessionTokenCookie, validateSessionToken, deleteSessionTokenCookie, setSessionTokenCookie } from '../helpers/auth';
+import { authService } from '../features/auth/auth.service';
 import { UnauthorizedException } from '../helpers/errors';
 import { createMiddleware } from 'hono/factory';
 
-const authMiddleware = createMiddleware(async (c, next) => {
-    const sessionToken = await getSessionTokenCookie(c);
+const authMiddleware = createMiddleware(async (ctx, next) => {
+    const sessionToken = await authService.getSessionTokenCookie(ctx);
     if (!sessionToken) throw new UnauthorizedException();
 
-    const { user, session } = await validateSessionToken(sessionToken);
-    if (!user || !session) {
-        deleteSessionTokenCookie(c);
+    const { session, user } = await authService.validateSessionToken(ctx, sessionToken);
+    if (!session || !user) {
+        authService.deleteSessionTokenCookie(ctx);
         throw new UnauthorizedException();
     }
 
-    await setSessionTokenCookie(c, sessionToken, session.expires_at);
+    await authService.setSessionTokenCookie(ctx, sessionToken, session.expires_at);
 
-    c.set('user', user);
-    c.set('session', session);
+    ctx.set('session', session);
+    ctx.set('user', user);
 
     await next();
 });

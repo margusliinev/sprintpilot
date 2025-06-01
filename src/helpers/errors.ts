@@ -31,17 +31,17 @@ export const UnprocessableEntityException = createHttpException(422, 'Unprocessa
 export const TooManyRequestsException = createHttpException(429, 'Too Many Requests');
 export const InternalServerErrorException = createHttpException(500, 'Internal Server Error');
 
-export function handleNotFound(c: Context) {
-    return c.json({ success: false, message: 'Not Found' }, 404);
+export function handleNotFound(ctx: Context) {
+    return ctx.json({ success: false, message: 'Not Found' }, 404);
 }
 
-export function handleError(err: HTTPExceptionWithErrors | Error, c: Context) {
+export function handleError(err: HTTPExceptionWithErrors | Error, ctx: Context) {
     if (err instanceof HTTPExceptionWithErrors) {
         const level = err.status >= 500 ? 'error' : 'warn';
-        c.var.log[level](err.message, {}, err);
-        return c.json({ success: false, message: err.message, errors: err.errors }, err.status);
+        ctx.var.log[level](err.message, {}, err);
+        return ctx.json({ success: false, message: err.message, errors: err.errors }, err.status);
     } else {
-        c.var.log.error(err.message, {}, err);
-        return c.json({ success: false, message: 'Internal Server Error' }, 500);
+        ctx.var.log.error(err.message, {}, err);
+        return ctx.json({ success: false, message: 'Internal Server Error' }, 500);
     }
 }

@@ -26,4 +26,9 @@ async function deleteSession(sessionId: Session['id']) {
     return db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
 }
 
-export { getAllSessions, createNewSession, updateSession, deleteSession };
+export const sessionModel = {
+    getAllSessions,
+    createNewSession,
+    updateSession,
+    deleteSession,
+};

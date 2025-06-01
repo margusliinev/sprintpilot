@@ -39,4 +39,10 @@ async function deleteUserSessions(userId: User['id']) {
     return db.delete(sessionsTable).where(eq(sessionsTable.user_id, userId));
 }
 
-export { getUserByEmail, getUserByEmailWithPassword, getUserWithSession, createNewUser, deleteUserSessions };
+export const userModel = {
+    getUserByEmail,
+    getUserByEmailWithPassword,
+    getUserWithSession,
+    createNewUser,
+    deleteUserSessions,
+};
