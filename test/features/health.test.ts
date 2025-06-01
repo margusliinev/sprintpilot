@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'bun:test';
 import { app } from '../../src/server';
 
-describe('Health Routes', () => {
+describe('Health', () => {
     test('should return successful response for healthcheck', async () => {
         const res = await app.request('/api/health/ok');
         const data = await res.json();

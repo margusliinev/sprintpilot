@@ -2,7 +2,7 @@ import { describe, test, expect } from 'bun:test';
 import { models } from '../../src/models';
 import { app } from '../../src/server';
 
-describe('Auth Routes', () => {
+describe('Auth', () => {
     test('should successfully register a new user', async () => {
         const res = await app.request('/api/auth/register', {
             method: 'POST',
