@@ -1,7 +1,7 @@
 import type { Errors } from './errors';
+import type { ZodType } from 'zod/v4';
 import { BadRequestException } from './errors';
 import { zValidator } from '@hono/zod-validator';
-import { ZodType } from 'zod/v4';
 
 const validateBody = <T extends ZodType>(schema: T) => {
     return zValidator('json', schema, (result, c) => {

@@ -1,5 +1,5 @@
 import type { User, NewUser, Session } from '../db/schema.ts';
-import { InternalServerErrorException } from '../helpers/errors.ts';
+import { InternalServerErrorException } from '../helpers/errors';
 import { usersTable, sessionsTable } from '../db/schema';
 import { eq, getTableColumns } from 'drizzle-orm';
 import { db } from '../db/index';

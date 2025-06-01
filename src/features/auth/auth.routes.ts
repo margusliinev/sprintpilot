@@ -1,8 +1,8 @@
-import { BadRequestException, InternalServerErrorException, UnauthorizedException } from '../../helpers/errors.ts';
-import { registerSchema, loginSchema } from './auth.schema.ts';
-import { validateBody } from '../../helpers/validation.ts';
-import { userService } from '../users/users.service.ts';
-import { authService } from './auth.service.ts';
+import { BadRequestException, InternalServerErrorException, UnauthorizedException } from '../../helpers/errors';
+import { registerSchema, loginSchema } from './auth.schema';
+import { validateBody } from '../../helpers/validation';
+import { userService } from '../users/users.service';
+import { authService } from './auth.service';
 import { auth } from '../../middleware';
 import { Hono } from 'hono';
 

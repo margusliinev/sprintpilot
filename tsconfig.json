@@ -1,18 +1,13 @@
 {
     "compilerOptions": {
-        "forceConsistentCasingInFileNames": true,
         "noPropertyAccessFromIndexSignature": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
         "noUnusedParameters": true,
-        "noImplicitOverride": true,
         "noUnusedLocals": true,
-        "allowImportingTsExtensions": true,
         "verbatimModuleSyntax": true,
         "erasableSyntaxOnly": true,
         "resolveJsonModule": true,
-        "skipLibCheck": true,
-        "allowJs": true,
         "noEmit": true,
         "strict": true,
         "moduleResolution": "bundler",
@@ -24,5 +19,5 @@
         "lib": ["ESNext"]
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "build", "test", "drizzle.config.ts"]
+    "exclude": ["node_modules", "build", "test"]
 }
