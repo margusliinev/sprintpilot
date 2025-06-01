@@ -21,7 +21,7 @@ export class Logger {
         this.requestId = requestId;
     }
 
-    log(level: Level, message: string, meta?: Meta, error?: ErrorExtended) {
+    private log(level: Level, message: string, meta?: Meta, error?: ErrorExtended) {
         const logData = {
             requestId: this.requestId,
             timestamp: new Date().toISOString(),
