@@ -47,7 +47,10 @@ function App() {
 
     return (
         <div className='App'>
-            <h1>{message}</h1>
+            <div>
+                <img src='/logo.svg' alt='Logo' />
+                <h1>{message}</h1>
+            </div>
         </div>
     );
 }

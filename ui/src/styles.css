@@ -1,16 +1,29 @@
+@import '@fontsource-variable/inter';
+
+:root {
+    --font-inter: 'Inter Variable', sans-serif;
+    --color-background: #18181b;
+    --color-foreground: #fafafa;
+}
+
+html {
+    color-scheme: dark;
+}
+
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     box-sizing: border-box;
+    line-height: 1.5;
     padding: 0;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #18181b;
-    color: #fafafa;
-    line-height: 1.5;
 }
 
 .App {
+    text-align: center;
     display: grid;
     place-items: center;
     height: 100vh;
