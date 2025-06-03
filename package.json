@@ -11,7 +11,9 @@
     },
     "scripts": {
         "dev": "bun run --hot src/server.ts",
-        "build": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
+        "build:ui": "cd ./ui && bun run build",
+        "build:api": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
+        "build": "bun run build:ui && bun run build:api",
         "start": "./build/server",
         "test": "bun test",
         "format": "prettier --write .",

@@ -4,6 +4,7 @@ import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
 import { bootstrap } from './middleware';
+import { serveStatic } from 'hono/bun';
 import { runMigrations } from './db';
 import { env } from './helpers/env';
 import { serve } from 'bun';
@@ -15,6 +16,7 @@ app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
 app.use(bootstrap);
+app.use('*', serveStatic({ root: './build/ui' }));
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);
