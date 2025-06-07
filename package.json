@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@hono/zod-validator": "0.7.0",
+        "croner": "9.0.0",
         "drizzle-kit": "0.31.1",
         "drizzle-orm": "0.44.2",
         "hono": "4.7.11",

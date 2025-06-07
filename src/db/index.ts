@@ -12,11 +12,10 @@ export const db = drizzle({ client: sqlite });
 
 export function runMigrations() {
     try {
-        console.info('🚧 Database migration started');
         migrate(db, { migrationsFolder: './src/db/migrations' });
-        console.info('✅ Database migration completed');
+        console.info('✅ Database migrations completed');
     } catch (error) {
-        console.error('❌ Database migration failed');
+        console.error('❌ Database migrations failed');
         throw error;
     }
 }

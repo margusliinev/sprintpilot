@@ -4,3 +4,4 @@ schema.ts
 bun.lock
 build
 dev.db*
+routeTree.gen.ts

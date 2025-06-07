@@ -6,6 +6,7 @@ import { requestId } from 'hono/request-id';
 import { bootstrap } from './middleware';
 import { serveStatic } from 'hono/bun';
 import { runMigrations } from './db';
+import { runCrons } from './crons';
 import { env } from './helpers/env';
 import { serve } from 'bun';
 import { Hono } from 'hono';
@@ -29,4 +30,5 @@ const server = serve({ fetch: app.fetch, port: env.PORT });
 if (env.NODE_ENV !== 'test') {
     console.log(`🚀 Server running at http://localhost:${server.port}`);
     runMigrations();
+    runCrons();
 }
