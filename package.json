@@ -11,9 +11,7 @@
     },
     "scripts": {
         "dev": "bun run --hot src/server.ts",
-        "build:ui": "cd ./ui && bun run build",
-        "build:api": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
-        "build": "bun run build:ui && bun run build:api",
+        "build": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
         "start": "./build/server",
         "test": "bun test",
         "format": "prettier --write .",
@@ -29,7 +27,7 @@
         "drizzle-kit": "0.31.1",
         "drizzle-orm": "0.44.2",
         "hono": "4.7.11",
-        "zod": "3.25.51"
+        "zod": "3.25.56"
     },
     "devDependencies": {
         "@types/bun": "1.2.15",
