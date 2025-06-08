@@ -1,4 +1,4 @@
 node_modules
 build
-dev.db*
 .DS_Store
+.env*

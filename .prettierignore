@@ -1,6 +1,7 @@
 node_modules
+build
 migrations
 schema.ts
 bun.lock
-build
 routeTree.gen.ts
+README.md
