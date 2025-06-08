@@ -16,7 +16,7 @@ app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
 app.use(bootstrap);
-app.use('*', serveStatic({ root: './build/ui' }));
+app.use('*', serveStatic({ root: './ui/build' }));
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);

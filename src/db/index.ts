@@ -20,6 +20,7 @@ if (env.NODE_ENV === 'production') {
 
 function runMigrations() {
     try {
+        console.info('🚧 Database migrations started');
         migrate(db, { migrationsFolder: './src/db/migrations' });
         console.info('✅ Database migrations completed');
     } catch (error) {

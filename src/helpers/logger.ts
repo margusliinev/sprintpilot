@@ -49,6 +49,8 @@ export class Logger {
     }
 
     request(httpRequest: HTTPRequest) {
-        if (env.NODE_ENV === 'production') console.log(JSON.stringify(httpRequest));
+        if (env.NODE_ENV === 'production' && httpRequest.path.startsWith('/api')) {
+            console.log(JSON.stringify(httpRequest));
+        }
     }
 }

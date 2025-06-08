@@ -6,7 +6,7 @@ import viteReact from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [TanStackRouterVite({ autoCodeSplitting: true }), viteReact()],
     resolve: { alias: { '@': resolve(__dirname, './src') } },
-    build: { outDir: '../build/ui' },
+    build: { outDir: 'build' },
     server: {
         proxy: {
             '/api': {
