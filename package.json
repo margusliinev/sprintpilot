@@ -10,10 +10,10 @@
         "url": "https://github.com/margusliinev/sprintpilot"
     },
     "scripts": {
-        "dev": "bun run --hot src/server.ts",
+        "dev": "bun run --env-file=.env --hot src/server.ts",
         "build": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
         "start": "./build/server",
-        "test": "bun test",
+        "test": "bun --env-file=.env.test test",
         "format": "prettier --write .",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",

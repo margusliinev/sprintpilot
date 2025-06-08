@@ -1,16 +1,24 @@
-import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
-import { drizzle } from 'drizzle-orm/bun-sqlite';
-import { Database } from 'bun:sqlite';
+import type { BunSQLDatabase } from 'drizzle-orm/bun-sql';
+import { migrate } from 'drizzle-orm/bun-sql/migrator';
+import { drizzle } from 'drizzle-orm/bun-sql';
 import { env } from '../helpers/env';
+import { SQL } from 'bun';
 
-const sqlite = new Database(env.DATABASE_URL, { create: true });
-sqlite.exec('PRAGMA journal_mode = WAL;');
-sqlite.exec('PRAGMA foreign_keys = ON;');
-sqlite.exec('PRAGMA synchronous = NORMAL;');
+declare global {
+    var db: BunSQLDatabase | undefined;
+}
 
-export const db = drizzle({ client: sqlite });
+const client = new SQL(env.DATABASE_URL);
+let db: BunSQLDatabase;
 
-export function runMigrations() {
+if (env.NODE_ENV === 'production') {
+    db = drizzle({ client });
+} else {
+    if (!global.db) global.db = drizzle({ client });
+    db = global.db;
+}
+
+function runMigrations() {
     try {
         migrate(db, { migrationsFolder: './src/db/migrations' });
         console.info('✅ Database migrations completed');
@@ -19,3 +27,5 @@ export function runMigrations() {
         throw error;
     }
 }
+
+export { db, runMigrations };
