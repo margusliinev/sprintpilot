@@ -9,6 +9,7 @@
         "verbatimModuleSyntax": true,
         "erasableSyntaxOnly": true,
         "skipLibCheck": true,
+        "allowJs": true,
         "noEmit": true,
         "strict": true,
         "moduleResolution": "bundler",
@@ -20,5 +21,5 @@
         "paths": { "@/*": ["./src/*"] },
         "lib": ["ES2022", "DOM", "DOM.Iterable"]
     },
-    "include": ["**/*.ts", "**/*.tsx"]
+    "include": ["**/*.ts", "**/*.tsx", "vite.config.js"]
 }
