@@ -28,5 +28,5 @@ app.onError(handleError);
 const server = serve({ fetch: app.fetch, port: env.PORT });
 if (env.NODE_ENV !== 'test') {
     console.log(`🚀 Server running at http://localhost:${server.port}`);
-    runMigrations();
+    await runMigrations();
 }

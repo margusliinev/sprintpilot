@@ -18,10 +18,10 @@ if (env.NODE_ENV === 'production') {
     db = global.db;
 }
 
-function runMigrations() {
+async function runMigrations() {
     try {
         console.info('🚧 Database migrations started');
-        migrate(db, { migrationsFolder: './src/db/migrations' });
+        await migrate(db, { migrationsFolder: './src/db/migrations' });
         console.info('✅ Database migrations completed');
     } catch (error) {
         console.error('❌ Database migrations failed');
