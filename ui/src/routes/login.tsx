@@ -41,11 +41,11 @@ function LoginPage() {
                     <h1 className='text-2xl font-bold mb-2 text-center bg-gradient-to-r from-zinc-200 to-zinc-400 bg-clip-text text-transparent'>Sign in to Sprintpilot</h1>
                     <p className='text-muted-foreground mb-6 text-center text-sm'>Welcome back! Please enter your details.</p>
                     <form className='w-full flex flex-col gap-4'>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='email'>Email</Label>
                             <Input id='email' type='email' placeholder='you@email.com' autoComplete='email' required className='mt-1' />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='password'>Password</Label>
                             <Input id='password' type='password' placeholder='••••••••' autoComplete='current-password' required className='mt-1' />
                         </div>

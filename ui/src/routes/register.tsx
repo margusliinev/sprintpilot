@@ -41,19 +41,19 @@ function RegisterPage() {
                     <h1 className='text-2xl font-bold mb-2 text-center bg-gradient-to-r from-zinc-200 to-zinc-400 bg-clip-text text-transparent'>Create your account</h1>
                     <p className='text-muted-foreground mb-6 text-center text-sm'>Join Sprintpilot and start planning your first sprint.</p>
                     <form className='w-full flex flex-col gap-4'>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='name'>Name</Label>
                             <Input id='name' type='text' placeholder='Your name' autoComplete='name' required className='mt-1' />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='email'>Email</Label>
                             <Input id='email' type='email' placeholder='you@email.com' autoComplete='email' required className='mt-1' />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='password'>Password</Label>
                             <Input id='password' type='password' placeholder='••••••••' autoComplete='new-password' required className='mt-1' />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-1'>
                             <Label htmlFor='confirm_password'>Confirm Password</Label>
                             <Input id='confirm_password' type='password' placeholder='••••••••' autoComplete='new-password' required className='mt-1' />
                         </div>
