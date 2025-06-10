@@ -42,12 +42,46 @@ function HomePage() {
             {/* Header */}
             <header className='w-full flex justify-center fixed top-0 left-0 z-30 bg-transparent transition-opacity duration-300' style={{ opacity: headerOpacity }}>
                 <div className='container mx-auto mt-4 px-2 sm:px-4'>
-                    <div className='flex items-center justify-between bg-card/80 border border-border/40 rounded-2xl shadow-lg px-3 py-2 sm:px-6 sm:py-3 backdrop-blur-md min-h-[56px]'>
-                        <a href='/' className='flex items-center gap-2 group min-w-0'>
+                    <div className='flex items-center justify-between px-3 py-2 sm:px-6 sm:py-3 min-h-[56px] shadow-none relative overflow-visible'>
+                        {/* Soft gradient background, blurred, with no border or hard edge */}
+                        <div
+                            className='absolute inset-0 rounded-full pointer-events-none'
+                            style={{
+                                background: 'rgba(24,24,27,0.15)',
+                                boxShadow: '0 0 2px rgba(24,24,27,0.1)',
+                                filter: 'blur(20px)',
+                                zIndex: 0,
+                            }}
+                        />
+                        <div
+                            className='absolute inset-0 pointer-events-none'
+                            style={{
+                                background: 'transparent',
+                                zIndex: 0,
+                            }}
+                        />
+                        {/* Edge fade effect */}
+                        <div className='absolute inset-0 pointer-events-none flex justify-between items-stretch z-10'>
+                            <div
+                                style={{
+                                    width: '64px',
+                                    background: 'linear-gradient(90deg, rgba(24,24,27,0.18) 0%, rgba(24,24,27,0.01) 100%)',
+                                    filter: 'blur(6px)',
+                                }}
+                            />
+                            <div
+                                style={{
+                                    width: '64px',
+                                    background: 'linear-gradient(270deg, rgba(24,24,27,0.18) 0%, rgba(24,24,27,0.01) 100%)',
+                                    filter: 'blur(6px)',
+                                }}
+                            />
+                        </div>
+                        <a href='/' className='flex items-center gap-2 group min-w-0 relative z-10'>
                             <img src='/logo.svg' alt='SprintPilot Logo' className='w-8 h-8 flex-shrink-0' />
                             <span className='font-bold text-base sm:text-lg tracking-tight text-zinc-200 transition-colors duration-200 group-hover:text-zinc-400 truncate'>Sprintpilot</span>
                         </a>
-                        <nav className='flex gap-1 sm:gap-4 items-center min-w-0'>
+                        <nav className='flex gap-1 sm:gap-4 items-center min-w-0 relative z-10'>
                             <a
                                 href='/login'
                                 className='text-muted-foreground hover:text-primary transition font-medium px-2 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 text-sm sm:text-base whitespace-nowrap'
