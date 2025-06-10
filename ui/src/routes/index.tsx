@@ -4,21 +4,67 @@ import { ArrowRight, Check } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
+import { useEffect, useRef, useState } from 'react';
 
 export const Route = createFileRoute('/')({
-    component: App,
+    component: HomePage,
 });
 
 const features = ['Real-time collaboration', 'Sprint planning', 'Task management', 'Team communication', 'Progress tracking', 'Agile workflows'];
 
-function App() {
+function HomePage() {
+    // Header fade state
+    const [headerOpacity, setHeaderOpacity] = useState(1);
+    const ticking = useRef(false);
+
+    useEffect(() => {
+        function onScroll() {
+            if (!ticking.current) {
+                window.requestAnimationFrame(() => {
+                    const y = window.scrollY;
+                    // Start fading after 16px, fully faded at 120px
+                    let opacity = 1;
+                    if (y > 16) {
+                        opacity = Math.max(0, 1 - (y - 16) / 104);
+                    }
+                    setHeaderOpacity(opacity < 0.04 ? 0 : opacity);
+                    ticking.current = false;
+                });
+                ticking.current = true;
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
         <div className='min-h-screen w-full overflow-hidden bg-background'>
-            {/* Gradient Background */}
-            <div className='absolute inset-0 bg-gradient-to-br from-zinc-900 via-background to-zinc-900/90 -z-10' />
+            {/* Header */}
+            <header className='w-full flex justify-center fixed top-0 left-0 z-30 bg-transparent transition-opacity duration-300' style={{ opacity: headerOpacity }}>
+                <div className='container mx-auto mt-4 px-4'>
+                    <div className='flex items-center justify-between bg-card/80 border border-border/40 rounded-2xl shadow-lg px-6 py-3 backdrop-blur-md'>
+                        <a href='/' className='flex items-center gap-2 group'>
+                            <img src='/logo.svg' alt='SprintPilot Logo' className='w-8 h-8' />
+                            <span className='font-bold text-lg tracking-tight text-zinc-200 transition-colors duration-200 group-hover:text-zinc-400'>Sprintpilot</span>
+                        </a>
+                        <nav className='flex gap-2 md:gap-4 items-center'>
+                            <a
+                                href='/login'
+                                className='text-muted-foreground hover:text-primary transition font-medium px-3 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+                            >
+                                Login
+                            </a>
+                            <a href='/register' className='ml-1'>
+                                <Button size='sm' className='px-5 font-semibold shadow-md'>
+                                    Register
+                                </Button>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </header>
 
-            {/* Hero Section */}
-            <div className='container mx-auto px-4 py-24'>
+            <div className='container mx-auto px-4 py-24 pt-32'>
                 <div className='flex flex-col items-center text-center space-y-8'>
                     <div className='relative'>
                         <div className='absolute inset-0 blur-3xl bg-gradient-to-br from-zinc-500/20 via-zinc-500/10 to-zinc-900/20 -z-10' />
