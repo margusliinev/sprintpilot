@@ -22,6 +22,7 @@ app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);
 app.route('/api/auth', authRoutes);
 
+app.get('*', serveStatic({ path: './ui/build/index.html' }));
 app.notFound(handleNotFound);
 app.onError(handleError);
 
