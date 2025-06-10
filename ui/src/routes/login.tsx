@@ -12,21 +12,21 @@ function LoginPage() {
         <div className='min-h-screen w-full bg-gradient-to-br from-zinc-900 via-background to-zinc-900/90 flex flex-col overflow-hidden'>
             {/* Header */}
             <header className='w-full flex justify-center fixed top-0 left-0 z-30 bg-transparent'>
-                <div className='container mx-auto mt-4 px-4'>
-                    <div className='flex items-center justify-between bg-card/80 border border-border/40 rounded-2xl shadow-lg px-6 py-3 backdrop-blur-md'>
-                        <a href='/' className='flex items-center gap-2 group'>
-                            <img src='/logo.svg' alt='SprintPilot Logo' className='w-8 h-8' />
-                            <span className='font-bold text-lg tracking-tight text-zinc-200 transition-colors duration-200 group-hover:text-zinc-400'>Sprintpilot</span>
+                <div className='container mx-auto mt-4 px-2 sm:px-4'>
+                    <div className='flex items-center justify-between bg-card/80 border border-border/40 rounded-2xl shadow-lg px-3 py-2 sm:px-6 sm:py-3 backdrop-blur-md min-h-[56px]'>
+                        <a href='/' className='flex items-center gap-2 group min-w-0'>
+                            <img src='/logo.svg' alt='SprintPilot Logo' className='w-8 h-8 flex-shrink-0' />
+                            <span className='font-bold text-base sm:text-lg tracking-tight text-zinc-200 transition-colors duration-200 group-hover:text-zinc-400 truncate'>Sprintpilot</span>
                         </a>
-                        <nav className='flex gap-2 md:gap-4 items-center'>
+                        <nav className='flex gap-1 sm:gap-4 items-center min-w-0'>
                             <a
                                 href='/login'
-                                className='text-muted-foreground hover:text-primary transition font-medium px-3 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+                                className='text-muted-foreground hover:text-primary transition font-medium px-2 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 text-sm sm:text-base whitespace-nowrap'
                             >
                                 Login
                             </a>
-                            <a href='/register' className='ml-1'>
-                                <Button size='sm' className='px-5 font-semibold shadow-md'>
+                            <a href='/register' className='ml-0 sm:ml-1'>
+                                <Button size='sm' className='px-3 sm:px-5 font-semibold shadow-md text-sm sm:text-base'>
                                     Register
                                 </Button>
                             </a>
