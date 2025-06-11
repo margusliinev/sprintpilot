@@ -4,6 +4,10 @@ import { sessionsTable } from '../db/schema';
 import { db } from '../db/index';
 import { eq } from 'drizzle-orm';
 
+async function getSessionByUserId(userId: Session['user_id']) {
+    return db.select().from(sessionsTable).where(eq(sessionsTable.user_id, userId));
+}
+
 async function getAllSessions() {
     return db.select().from(sessionsTable);
 }
@@ -27,6 +31,7 @@ async function deleteSession(sessionId: Session['id']) {
 }
 
 export const sessionModel = {
+    getSessionByUserId,
     getAllSessions,
     createNewSession,
     updateSession,

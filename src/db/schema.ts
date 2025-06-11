@@ -6,16 +6,16 @@ export const usersTable = pgTable('users', {
     name: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).notNull().unique(),
     password: varchar({ length: 255 }).notNull(),
-    created_at: timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
-    updated_at: timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull().$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+    created_at: timestamp({ mode: 'string', withTimezone: true }).defaultNow().notNull(),
+    updated_at: timestamp({ mode: 'string', withTimezone: true }).defaultNow().notNull().$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
 export const sessionsTable = pgTable('sessions', {
     id: uuid().primaryKey().$defaultFn(() => Bun.randomUUIDv7()),
     user_id: uuid().notNull().references(() => usersTable.id),
-    expires_at: timestamp({ mode: 'date', withTimezone: true }).notNull(),
-    created_at: timestamp({ mode: 'date', withTimezone: true }).notNull().defaultNow(),
-    updated_at: timestamp({ mode: 'date', withTimezone: true }).notNull().defaultNow().$onUpdate(() => sql`CURRENT_TIMESTAMP`),
+    expires_at: timestamp({ mode: 'string', withTimezone: true }).notNull(),
+    created_at: timestamp({ mode: 'string', withTimezone: true }).notNull().defaultNow(),
+    updated_at: timestamp({ mode: 'string', withTimezone: true }).notNull().defaultNow().$onUpdate(() => sql`CURRENT_TIMESTAMP`),
 });
 
 export type User = typeof usersTable.$inferSelect;

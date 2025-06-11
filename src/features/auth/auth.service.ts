@@ -9,7 +9,7 @@ const sessionCookieName = 'auth-session';
 async function createSession(ctx: Context, user_id: string) {
     const newSession = await ctx.var.models.session.createNewSession({
         user_id,
-        expires_at: new Date(Date.now() + DAY_IN_MS * 30),
+        expires_at: new Date(Date.now() + DAY_IN_MS * 30).toISOString(),
     });
     return newSession;
 }
@@ -31,7 +31,7 @@ async function validateSessionToken(ctx: Context, sessionToken: string) {
 
     const renewSession = Date.now() >= new Date(session.expires_at).getTime() - DAY_IN_MS * 15;
     if (renewSession) {
-        session.expires_at = new Date(Date.now() + DAY_IN_MS * 30);
+        session.expires_at = new Date(Date.now() + DAY_IN_MS * 30).toISOString();
         await ctx.var.models.session.updateSession(session.id, { expires_at: session.expires_at });
     }
 
@@ -50,13 +50,13 @@ async function getSessionTokenCookie(ctx: Context) {
     return await getSignedCookie(ctx, env.SESSION_SECRET, sessionCookieName);
 }
 
-async function setSessionTokenCookie(ctx: Context, token: string, expires_at: Date) {
+async function setSessionTokenCookie(ctx: Context, token: string, expires_at: string) {
     await setSignedCookie(ctx, sessionCookieName, token, env.SESSION_SECRET, {
         secure: env.NODE_ENV === 'production',
         sameSite: 'lax',
         httpOnly: true,
         path: '/',
-        expires: expires_at,
+        expires: new Date(expires_at),
     });
 }
 

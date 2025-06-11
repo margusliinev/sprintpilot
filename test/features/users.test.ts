@@ -75,4 +75,24 @@ describe('Users', () => {
         expect(res.status).toBe(401);
         expect(data.success).toBe(false);
     });
+
+    test('should fail to get authenticated user info if session is expired', async () => {
+        const { cookie, user } = await setupAuthUser();
+
+        const [session] = await models.session.getSessionByUserId(user.id);
+        await models.session.updateSession(session.id, { expires_at: new Date(Date.now() - 1000).toISOString() });
+
+        const res = await app.request('/api/users/me', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: cookie,
+            },
+        });
+
+        const data = await res.json();
+
+        expect(res.status).toBe(401);
+        expect(data.success).toBe(false);
+    });
 });

@@ -43,15 +43,6 @@ DATABASE_URL='postgresql://user:password@localhost:5432/db'
 SESSION_SECRET='your_secret_here'
 ```
 
-For running tests, create a `.env.test` file with:
-
-```
-PORT='4000'
-NODE_ENV='test'
-DATABASE_URL='postgresql://user:password@localhost:5433/db_test'
-SESSION_SECRET='your_secret_here'
-```
-
 ### 3. Install Dependencies
 
 Install dependencies for both API and the UI:
