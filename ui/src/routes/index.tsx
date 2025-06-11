@@ -108,7 +108,7 @@ function HomePage() {
                     <h1 className='text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-br pb-1 from-white to-zinc-400 bg-clip-text text-transparent'>Sprint Planning for Small Teams</h1>
 
                     <p className='text-lg md:text-xl text-muted-foreground max-w-2xl'>
-                        Sprintpilot is the project management tool designed for small, nimble teams. Enjoy real-time collaboration and simple workflows—without the enterprise bloat.
+                        Sprintpilot is a project management tool of choice for developers around the world to improve real-time collaboration. Enjoy simple workflows without the enterprise bloat.
                     </p>
 
                     <div className='flex gap-4 mt-8'>
