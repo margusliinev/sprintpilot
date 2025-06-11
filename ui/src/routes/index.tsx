@@ -140,11 +140,6 @@ function HomePage() {
                     </span>
                 </div>
 
-                {/* Animated Background Accent */}
-                <div className='relative flex justify-center'>
-                    <div className='absolute left-1/2 -translate-x-1/2 -top-10 w-80 h-32 bg-gradient-to-r from-primary/10 via-zinc-700/10 to-primary/10 blur-2xl rounded-full opacity-70 pointer-events-none animate-pulse-slow' />
-                </div>
-
                 {/* Get Started Card Section */}
                 <section className='flex justify-center mt-8'>
                     <div className='w-full max-w-xl'>
