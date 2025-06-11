@@ -80,7 +80,7 @@ describe('Users', () => {
         const { cookie, user } = await setupAuthUser();
 
         const [session] = await models.session.getSessionByUserId(user.id);
-        await models.session.updateSession(session.id, { expires_at: new Date(Date.now() - 1000).toISOString() });
+        await models.session.updateSession(session.id, { expires_at: new Date(Date.now() - 1000) });
 
         const res = await app.request('/api/users/me', {
             method: 'GET',
