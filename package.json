@@ -27,7 +27,7 @@
         "drizzle-kit": "0.31.1",
         "drizzle-orm": "0.44.2",
         "hono": "4.7.11",
-        "zod": "3.25.56"
+        "zod": "3.25.61"
     },
     "devDependencies": {
         "@types/bun": "1.2.15",
