@@ -1,4 +1,5 @@
 import { describe, test, expect } from 'bun:test';
+import { setupAuthUser } from '../helpers';
 import { models } from '../../src/models';
 import { app } from '../../src/server';
 
@@ -48,20 +49,7 @@ describe('Auth', () => {
     });
 
     test('should successfully logout the user', async () => {
-        const registerResponse = await app.request('/api/auth/register', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: 'Test User',
-                email: 'test@example.com',
-                password: 'password123',
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        const setCookie = registerResponse.headers.get('set-cookie');
-        expect(setCookie).toBeTruthy();
+        const { cookie } = await setupAuthUser();
 
         const sessions = await models.session.getAllSessions();
         expect(sessions.length).toBe(1);
@@ -70,7 +58,7 @@ describe('Auth', () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Cookie: setCookie!,
+                Cookie: cookie,
             },
         });
         const data = await logoutResponse.json();
