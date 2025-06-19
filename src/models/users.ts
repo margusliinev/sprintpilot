@@ -27,7 +27,7 @@ async function getUserWithSession(sessionId: Session['id']) {
 
 async function createNewUser(user: NewUser) {
     return db.transaction(async (tx) => {
-        const [newUser] = await tx.insert(usersTable).values(user).returning();
+        const [newUser] = await tx.insert(usersTable).values(user).$returningId();
         if (!newUser) throw new InternalServerErrorException();
 
         const [createdUser] = await tx.select(userColumns).from(usersTable).where(eq(usersTable.id, newUser.id));

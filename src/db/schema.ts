@@ -1,20 +1,20 @@
-import { pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
+import { mysqlTable, varchar, timestamp } from 'drizzle-orm/mysql-core';
 
-export const usersTable = pgTable('users', {
-    id: uuid().primaryKey().$defaultFn(() => Bun.randomUUIDv7()),
-    name: varchar({ length: 255 }).notNull(),
-    email: varchar({ length: 255 }).notNull().unique(),
-    password: varchar({ length: 255 }).notNull(),
-    created_at: timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
-    updated_at: timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull().$onUpdate(() => new Date()),
+export const usersTable = mysqlTable('users', {
+	id: varchar({ length: 255 }).primaryKey().$defaultFn(()=> Bun.randomUUIDv7()),
+	name: varchar({ length: 255 }).notNull(),
+	email: varchar({ length: 255 }).notNull().unique(),
+	password: varchar({ length: 255 }).notNull(),
+	created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
+	updated_at: timestamp({ mode: 'date' }).notNull().defaultNow().onUpdateNow()
 });
 
-export const sessionsTable = pgTable('sessions', {
-    id: uuid().primaryKey().$defaultFn(() => Bun.randomUUIDv7()),
-    user_id: uuid().notNull().references(() => usersTable.id),
-    expires_at: timestamp({ mode: 'date', withTimezone: true }).notNull(),
-    created_at: timestamp({ mode: 'date', withTimezone: true }).notNull().defaultNow(),
-    updated_at: timestamp({ mode: 'date', withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+export const sessionsTable = mysqlTable('sessions', {
+	id: varchar({ length: 255 }).primaryKey().$defaultFn(()=> Bun.randomUUIDv7()),
+	user_id: varchar({ length: 255 }).notNull().references(() => usersTable.id),
+	expires_at: timestamp({ mode: 'date' }).notNull(),
+	created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
+	updated_at: timestamp({ mode: 'date' }).notNull().defaultNow().onUpdateNow()
 });
 
 export type User = typeof usersTable.$inferSelect;

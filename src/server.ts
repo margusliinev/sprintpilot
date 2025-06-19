@@ -5,7 +5,6 @@ import { secureHeaders } from 'hono/secure-headers';
 import { requestId } from 'hono/request-id';
 import { bootstrap } from './middleware';
 import { serveStatic } from 'hono/bun';
-import { runMigrations } from './db';
 import { env } from './helpers/env';
 import { serve } from 'bun';
 import { Hono } from 'hono';
@@ -27,8 +26,4 @@ app.get('*', serveStatic({ path: './ui/build/index.html' }));
 app.notFound(handleNotFound);
 app.onError(handleError);
 
-const server = serve({ fetch: app.fetch, port: env.PORT });
-if (env.NODE_ENV !== 'test') {
-    console.log(`🚀 Server running at http://localhost:${server.port}`);
-    await runMigrations();
-}
+serve({ fetch: app.fetch, port: env.PORT });

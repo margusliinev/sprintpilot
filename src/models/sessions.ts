@@ -14,7 +14,7 @@ async function getAllSessions() {
 
 async function createNewSession(session: NewSession) {
     return db.transaction(async (tx) => {
-        const [newSession] = await tx.insert(sessionsTable).values(session).returning();
+        const [newSession] = await tx.insert(sessionsTable).values(session).$returningId();
         if (!newSession) throw new InternalServerErrorException();
 
         const [createdSession] = await tx.select().from(sessionsTable).where(eq(sessionsTable.id, newSession.id));

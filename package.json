@@ -10,10 +10,10 @@
         "url": "https://github.com/margusliinev/sprintpilot"
     },
     "scripts": {
-        "dev": "bun run --hot src/server.ts",
+        "dev": "bun run db:migrate && bun run --hot src/server.ts",
         "build": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
         "start": "./build/server",
-        "test": "bun test",
+        "test": "bun run db:migrate && bun test",
         "format": "prettier --write .",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
@@ -26,12 +26,13 @@
         "@hono/zod-validator": "0.7.0",
         "drizzle-kit": "0.31.1",
         "drizzle-orm": "0.44.2",
-        "hono": "4.7.11",
-        "zod": "3.25.64"
+        "hono": "4.8.0",
+        "mysql2": "3.14.1",
+        "zod": "3.25.67"
     },
     "devDependencies": {
         "@types/bun": "1.2.16",
         "prettier": "3.5.3",
-        "prettier-plugin-tailwindcss": "0.6.12"
+        "prettier-plugin-tailwindcss": "0.6.13"
     }
 }
