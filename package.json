@@ -13,7 +13,7 @@
         "dev": "bun run db:migrate && bun run --hot src/server.ts",
         "build": "bun build --compile --sourcemap ./src/server.ts --outfile ./build/server",
         "start": "./build/server",
-        "test": "bun run db:migrate && bun test",
+        "test": "bun test",
         "format": "prettier --write .",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",

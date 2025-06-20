@@ -9,8 +9,8 @@ Sprintpilot is a project management tool of choice for developers around the wor
 - Typescript
 - Bun + Hono (API)
 - React + Tanstack Router (UI)
-- PostgreSQL
 - Docker
+- MySQL
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Before you begin, ensure you have the following installed:
 - [Bun](https://bun.sh/) (v1.0 or later)
 - [Docker](https://www.docker.com/) & Docker Compose
 - [Node.js](https://nodejs.org/) (for UI development, optional if using Bun only)
-- [PostgreSQL](https://www.postgresql.org/) (if not using Docker for DB)
+- [MySQL](https://www.mysql.com/) (if not using Docker for DB)
 
 ## Getting Started
 
@@ -39,8 +39,16 @@ Create a `.env` file in the root directory with the following contents.
 ```
 PORT='3000'
 NODE_ENV='development'
-DATABASE_URL='postgresql://user:password@localhost:5432/db'
-SESSION_SECRET='your_secret_here'
+DATABASE_URL='mysql://user:password@localhost:3306/db'
+SESSION_SECRET='secret'
+```
+Create a `.env.test` file in the root directory with the following contents.
+
+```
+PORT='4000'
+NODE_ENV='test'
+DATABASE_URL='mysql://user:password@localhost:3307/db_test'
+SESSION_SECRET='test_secret'
 ```
 
 ### 3. Install Dependencies

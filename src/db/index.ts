@@ -1,4 +1,5 @@
 import { MySql2Database } from 'drizzle-orm/mysql2';
+import { migrate } from 'drizzle-orm/mysql2/migrator';
 import { drizzle } from 'drizzle-orm/mysql2';
 import { env } from '../helpers/env';
 import mysql from 'mysql2/promise';
@@ -17,4 +18,18 @@ if (env.NODE_ENV === 'production') {
     db = global.db;
 }
 
-export { db };
+async function runMigrations() {
+    const client = await mysql.createConnection({ uri: env.DATABASE_URL, connectionLimit: 1 });
+    const db = drizzle({ client });
+
+    try {
+        console.info('🚧 Database migrations started');
+        await migrate(db, { migrationsFolder: './src/db/migrations' });
+        console.info('✅ Database migrations completed');
+    } catch (error) {
+        console.error('❌ Database migrations failed');
+        throw error;
+    }
+}
+
+export { db, runMigrations };

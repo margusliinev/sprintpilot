@@ -1,8 +1,7 @@
-import type { User, NewUser } from '../src/db/schema';
 import { models } from '../src/models';
 import { app } from '../src/server';
 
-export async function setupAuthUser(userData: Partial<NewUser> = {}) {
+export async function setupAuthUser() {
     const defaultUser = {
         name: 'Test User',
         email: 'test@example.com',

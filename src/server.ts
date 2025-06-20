@@ -26,4 +26,5 @@ app.get('*', serveStatic({ path: './ui/build/index.html' }));
 app.notFound(handleNotFound);
 app.onError(handleError);
 
-serve({ fetch: app.fetch, port: env.PORT });
+const server = serve({ fetch: app.fetch, port: env.PORT });
+console.log(`🚀 Server is running on http://localhost:${server.port}`);
