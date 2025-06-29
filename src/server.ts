@@ -2,10 +2,12 @@ import { healthRoutes, usersRoutes, authRoutes } from './features';
 import { handleError, handleNotFound } from './helpers/errors';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { secureHeaders } from 'hono/secure-headers';
+import { logger, bootstrap } from './middleware';
+import { emitter } from '@hono/event-emitter';
 import { requestId } from 'hono/request-id';
-import { bootstrap } from './middleware';
 import { serveStatic } from 'hono/bun';
 import { env } from './helpers/env';
+import { handlers } from './events';
 import { serve } from 'bun';
 import { Hono } from 'hono';
 
@@ -15,6 +17,8 @@ app.use(trimTrailingSlash());
 app.use(secureHeaders());
 app.use(requestId());
 app.use(bootstrap);
+app.use(logger);
+app.use(emitter(handlers));
 
 app.route('/api/health', healthRoutes);
 app.route('/api/users', usersRoutes);

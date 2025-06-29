@@ -19,6 +19,7 @@ app.post('/register', validateBody(registerSchema), async (ctx) => {
 
     const newUser = await userService.createNewUser(ctx, { ...body, email: normalizedEmail, password: hashedPassword });
     if (!newUser) throw new InternalServerErrorException();
+    ctx.get('emitter').emitAsync(ctx, 'user:created', newUser);
 
     const session = await authService.createSession(ctx, newUser.id);
     if (!session) throw new InternalServerErrorException();
@@ -40,6 +41,7 @@ app.post('/login', validateBody(loginSchema), async (ctx) => {
 
     const session = await authService.createSession(ctx, user.id);
     if (!session) throw new InternalServerErrorException();
+    ctx.get('emitter').emitAsync(ctx, 'session:created', session);
 
     await authService.setSessionTokenCookie(ctx, session.id, session.expires_at);
 
